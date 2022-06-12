@@ -7,6 +7,7 @@ import java.util.ArrayList;
  */
 public class Json {
 
+    /** All values that this {@link Json} object contains. */
     public JsonMap values;
 
     public static void main(String[] args) {
@@ -31,8 +32,8 @@ public class Json {
         StringBuilder builder = style.create();
 
         values.each((key, value) -> {
-            if (value instanceof JsonSerializable json)
-                value = json.write();
+            if (value instanceof String string) value = "\"" + string + "\"";
+            if (value instanceof JsonSerializable json) value = json.write();
             builder.append(style.add(key, value instanceof Json json ? json.write(style) : value.toString()));
         });
 
@@ -43,16 +44,28 @@ public class Json {
         return new Json();
     }
 
+    /** Makes the object serializable for the json parser. */
     public interface JsonSerializable {
 
+        /** @return a {@link Json} representation of this object. */
         public Json write();
 
+        /** Recreates an object from its {@link Json} representation. */
         public void read(Json json);
     }
 
+    /** Alternative for {@link JsonSerializable} if you need to parse already existing class into json. */
+    public interface JsonSerializer<T> {
+
+        /** @return a {@link Json} representation of the given object. */
+        public Json write(T object);
+
+        /** Recreates the given object from its {@link Json} representation. */
+        public void read(T object, Json json);
+    }
+
     public enum JsonStyle {
-        standard("{", "\"%s\":\"%s\",", "\"}"),
-        beautiful("{\n", "    \"%s\": \"%s\",\n", "\n}");
+        standard("{", "\"%s\":%s,", "\"}"), beautiful("{\n", "    \"%s\": %s,\n", "\n}");
 
         private final String start;
         private final String template;
