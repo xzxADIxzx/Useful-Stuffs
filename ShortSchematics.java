@@ -20,7 +20,7 @@ public class ShortSchematics {
     public static final int version = 0;
 
     /** List of all characters that are used to store integers */
-    public static final String symbols = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyXxZz" // I know it's a bad idea
+    public static final String symbols = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyXxZz" // i know it's a bad idea
                                        + "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫЫЬьЭэЮюЯя";
 
     /** Maximum value that can be stored in one character. */
@@ -76,16 +76,12 @@ public class ShortSchematics {
             if (next() != version) throw new VerifyError("The schematic version does not match the script version");
         }
 
-        public char nextChar() {
-            return base.charAt(index++);
-        }
-
         public int next() {
-            return symbols.indexOf(nextChar());
+            return symbols.indexOf(base.charAt(index++));
         }
 
         public int nextTwo() {
-            return symbols.indexOf(nextChar()) * max + symbols.indexOf(nextChar());
+            return next() * max + next();
         }
 
         public boolean hasNext() {
