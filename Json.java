@@ -7,15 +7,18 @@ import java.util.ArrayList;
  */
 public class Json {
 
+    /** All {@link JsonSerializer}s used to cast objects to json and back. */
+    public static final ArrayList<JsonSerializer<?>> serializers = new ArrayList<>();
+
     /** All values that this {@link Json} object contains. */
     public JsonMap values;
 
     public static void main(String[] args) {
         Json json = new Json();
-        json.add("name", "Karlson");
-        json.add("age", 19);
-        json.add("abilities", new Json().add("healthy", true).add("fast", false));
-        json.add("config", 0.1f);
+        json.put("name", "Karlson");
+        json.put("age", 19);
+        json.put("abilities", new Json().put("healthy", true).put("fast", false));
+        json.put("config", 0.1f);
         System.out.print(json.write(JsonStyle.beautiful));
     }
 
@@ -23,23 +26,34 @@ public class Json {
         this.values = new JsonMap();
     }
 
-    public Json add(String name, Object object) {
-        values.put(name, object);
+    public Object get(String key) {
+        return values.get(key);
+    }
+
+    public Json put(String key, Object value) {
+        values.put(key, value);
         return this;
     }
 
+    public boolean contains(String key) {
+        return values.contains(key);
+    }
+
+    /** @return a string representation of this {@link Json}. */
     public String write(JsonStyle style) {
         StringBuilder builder = style.create();
 
         values.each((key, value) -> {
             if (value instanceof String string) value = "\"" + string + "\"";
             if (value instanceof JsonSerializable json) value = json.write();
+            // TODO JsonSerializer<T> auto(T value)
             builder.append(style.add(key, value instanceof Json json ? json.write(style) : value.toString()));
         });
 
         return style.toString(builder);
     }
 
+    /** @return {@link Json} parsed from the given string. */
     public static Json read(String json) {
         return new Json();
     }
@@ -65,7 +79,7 @@ public class Json {
     }
 
     public enum JsonStyle {
-        standard("{", "\"%s\":%s,", "\"}"), beautiful("{\n", "    \"%s\": %s,\n", "\n}");
+        standard("{", "\"%s\":%s,", "}"), beautiful("{\n", "    \"%s\": %s,\n", "\n}");
 
         private final String start;
         private final String template;
@@ -86,22 +100,21 @@ public class Json {
         }
 
         public String toString(StringBuilder builder) {
-            int index = builder.length();
-            return builder.replace(index - 2, index, end).toString();
+            return builder.replace(builder.lastIndexOf(","), builder.length(), end).toString();
         }
     }
 
     public class JsonMap {
 
-        private ArrayList<String> keys = new ArrayList<>();
-        private ArrayList<Object> values = new ArrayList<>();
+        private final ArrayList<String> keys = new ArrayList<>();
+        private final ArrayList<Object> values = new ArrayList<>();
 
         public void each(Consumer cons) {
             for (int i = 0; i < keys.size(); i++)
                 cons.get(keys.get(i), values.get(i));
         }
 
-        public Object get(Object key) {
+        public Object get(String key) {
             int index = keys.indexOf(key);
             return index == -1 ? null : values.get(index);
         }
@@ -117,9 +130,12 @@ public class Json {
             }
         }
 
-        public interface Consumer {
+        public boolean contains(String key) {
+            return keys.contains(key);
+        }
 
-            public abstract void get(String key, Object value);
+        public interface Consumer {
+            public void get(String key, Object value);
         }
     }
 }
