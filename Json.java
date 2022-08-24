@@ -35,6 +35,13 @@ public class Json {
         return this;
     }
 
+    public boolean remove(String key) {
+        if (values.contains(key)) {
+            values.remove(key);
+            return true;
+        } else return false;
+    }
+
     public boolean contains(String key) {
         return values.contains(key);
     }
@@ -122,12 +129,18 @@ public class Json {
         public void put(String key, Object value) {
             if (keys.contains(key)) {
                 int index = keys.indexOf(key);
-                values.remove(index);
-                values.add(index, value);
+                values.set(index, value);
             } else {
                 keys.add(key);
                 values.add(value);
             }
+        }
+
+        public void remove(String key) {
+            int index = keys.indexOf(key);
+            if (index == -1) return;
+            keys.remove(index);
+            values.remove(index);
         }
 
         public boolean contains(String key) {
