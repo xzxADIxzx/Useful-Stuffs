@@ -5,6 +5,7 @@ import java.util.ArrayList;
  * 
  * @author xzxADIxzx
  */
+@SuppressWarnings("unchecked")
 public class Json {
 
     /** All {@link JsonSerializer}s used to cast objects to json and back. */
@@ -26,8 +27,17 @@ public class Json {
         this.values = new JsonMap();
     }
 
+    public Json(Class<?> key) {
+        this(); // used to parse objects
+        this.put("class", key.getName());
+    }
+
     public Object get(String key) {
         return values.get(key);
+    }
+
+    public <T> T getAs(String key) {
+        return (T) values.get(key);
     }
 
     public Json put(String key, Object value) {
