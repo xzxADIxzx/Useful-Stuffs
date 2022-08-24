@@ -48,6 +48,7 @@ public class Json {
 
     /** @return a string representation of this {@link Json}. */
     public String write(JsonStyle style) {
+        JsonStyle.indent++;
         StringBuilder builder = style.create();
 
         values.each((key, value) -> {
@@ -57,6 +58,7 @@ public class Json {
             builder.append(style.add(key, value instanceof Json json ? json.write(style) : value.toString()));
         });
 
+        JsonStyle.indent--;
         return style.toString(builder);
     }
 
@@ -86,13 +88,17 @@ public class Json {
     }
 
     public enum JsonStyle {
-        standard("{", "\"%s\":%s,", "}"), beautiful("{\n", "    \"%s\": %s,\n", "\n}");
+        standard(0, "{", "\"%s\":%s,", "%s}"), beautiful(4, "{\n", "\"%s\": %s,\n", "\n%s}");
+        
+        private static int indent;
 
+        private final int spaces;
         private final String start;
         private final String template;
         private final String end;
 
-        private JsonStyle(String start, String template, String end) {
+        private JsonStyle(int spaces, String start, String template, String end) {
+            this.spaces = spaces;
             this.start = start;
             this.template = template;
             this.end = end;
@@ -103,11 +109,15 @@ public class Json {
         }
 
         public String add(String name, String value) {
-            return template.formatted(name, value);
+            return indent() + template.formatted(name, value);
         }
 
         public String toString(StringBuilder builder) {
-            return builder.replace(builder.lastIndexOf(","), builder.length(), end).toString();
+            return builder.replace(builder.lastIndexOf(","), builder.length(), end.formatted(indent())).toString();
+        }
+
+        private String indent() {
+            return " ".repeat(spaces).repeat(indent);
         }
     }
 
