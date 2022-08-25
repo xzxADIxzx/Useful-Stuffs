@@ -32,6 +32,12 @@ public class Json {
         this.put("class", key.getName());
     }
 
+    /** Iterate over all values in json. */
+    public void each(Consumer cons) {
+        values.each(cons);
+    }
+
+    /** @return a value by a key in json. */
     public Object get(String key) {
         return values.get(key);
     }
@@ -40,11 +46,13 @@ public class Json {
         return (T) values.get(key);
     }
 
+    /** Puts a value to json by a key. */
     public Json put(String key, Object value) {
         values.put(key, value);
         return this;
     }
 
+    /** Remove a value from json by a key. */
     public boolean remove(String key) {
         if (values.contains(key)) {
             values.remove(key);
@@ -52,6 +60,7 @@ public class Json {
         } else return false;
     }
 
+    /** @return whether the json contains a key. */
     public boolean contains(String key) {
         return values.contains(key);
     }
