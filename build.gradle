@@ -1,5 +1,5 @@
 allprojects {
-	group = 'com.github.xzxADIxzx'
+	group = 'com.github.xzxADIxzx.Useful-Stuffs'
 	version = '1.2.0'
 }
 
