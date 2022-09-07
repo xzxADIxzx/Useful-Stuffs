@@ -1,3 +1,5 @@
+package useful;
+
 import java.util.ArrayList;
 
 /**
