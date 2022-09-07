@@ -2,9 +2,9 @@
 .settings/*
 .vscode/*
 
-bin/*
-lib/*
-build/*
+*/bin/*
+*/lib/*
+*/build/*
 
 *.classpath
 *.project
