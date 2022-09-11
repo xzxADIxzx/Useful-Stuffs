@@ -1,3 +1,7 @@
+package useful;
+
+import useful.Json.JsonMap.Consumer;
+
 import java.util.ArrayList;
 
 /**

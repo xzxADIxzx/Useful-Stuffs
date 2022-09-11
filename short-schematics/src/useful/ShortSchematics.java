@@ -1,3 +1,5 @@
+package useful;
+
 import arc.struct.Seq;
 import arc.struct.StringMap;
 import mindustry.game.Schematic;
