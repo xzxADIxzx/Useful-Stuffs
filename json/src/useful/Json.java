@@ -111,7 +111,7 @@ public class Json {
     }
 
     public enum JsonStyle {
-        standard(0, "{", "\"%s\":%s,", "%s}"), beautiful(4, "{\n", "\"%s\": %s,\n", "\n%s}");
+        compact(0, "{", "\"%s\":%s,", "%s}"), standard(0, "{ ", "\"%s\": %s, ", " %s}"), beautiful(4, "{\n", "\"%s\": %s,\n", "\n%s}");
         
         private static int indent;
 
