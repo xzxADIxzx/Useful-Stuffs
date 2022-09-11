@@ -90,6 +90,27 @@ public class Json {
         return new Json();
     }
 
+    /** Parses a field into a specific type. */
+    public static Object readField(String field) throws RuntimeException {
+        if (field.equals("null")) return null;
+
+        if (field.equals("true")) return true;
+        if (field.equals("false")) return false;
+
+        if (field.startsWith("\"") && field.endsWith("\"")) return field.substring(1, field.length() - 1);
+        if (field.startsWith("{") && field.endsWith("}")) return read(field.substring(1, field.length() - 1));
+
+        try {
+            return Integer.parseInt(field);
+        } catch (Throwable ignored) {}
+
+        try {
+            return Float.parseFloat(field);
+        } catch (Throwable ignored) {}
+
+        throw new RuntimeException("Unknown field type!");
+    }
+
     /** Makes the object serializable for the json parser. */
     public interface JsonSerializable {
 
