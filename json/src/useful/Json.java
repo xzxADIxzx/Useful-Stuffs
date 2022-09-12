@@ -18,15 +18,6 @@ public class Json {
     /** All values that this {@link Json} object contains. */
     public JsonMap values;
 
-    public static void main(String[] args) {
-        Json json = new Json();
-        json.put("name", "Karlson");
-        json.put("age", 19);
-        json.put("abilities", new Json().put("healthy", true).put("fast", false));
-        json.put("config", 0.1f);
-        System.out.print(json.write(JsonStyle.beautiful));
-    }
-
     public Json() {
         this.values = new JsonMap();
     }
