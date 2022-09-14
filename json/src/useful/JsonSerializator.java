@@ -16,6 +16,10 @@ public class JsonSerializator {
 
     private ArrayList<ClassSerializerPair<?>> pairs = new ArrayList<>();
 
+    /**
+     * Searches for a {@link JsonSerializer} in {@link JsonSerializator#pairs} and serializes through it if finds it, otherwise through reflection.
+     * Only supports objects! If you need to serialize int or float call {@link #serializeField(Object)}.
+     */
     public Json serialize(Object object) {
         ClassSerializerPair<Object> pair = getSerializer(object);
 
@@ -34,6 +38,7 @@ public class JsonSerializator {
         else return field.toString();
     }
 
+    /** Searches for a {@link JsonSerializer} in {@link JsonSerializator#pairs} and deserializes through it if finds it, otherwise through reflection. */
     public Object deserialize(Json json) {
         String className = json.getAs("class");
         if (className == null) return json;

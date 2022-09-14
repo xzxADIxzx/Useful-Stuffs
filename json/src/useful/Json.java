@@ -66,14 +66,19 @@ public class Json {
         StringBuilder builder = style.create();
 
         values.each((key, value) -> {
-            if (value instanceof String string) value = "\"" + string + "\"";
-            if (value instanceof JsonSerializable json) value = json.write();
-            // TODO JsonSerializer<T> auto(T value)
-            builder.append(style.add(key, value instanceof Json json ? json.write(style) : value.toString()));
+            builder.append(style.add(key, write(value, style)));
         });
 
         JsonStyle.indent--;
         return style.toString(builder);
+    }
+
+    public static String write(Object object, JsonStyle style) {
+        // object can initially be json
+        if (object instanceof Json json) json.write(style);
+
+        object = serializator.serializeField(object);
+        return object instanceof Json json ? json.write(style) : object.toString();
     }
 
     /** @return {@link Json} parsed from the given string. */
@@ -81,6 +86,9 @@ public class Json {
         return new Json();
     }
 
+    public static <T> T readAs(String object) {
+        return (T) serializator.deserializeField(object);
+    } 
 
     /** Makes the object serializable for the json parser. */
     public interface JsonSerializable {
