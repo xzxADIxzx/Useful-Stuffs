@@ -1,5 +1,6 @@
 package useful;
 
+import useful.Json.JsonSerializable;
 import useful.Json.JsonSerializer;
 
 import java.util.ArrayList;
@@ -22,6 +23,17 @@ public class JsonSerializator {
         else return new Json(object.getClass()); // TODO serialize through public fields and etc.
     }
 
+    /** @return a {@link Json} or string that represents the field and can be parsed back using {@link #deserializeField(String)}. */
+    public Object serializeField(Object field) {
+        if (field == null) return "null"; // it is impossible to get string from zero
+
+        if (field instanceof String string) return "\"" + string + "\"";
+        if (field instanceof JsonSerializable json) return json.write();
+
+        if (serializable(field)) return serialize(field);
+        else return field.toString();
+    }
+
     public Object deserialize(Json json) {
         String className = json.getAs("class");
         if (className == null) return json;
@@ -35,6 +47,27 @@ public class JsonSerializator {
 
         if (referenced == null) return json;
         else return null; // TODO deserialize through public fields and class
+    }
+
+    /** Parses a field into a specific type. */
+    public Object deserializeField(String field) throws RuntimeException {
+        if (field.equals("null")) return null;
+
+        if (field.equals("true")) return true;
+        if (field.equals("false")) return false;
+
+        if (field.startsWith("\"") && field.endsWith("\"")) return field.substring(1, field.length() - 1);
+        if (field.startsWith("{") && field.endsWith("}")) return Json.read(field.substring(1, field.length() - 1));
+
+        try {
+            return Integer.parseInt(field);
+        } catch (Throwable ignored) {}
+
+        try {
+            return Float.parseFloat(field);
+        } catch (Throwable ignored) {}
+
+        throw new RuntimeException("Unknown field type!");
     }
 
     public boolean serializable(Object object) {
