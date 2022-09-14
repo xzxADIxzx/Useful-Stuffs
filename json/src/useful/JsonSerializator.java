@@ -8,6 +8,11 @@ import java.util.ArrayList;
 @SuppressWarnings("unchecked")
 public class JsonSerializator {
 
+    private static ArrayList<Class<?>> unserializable = new ArrayList<>() {{ // ._.
+        add(Object.class); add(Byte.class); add(Short.class); add(Integer.class); add(Long.class);
+        add(Character.class); add(Boolean.class); add(Float.class); add(Double.class);
+    }};
+
     private ArrayList<ClassSerializerPair<?>> pairs = new ArrayList<>();
 
     public Json serialize(Object object) {
@@ -33,10 +38,11 @@ public class JsonSerializator {
     }
 
     public boolean serializable(Object object) {
-        return !object.getClass().isPrimitive();
+        return !object.getClass().isPrimitive() && !unserializable.contains(object.getClass());
     }
 
     public <T> void addSerializer(Class<T> referenced, JsonSerializer<T> serializer) {
+        if (unserializable.contains(referenced)) return; // pls, don't
         pairs.add(new ClassSerializerPair<T>(referenced, serializer));
     }
 
