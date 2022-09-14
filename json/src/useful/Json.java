@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class Json {
 
     /** All {@link JsonSerializer}s used to cast objects to json and back. */
-    public static final ArrayList<JsonSerializer<?>> serializers = new ArrayList<>();
+    public static final JsonSerializator serializator = new JsonSerializator();
 
     /** All values that this {@link Json} object contains. */
     public JsonMap values;
@@ -122,6 +122,7 @@ public class Json {
         public void read(T object, Json json);
     }
 
+    /** All json styles that are used during writing. */
     public enum JsonStyle {
         compact(0, "{", "\"%s\":%s,", "%s}"), standard(0, "{ ", "\"%s\": %s, ", " %s}"), beautiful(4, "{\n", "\"%s\": %s,\n", "\n%s}");
         
