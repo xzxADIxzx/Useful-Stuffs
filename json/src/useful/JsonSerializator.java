@@ -67,7 +67,7 @@ public class JsonSerializator {
         if (field.equals("false")) return false;
 
         if (field.startsWith("\"") && field.endsWith("\"")) return deserializeString(field);
-        if (field.startsWith("{") && field.endsWith("}")) return Json.read(field.substring(1, field.length() - 1));
+        if (field.startsWith("{") && field.endsWith("}")) return Json.read(field);
 
         try {
             return Integer.parseInt(field);
