@@ -84,12 +84,20 @@ public class Json {
 
     /** @return {@link Json} parsed from the given string. */
     public static Json read(String json) {
-        return new Json();
+        JsonCutter cutter = new JsonCutter(json);
+        Json result = new Json();
+
+        while (cutter.hasNext()) {
+            result.put(serializator.deserializeString(cutter.next()), readAs(cutter.next()));
+        }
+
+        return result;
     }
 
-    public static <T> T readAs(String object) {
-        return (T) serializator.deserializeField(object);
-    } 
+    public static Object readAs(String field) {
+        Object object = serializator.deserializeField(field);
+        return object instanceof Json json ? serializator.deserialize(json) : object;
+    }
 
     /** Makes the object serializable for the json parser. */
     public interface JsonSerializable {
