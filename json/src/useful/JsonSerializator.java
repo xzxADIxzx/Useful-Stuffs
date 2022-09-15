@@ -31,11 +31,16 @@ public class JsonSerializator {
     public Object serializeField(Object field) {
         if (field == null) return "null"; // it is impossible to get string from zero
 
-        if (field instanceof String string) return "\"" + string + "\"";
+        if (field instanceof String string) return serializeString(string);
         if (field instanceof JsonSerializable json) return json.write();
 
         if (serializable(field)) return serialize(field);
         else return field.toString();
+    }
+
+    /** Replaces " with \" and adds " on the sides. */
+    public String serializeString(String field) {
+        return "\"" + field.replaceAll("\"", "\\\"") + "\"";
     }
 
     /** Searches for a {@link JsonSerializer} in {@link JsonSerializator#pairs} and deserializes through it if finds it, otherwise through reflection. */
@@ -61,7 +66,7 @@ public class JsonSerializator {
         if (field.equals("true")) return true;
         if (field.equals("false")) return false;
 
-        if (field.startsWith("\"") && field.endsWith("\"")) return field.substring(1, field.length() - 1);
+        if (field.startsWith("\"") && field.endsWith("\"")) return deserializeString(field);
         if (field.startsWith("{") && field.endsWith("}")) return Json.read(field.substring(1, field.length() - 1));
 
         try {
@@ -73,6 +78,11 @@ public class JsonSerializator {
         } catch (Throwable ignored) {}
 
         throw new RuntimeException("Unknown field type!");
+    }
+
+    /** Removes " on the sides and replaces \" with. " */
+    public String deserializeString(String field) {
+        return field.substring(1, field.length() - 1).replaceAll("\\\"", "\"");
     }
 
     public boolean serializable(Object object) {
