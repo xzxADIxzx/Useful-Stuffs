@@ -66,7 +66,7 @@ public class Json {
         StringBuilder builder = style.create();
 
         values.each((key, value) -> {
-            builder.append(style.add(key, write(value, style)));
+            builder.append(style.add(serializator.serializeString(key), write(value, style)));
         });
 
         JsonStyle.indent--;
@@ -75,7 +75,7 @@ public class Json {
 
     public static String write(Object object, JsonStyle style) {
         // object can initially be json
-        if (object instanceof Json json) json.write(style);
+        if (object instanceof Json json) return json.write(style);
 
         object = serializator.serializeField(object);
         return object instanceof Json json ? json.write(style) : object.toString();
@@ -112,7 +112,7 @@ public class Json {
 
     /** All json styles that are used during writing. */
     public enum JsonStyle {
-        compact(0, "{", "\"%s\":%s,", "%s}"), standard(0, "{ ", "\"%s\": %s, ", " %s}"), beautiful(4, "{\n", "\"%s\": %s,\n", "\n%s}");
+        compact(0, "{", "%s:%s,", "%s}"), standard(0, "{ ", "%s: %s, ", " %s}"), beautiful(4, "{\n", "%s: %s,\n", "\n%s}");
         
         private static int indent;
 

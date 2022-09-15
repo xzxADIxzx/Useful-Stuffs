@@ -40,7 +40,7 @@ public class JsonSerializator {
 
     /** Replaces " with \" and adds " on the sides. */
     public String serializeString(String field) {
-        return "\"" + field.replaceAll("\"", "\\\"") + "\"";
+        return "\"" + field.replaceAll("\"", "\\\\\"") + "\"";
     }
 
     /** Searches for a {@link JsonSerializer} in {@link JsonSerializator#pairs} and deserializes through it if finds it, otherwise through reflection. */
@@ -82,7 +82,7 @@ public class JsonSerializator {
 
     /** Removes " on the sides and replaces \" with. " */
     public String deserializeString(String field) {
-        return field.substring(1, field.length() - 1).replaceAll("\\\"", "\"");
+        return field.substring(1, field.length() - 1).replaceAll("\\\\\"", "\"");
     }
 
     public boolean serializable(Object object) {
