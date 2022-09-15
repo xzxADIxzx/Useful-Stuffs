@@ -222,7 +222,7 @@ public class Json {
             char bracket = base.charAt(start);
             int end = next(bracket == '"' ? next -> next == '"' : bracket == '{' ? next -> next == '}' : next -> next == ' ' || next == ',' || next == '}');
 
-            return base.substring(start, bracket == '"' || bracket == '{' ? ++end : end);
+            return base.substring(start, bracket == '"' || bracket == '{' ? ++index : end); // index because brackets
         }
 
         public int next(Function<Character, Boolean> pred) {
