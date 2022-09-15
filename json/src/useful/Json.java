@@ -3,6 +3,7 @@ package useful;
 import useful.Json.JsonMap.Consumer;
 
 import java.util.ArrayList;
+import java.util.function.Function;
 
 /**
  * Just a small and simple json parser.
@@ -137,6 +138,7 @@ public class Json {
         }
 
         public String toString(StringBuilder builder) {
+            if (builder.length() == start.length()) return "{}";
             return builder.replace(builder.lastIndexOf(","), builder.length(), end.formatted(indent())).toString();
         }
 
@@ -183,6 +185,46 @@ public class Json {
 
         public interface Consumer {
             public void get(String key, Object value);
+        }
+    }
+
+    /** Iterates over json keys and values as a string. */
+    public static class JsonCutter {
+
+        private final String base;
+        private final int lastIndex;
+
+        private int index;
+
+        public JsonCutter(String base) {
+            this.base = base.trim().replaceAll("\n", "");
+
+            index = this.base.length() - 1;
+            while (index != 0) {
+                char next = this.base.charAt(--index);
+                if (next != ' ' && next != ':' && next != ',') break;
+            }
+
+            this.lastIndex = index;
+            index = 0;
+        }
+
+        public String next() {
+            int start = next(next -> next != ' ' && next != ':' && next != ',');
+            char bracket = base.charAt(start);
+            int end = next(bracket == '"' ? next -> next == '"' : bracket == '{' ? next -> next == '}' : next -> next == ' ' || next == ',' || next == '}');
+
+            return base.substring(start - 1, end + (bracket == '"' || bracket == '{' ? 2 : 1));
+        }
+
+        public int next(Function<Character, Boolean> pred) {
+            while (hasNext())
+                if (pred.apply(base.charAt(++index))) break;
+            return index;
+        }
+
+        public boolean hasNext() {
+            return index <= lastIndex;
         }
     }
 }
