@@ -227,7 +227,7 @@ public class Json {
 
         public int next(Function<Character, Boolean> pred) {
             while (hasNext())
-                if (pred.apply(base.charAt(++index))) break;
+                if (base.charAt(index++) != '\\' && pred.apply(base.charAt(index))) break;
             return index;
         }
 
