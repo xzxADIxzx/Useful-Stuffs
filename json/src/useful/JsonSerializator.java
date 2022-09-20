@@ -94,9 +94,9 @@ public class JsonSerializator {
         pairs.add(new ClassSerializerPair<T>(referenced, serializer));
     }
 
-    public <T> ClassSerializerPair<T> getSerializer(T referenced) {
+    public <T> ClassSerializerPair<T> getSerializer(Class<T> referenced) {
         for (ClassSerializerPair<?> pair : pairs) // class cast exception not possible
-            if (pair.referenced.isInstance(referenced)) return (ClassSerializerPair<T>) pair;
+            if (pair.referenced.isAssignableFrom(referenced)) return (ClassSerializerPair<T>) pair;
         return null; // no serializer found so we will serialize via reflection
     }
 
