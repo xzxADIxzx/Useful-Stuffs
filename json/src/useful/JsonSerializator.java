@@ -3,6 +3,7 @@ package useful;
 import useful.Json.JsonSerializable;
 import useful.Json.JsonSerializer;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /** Converts objects to {@link Json} using registered {@link JsonSerializer}s or reflection. */
@@ -21,10 +22,18 @@ public class JsonSerializator {
      * Only supports objects! If you need to serialize int or float call {@link #serializeField(Object)}.
      */
     public Json serialize(Object object) {
-        ClassSerializerPair<Object> pair = getSerializer(object);
+        Class<Object> referenced = (Class<Object>) object.getClass();
+        ClassSerializerPair<Object> pair = getSerializer(referenced);
 
         if (pair != null) return pair.serializer.write(object);
-        else return new Json(object.getClass()); // TODO serialize through public fields and etc.
+        else {
+            Json json = new Json(referenced);
+            try {
+                for (Field field : referenced.getFields())
+                    json.put(field.getName(), field.get(object));
+            } catch (Throwable ignored) {} // how is this even possible if we iterate over public fields?!
+            return json;
+        }
     }
 
     /** @return a {@link Json} or string that represents the field and can be parsed back using {@link #deserializeField(String)}. */
@@ -48,15 +57,30 @@ public class JsonSerializator {
         String className = json.getAs("class");
         if (className == null) return json;
 
-        Class<?> referenced = null;
+        Class<Object> referenced;
         try {
-            referenced = Class.forName(className);
+            referenced = (Class<Object>) Class.forName(className);
         } catch (ClassNotFoundException ignored) {
             referenced = null; // TODO search in TagMap<String, Class<?>>
         }
 
         if (referenced == null) return json;
-        else return null; // TODO deserialize through public fields and class
+
+        Object object;
+        try {
+            object = referenced.getDeclaredConstructor().newInstance();
+        } catch (Throwable ignored) {
+            return json;
+        }
+
+        ClassSerializerPair<Object> pair = getSerializer(referenced);
+        if (pair != null) pair.serializer.read(object, json);
+        else try {
+            for (Field field : referenced.getFields())
+                field.set(object, json.get(field.getName()));
+        } catch (Throwable ignored) {}
+
+        return object;
     }
 
     /** Parses a field into a specific type. */
