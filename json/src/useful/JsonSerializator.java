@@ -16,6 +16,7 @@ public class JsonSerializator {
     }};
 
     private ArrayList<ClassSerializerPair<?>> pairs = new ArrayList<>();
+    private ArrayList<StringClassPair> tags = new ArrayList<>();
 
     /**
      * Searches for a {@link JsonSerializer} in {@link JsonSerializator#pairs} and serializes through it if finds it, otherwise through reflection.
@@ -61,7 +62,7 @@ public class JsonSerializator {
         try {
             referenced = (Class<Object>) Class.forName(className);
         } catch (ClassNotFoundException ignored) {
-            referenced = null; // TODO search in TagMap<String, Class<?>>
+            referenced = (Class<Object>) getByTag(className);
         }
 
         if (referenced == null) return json;
@@ -124,5 +125,17 @@ public class JsonSerializator {
         return null; // no serializer found so we will serialize via reflection
     }
 
+    public <T> void addTag(String tag, Class<?> referenced) {
+        tags.add(new StringClassPair(tag, referenced));
+    }
+
+    public Class<?> getByTag(String tag) {
+        for (StringClassPair pair : tags)
+            if (pair.tag.equals(tag)) return pair.referenced;
+        return null; // no class by tag found
+    }
+
     public record ClassSerializerPair<T>(Class<T> referenced, JsonSerializer<T> serializer) {}
+
+    public record StringClassPair(String tag, Class<?> referenced) {}
 }
