@@ -4,6 +4,7 @@ import useful.Json.JsonSerializable;
 import useful.Json.JsonSerializer;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
 /** Converts objects to {@link Json} using registered {@link JsonSerializer}s or reflection. */
@@ -31,7 +32,7 @@ public class JsonSerializator {
             Json json = new Json(referenced);
             try {
                 for (Field field : referenced.getFields())
-                    json.put(field.getName(), field.get(object));
+                    if (serializable(field.getModifiers())) json.put(field.getName(), field.get(object));
             } catch (Throwable ignored) {} // how is this even possible if we iterate over public fields?!
             return json;
         }
@@ -78,7 +79,7 @@ public class JsonSerializator {
         if (pair != null) pair.serializer.read(object, json);
         else try {
             for (Field field : referenced.getFields())
-                field.set(object, json.get(field.getName()));
+                if (serializable(field.getModifiers())) field.set(object, json.get(field.getName()));
         } catch (Throwable ignored) {}
 
         return object;
@@ -112,6 +113,10 @@ public class JsonSerializator {
 
     public boolean serializable(Object object) {
         return !object.getClass().isPrimitive() && !unserializable.contains(object.getClass());
+    }
+
+    public boolean serializable(int modifiers) {
+        return !Modifier.isStatic(modifiers) && !Modifier.isFinal(modifiers);
     }
 
     public <T> void addSerializer(Class<T> referenced, JsonSerializer<T> serializer) {
