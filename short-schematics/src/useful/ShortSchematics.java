@@ -33,6 +33,8 @@ public class ShortSchematics {
     }
 
     public static String write(Schematic schem) {
+        schem.tiles.sort(st -> st.x + st.y * schem.width);
+
         Seq<Short> out = new Seq<>();
         out.add((short) (schem.width),
                 (short) (schem.height));
