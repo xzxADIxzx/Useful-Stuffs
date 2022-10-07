@@ -200,21 +200,17 @@ public class Json {
     public static class JsonCutter {
 
         private final String base;
-        private final int lastIndex;
 
         private int index;
 
         public JsonCutter(String base) {
-            this.base = base.trim().replaceAll("\n", "");
+            base = base.replaceAll("\n", "").trim();
 
-            index = this.base.length() - 1;
-            while (index != 0) {
-                char next = this.base.charAt(--index);
-                if (next != ' ' && next != ':' && next != ',') break;
-            }
+            if (base.length() < 2) throw new RuntimeException("Minimum json length is 2 characters!");
+            if (base.charAt(0) != '{' || base.charAt(base.length() - 1) != '}')
+                throw new RuntimeException("Json must start and end with curly braces!");
 
-            this.lastIndex = index;
-            index = 0;
+            this.base = base.substring(1, base.length() - 1);
         }
 
         public String next() {
@@ -232,7 +228,12 @@ public class Json {
         }
 
         public boolean hasNext() {
-            return index <= lastIndex;
+            if (base.isEmpty()) return false;
+
+            for (int i = index; i < base.length(); i++)
+                if (base.charAt(i) != ' ') return true;
+
+            return false;
         }
     }
 }
