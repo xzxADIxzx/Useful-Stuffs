@@ -3,7 +3,7 @@ apply plugin: 'java'
 sourceSets.main.java.srcDirs = ['src']
 
 ext {
-	mindustryVersion = 'v138'
+	mindustryVersion = 'v139'
 }
 
 dependencies {
