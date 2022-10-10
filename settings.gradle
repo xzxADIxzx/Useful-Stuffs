@@ -1,2 +1,3 @@
 include 'json'
+include 'server-bundle'
 include 'short-schematics'
