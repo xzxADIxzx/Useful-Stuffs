@@ -14,6 +14,11 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Simple L10N bundle for Mindustry plugins.
+ * 
+ * @author xzxADIxzx
+ */
 public class Bundle {
 
     public static final Seq<Locale> supported = new Seq<>();

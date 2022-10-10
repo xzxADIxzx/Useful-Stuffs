@@ -7,7 +7,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 
-/** Converts objects to {@link Json} using registered {@link JsonSerializer}s or reflection. */
+/** 
+ * Converts objects to {@link Json} using registered {@link JsonSerializer}s or reflection.
+ * 
+ * @author xzxADIxzx
+ */
 @SuppressWarnings("unchecked")
 public class JsonSerializator {
 
