@@ -215,25 +215,57 @@ public class Json {
 
         public String next() {
             int start = next(next -> next != ' ' && next != ':' && next != ',');
-            char bracket = base.charAt(start);
-            int end = next(bracket == '"' ? next -> next == '"' : bracket == '{' ? next -> next == '}' : next -> next == ' ' || next == ',' || next == '}');
 
-            return base.substring(start, bracket == '"' || bracket == '{' ? ++index : end); // index because brackets
+            switch (base.charAt(start)) {
+                case '{' -> skipJson();
+                case '"' -> skipString();
+                default -> skip();
+            }
+
+            return base.substring(start, index);
         }
 
         public int next(Function<Character, Boolean> pred) {
             while (hasNext())
-                if (base.charAt(index++) != '\\' && pred.apply(base.charAt(index))) break;
-            return index;
+                if (pred.apply(base.charAt(index++))) break;
+            return index - 1;
         }
 
         public boolean hasNext() {
-            if (base.isEmpty()) return false;
+            if (base.isEmpty() || index >= base.length()) return false;
 
             for (int i = index; i < base.length(); i++)
                 if (base.charAt(i) != ' ') return true;
 
             return false;
+        }
+
+        public void skipJson() {
+            int braces = 1; // number of open curly braces
+            while (hasNext()) {
+                switch (base.charAt(index++)) {
+                    case '"' -> skipString(); // string may contains curly braces
+                    case '{' -> braces++;
+                    case '}' -> braces--;
+                }
+
+                if (braces == 0) break; // closing bracket
+            }
+        }
+
+        public void skipString() {
+            while (hasNext()) {
+                if (base.charAt(index) == '\\') {
+                    index += 2; // skip \"
+                    continue;
+                }
+
+                if (base.charAt(index++) == '"') break; // end of string
+            }
+        }
+
+        public void skip() { // booleans and numbers are separated from the next by any of these characters
+            next(next -> next == ' ' || next == ',' || next == '}');
         }
     }
 }
