@@ -1,8 +1,10 @@
 package useful;
 
+import arc.func.Boolf;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Log;
+import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.mod.Mod;
 
@@ -57,6 +59,10 @@ public class Bundle {
         }
     }
 
+    public static String format(String key, Player player, Object... values) {
+        return format(key, locale(player), values);
+    }
+
     public static String format(String key, Locale locale, Object... values) {
         if (locale.toString().equals("router")) return "router";
 
@@ -64,5 +70,21 @@ public class Bundle {
         if (values.length == 0) return pattern;
 
         return MessageFormat.format(pattern, values);
+    }
+
+    public static void bundled(Player player, String key) {
+        player.sendMessage(get(key, player));
+    }
+
+    public static void bundled(Player player, String key, Object... values) {
+        player.sendMessage(format(key, player, values));
+    }
+
+    public static void sendToChat(String key, Object... values) {
+        Groups.player.each(player -> bundled(player, key, values));
+    }
+
+    public static void sendToChat(Boolf<Player> filter, String key, Object... values) {
+        Groups.player.each(filter, player -> bundled(player, key, values));
     }
 }
