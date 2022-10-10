@@ -20,6 +20,7 @@ public class Bundle {
     public static Locale defaultLocale;
 
     public static void load(Class<? extends Mod> main) {
+        supported.add(new Locale("router")); // :3
         mods.getMod(main).root.child("bundles").walk(fi -> {
             if (!fi.extEquals("properties")) return;
 
@@ -38,7 +39,16 @@ public class Bundle {
         return locale == null ? defaultLocale : locale;
     }
 
+    public static String get(String key, Player player) {
+        return get(key, key, locale(player));
+    }
+
+    public static String get(String key, Locale locale) {
+        return get(key, key, locale);
+    }
+
     public static String get(String key, String defaultValue, Locale locale) {
+        if (locale.toString().equals("router")) return "router";
         try {
             ResourceBundle bundle = bundles.get(locale, bundles.get(defaultLocale));
             return bundle.getString(key);
@@ -48,6 +58,8 @@ public class Bundle {
     }
 
     public static String format(String key, Locale locale, Object... values) {
+        if (locale.toString().equals("router")) return "router";
+
         var pattern = get(key, locale);
         if (values.length == 0) return pattern;
 
