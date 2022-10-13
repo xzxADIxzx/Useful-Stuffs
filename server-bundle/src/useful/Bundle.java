@@ -73,7 +73,7 @@ public class Bundle {
     }
 
     public static String format(String key, Locale locale, Object... values) {
-        return format(key, key, locale(player), values);
+        return format(key, key, locale, values);
     }
 
     public static String format(String key, LocaleProvider provider, Object... values) {
