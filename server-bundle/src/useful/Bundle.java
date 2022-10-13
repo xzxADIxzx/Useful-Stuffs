@@ -54,6 +54,10 @@ public class Bundle {
         return get(key, key, locale);
     }
 
+    public static String get(String key, LocaleProvider provider) {
+        return get(key, key, provider.locale());
+    }
+
     public static String get(String key, String defaultValue, Locale locale) {
         if (locale.toString().equals("router")) return "router";
         try {
@@ -65,13 +69,21 @@ public class Bundle {
     }
 
     public static String format(String key, Player player, Object... values) {
-        return format(key, locale(player), values);
+        return format(key, key, locale(player), values);
     }
 
     public static String format(String key, Locale locale, Object... values) {
+        return format(key, key, locale(player), values);
+    }
+
+    public static String format(String key, LocaleProvider provider, Object... values) {
+        return format(key, key, provider.locale(), values);
+    }
+
+    public static String format(String key, String defaultValue, Locale locale, Object... values) {
         if (locale.toString().equals("router")) return "router";
 
-        var pattern = get(key, locale);
+        var pattern = get(key, defaultValue, locale);
         if (values.length == 0) return pattern;
 
         return MessageFormat.format(pattern, values);
@@ -91,5 +103,10 @@ public class Bundle {
 
     public static void sendToChat(Boolf<Player> filter, String key, Object... values) {
         Groups.player.each(filter, player -> bundled(player, key, values));
+    }
+
+    /** Used in some player data classes to shorten code. */
+    public static interface LocaleProvider {
+        public Locale locale();
     }
 }
