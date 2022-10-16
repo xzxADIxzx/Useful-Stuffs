@@ -200,7 +200,6 @@ public class Json {
     public static class JsonCutter {
 
         private final String base;
-
         private int index;
 
         public JsonCutter(String base) {
@@ -266,6 +265,7 @@ public class Json {
 
         public void skip() { // booleans and numbers are separated from the next by any of these characters
             next(next -> next == ' ' || next == ',' || next == '}');
+            if (hasNext()) index -= 1; // very important thing
         }
     }
 }
