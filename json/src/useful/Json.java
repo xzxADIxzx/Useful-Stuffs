@@ -96,7 +96,7 @@ public class Json {
 
     public static Object readAs(String field) {
         Object object = serializator.deserializeField(field);
-        return object instanceof Json json ? serializator.deserialize(json) : object;
+        return object instanceof Json json ? serializator.deserializeObject(json) : object;
     }
 
     /** Makes the object serializable for the json parser. */

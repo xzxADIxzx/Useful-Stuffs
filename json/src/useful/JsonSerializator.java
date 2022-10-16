@@ -23,11 +23,13 @@ public class JsonSerializator {
     private ArrayList<ClassSerializerPair<?>> pairs = new ArrayList<>();
     private ArrayList<StringClassPair> tags = new ArrayList<>();
 
+    // region serialization
+
     /**
      * Searches for a {@link JsonSerializer} in {@link JsonSerializator#pairs} and serializes through it if finds it, otherwise through reflection.
      * Only supports objects! If you need to serialize int or float call {@link #serializeField(Object)}.
      */
-    public Json serialize(Object object) {
+    public Json serializeObject(Object object) {
         Class<Object> referenced = (Class<Object>) object.getClass();
         ClassSerializerPair<Object> pair = getSerializer(referenced);
 
@@ -49,7 +51,7 @@ public class JsonSerializator {
         if (field instanceof String string) return serializeString(string);
         if (field instanceof JsonSerializable json) return json.write();
 
-        if (serializable(field)) return serialize(field);
+        if (serializable(field)) return serializeObject(field);
         else return field.toString();
     }
 
@@ -58,8 +60,14 @@ public class JsonSerializator {
         return "\"" + field.replaceAll("\"", "\\\\\"") + "\"";
     }
 
-    /** Searches for a {@link JsonSerializer} in {@link JsonSerializator#pairs} and deserializes through it if finds it, otherwise through reflection. */
-    public Object deserialize(Json json) {
+    // endregion
+    // region deserialization
+
+    /** 
+     * Searches for a {@link JsonSerializer} in {@link JsonSerializator#pairs} and deserializes through it if finds it, otherwise through reflection.
+     * Returns json if class not found by class tag in json.
+     */
+    public Object deserializeObject(Json json) {
         String className = json.getAs("class");
         if (className == null) return json;
 
@@ -114,6 +122,8 @@ public class JsonSerializator {
     public String deserializeString(String field) {
         return field.substring(1, field.length() - 1).replaceAll("\\\\\"", "\"");
     }
+
+    // endregion
 
     public boolean serializable(Object object) {
         return !object.getClass().isPrimitive() && !unserializable.contains(object.getClass());
