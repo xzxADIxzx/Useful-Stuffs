@@ -260,12 +260,17 @@ public class Json {
             this.base = base.substring(1, base.length() - 1);
         }
 
+        public static JsonCutter array(String base) { // hacky
+            return new JsonCutter("{" + base.substring(1, base.length() - 1) + "}");
+        }
+
         public String next() {
             int start = next(next -> next != ' ' && next != ':' && next != ',');
 
             switch (base.charAt(start)) {
-                case '{' -> skipJson();
                 case '"' -> skipString();
+                case '{' -> skipJson();
+                case '[' -> skipArray();
                 default -> skip();
             }
 
@@ -287,6 +292,17 @@ public class Json {
             return false;
         }
 
+        public void skipString() {
+            while (hasNext()) {
+                if (base.charAt(index) == '\\') {
+                    index += 2; // skip \"
+                    continue;
+                }
+
+                if (base.charAt(index++) == '"') break; // end of string
+            }
+        }
+
         public void skipJson() {
             int braces = 1; // number of open curly braces
             while (hasNext()) {
@@ -300,14 +316,16 @@ public class Json {
             }
         }
 
-        public void skipString() {
+        public void skipArray() {
+            int braces = 1; // number of open square braces
             while (hasNext()) {
-                if (base.charAt(index) == '\\') {
-                    index += 2; // skip \"
-                    continue;
+                switch (base.charAt(index++)) {
+                    case '"' -> skipString(); // string may contains square braces
+                    case '[' -> braces++;
+                    case ']' -> braces--;
                 }
 
-                if (base.charAt(index++) == '"') break; // end of string
+                if (braces == 0) break; // closing bracket
             }
         }
 
