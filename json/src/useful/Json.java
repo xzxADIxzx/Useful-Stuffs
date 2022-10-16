@@ -39,8 +39,20 @@ public class Json {
         return values.get(key);
     }
 
+    /**
+     * @return a value cast to a specific type.
+     * @throws ClassCastException value cannot be cast to a specific type.
+     */
     public <T> T getAs(String key) {
         return (T) values.get(key);
+    }
+
+    /**
+     * @return an array cast to a specific type.
+     * @throws ClassCastException DO NOT USE INT.CLASS, USE INTEGER INSTEAD!
+     */
+    public <T> T[] getArray(String key, Class<T> referenced) {
+        return new JsonArray(get(key)).cast(referenced);
     }
 
     /** Puts a value to json by a key. */
