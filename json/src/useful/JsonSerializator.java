@@ -1,5 +1,6 @@
 package useful;
 
+import useful.Json.JsonArray;
 import useful.Json.JsonSerializable;
 import useful.Json.JsonSerializer;
 
@@ -44,12 +45,13 @@ public class JsonSerializator {
         }
     }
 
-    /** @return a {@link Json} or string that represents the field and can be parsed back using {@link #deserializeField(String)}. */
+    /** @return a {@link Json}, {@link JsonArray} or string that represents the field and can be parsed back using {@link #deserializeField(String)}. */
     public Object serializeField(Object field) {
         if (field == null) return "null"; // it is impossible to get string from zero
 
         if (field instanceof String string) return serializeString(string);
         if (field instanceof JsonSerializable json) return json.write();
+        if (field.getClass().isArray()) return new JsonArray(field);
 
         if (serializable(field)) return serializeObject(field);
         else return field.toString();
@@ -106,6 +108,7 @@ public class JsonSerializator {
 
         if (field.startsWith("\"") && field.endsWith("\"")) return deserializeString(field);
         if (field.startsWith("{") && field.endsWith("}")) return Json.read(field);
+        if (field.startsWith("[") && field.endsWith("]")) return JsonArray.read(field);
 
         try {
             return Integer.parseInt(field);

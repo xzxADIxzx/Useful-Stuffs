@@ -2,6 +2,7 @@ package useful;
 
 import useful.Json.JsonMap.Consumer;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.function.Function;
 
@@ -79,7 +80,11 @@ public class Json {
         if (object instanceof Json json) return json.write(style);
 
         object = serializator.serializeField(object);
-        return object instanceof Json json ? json.write(style) : object.toString();
+
+        if (object instanceof Json json) return json.write(style);
+        if (object instanceof JsonArray array) return array.write(style);
+
+        return object.toString();
     }
 
     /** @return {@link Json} parsed from the given string. */
@@ -193,6 +198,49 @@ public class Json {
 
         public interface Consumer {
             public void get(String key, Object value);
+        }
+    }
+
+    public static class JsonArray {
+
+        private final Object array;
+
+        public JsonArray(Object array) {
+            if (!array.getClass().isArray()) throw new RuntimeException("Object is not an array");
+            this.array = array;
+        }
+
+        public String write(JsonStyle style) { // TODO style
+            int lenght = Array.getLength(array);
+            StringBuilder builder = new StringBuilder("[ ");
+
+            for (int i = 0; i < lenght; i++) {
+                builder.append(Json.write(Array.get(array, i), style)).append(", ");
+            }
+
+            return builder.substring(0, builder.length() - 2) + " ]";
+        }
+
+        public static Object read(String array) {
+            JsonCutter cutter = JsonCutter.array(array);
+            ArrayList<Object> result = new ArrayList<>();
+
+            while (cutter.hasNext()) {
+                result.add(Json.readAs(cutter.next()));
+            }
+
+            return result.toArray();
+        }
+
+        public <T> T[] cast(Class<T> referenced) {
+            int lenght = Array.getLength(array);
+            ArrayList<T> result = new ArrayList<>();
+
+            for (int i = 0; i < lenght; i++) {
+                result.add((T) Array.get(array, i));
+            }
+
+            return result.toArray((T[]) Array.newInstance(referenced, lenght));
         }
     }
 
