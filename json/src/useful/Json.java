@@ -77,7 +77,7 @@ public class Json {
     /** @return a string representation of this {@link Json}. */
     public String write(JsonStyle style) {
         JsonStyle.indent++;
-        StringBuilder builder = style.create();
+        StringBuilder builder = style.createJson();
 
         values.each((key, value) -> {
             builder.append(style.add(serializator.serializeString(key), write(value, style)));
@@ -138,33 +138,44 @@ public class Json {
 
     /** All json styles that are used during writing. */
     public enum JsonStyle {
-        compact(0, "{", "%s:%s,", "%s}"), standard(0, "{ ", "%s: %s, ", " %s}"), beautiful(4, "{\n", "%s: %s,\n", "\n%s}");
-        
+        compact(0, "{", "%s:%s,", "%s,", "%s}"), standard(0, "{ ", "%s: %s, ", "%s, ", " %s}"), beautiful(4, "{\n", "%s: %s,\n", "   %s,\n", "\n%s}");
+
         private static int indent;
 
         private final int spaces;
-        private final String start;
-        private final String template;
-        private final String end;
+        private final String start, end;
+        private final String keyvalue, value;
 
-        private JsonStyle(int spaces, String start, String template, String end) {
+        private JsonStyle(int spaces, String start, String keyvalue, String value, String end) {
             this.spaces = spaces;
             this.start = start;
-            this.template = template;
+            this.keyvalue = keyvalue;
+            this.value = value;
             this.end = end;
         }
 
-        public StringBuilder create() {
+        public StringBuilder createJson() {
             return new StringBuilder(start);
         }
 
-        public String add(String name, String value) {
-            return indent() + template.formatted(name, value);
+        public StringBuilder createArray() {
+            return new StringBuilder(start.replace('{', '['));
+        }
+
+        public String add(String key, String value) {
+            return indent() + this.keyvalue.formatted(key, value);
+        }
+
+        public String add(String value) {
+            return indent() + this.value.formatted(value);
         }
 
         public String toString(StringBuilder builder) {
-            if (builder.length() == start.length()) return "{}";
-            return builder.replace(builder.lastIndexOf(","), builder.length(), end.formatted(indent())).toString();
+            boolean json = builder.charAt(0) == '{';
+            if (builder.length() == start.length()) return json ? "{}" : "[]";
+
+            builder.setLength(builder.lastIndexOf(","));
+            return builder.append((json ? this.end : this.end.replace('}', ']')).formatted(indent())).toString();
         }
 
         private String indent() {
@@ -222,15 +233,15 @@ public class Json {
             this.array = array;
         }
 
-        public String write(JsonStyle style) { // TODO style
+        public String write(JsonStyle style) {
             int lenght = Array.getLength(array);
-            StringBuilder builder = new StringBuilder("[ ");
+            StringBuilder builder = style.createArray();
 
             for (int i = 0; i < lenght; i++) {
-                builder.append(Json.write(Array.get(array, i), style)).append(", ");
+                builder.append(style.add(Json.write(Array.get(array, i), style)));
             }
 
-            return builder.substring(0, builder.length() - 2) + " ]";
+            return style.toString(builder);
         }
 
         public static Object read(String array) {
