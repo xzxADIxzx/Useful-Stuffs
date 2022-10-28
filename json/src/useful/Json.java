@@ -229,7 +229,7 @@ public class Json {
         private final Object array;
 
         public JsonArray(Object array) {
-            if (!array.getClass().isArray()) throw new RuntimeException("Object is not an array");
+            if (!array.getClass().isArray()) throw new IllegalArgumentException("Object is not an array");
             this.array = array;
         }
 

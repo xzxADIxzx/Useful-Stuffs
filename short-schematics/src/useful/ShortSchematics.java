@@ -101,7 +101,7 @@ public class ShortSchematics {
         public Strinter(String base) {
             if (!base.startsWith("#")) throw new RuntimeException("All short schematics start with #");
             this.base = base.substring(1); // skip # char
-            if (next() != version) throw new VerifyError("The schematic version does not match the script version");
+            if (next() != version) throw new RuntimeException("The schematic version does not match the script version");
         }
 
         public int next() {

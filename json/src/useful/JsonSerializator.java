@@ -100,7 +100,7 @@ public class JsonSerializator {
     }
 
     /** Parses a field into a specific type. */
-    public Object deserializeField(String field) throws RuntimeException {
+    public Object deserializeField(String field) {
         if (field.equals("null")) return null;
 
         if (field.equals("true")) return true;
