@@ -4,6 +4,7 @@ import arc.func.Boolf;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Log;
+import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.mod.Mod;
@@ -97,12 +98,28 @@ public class Bundle {
         player.sendMessage(format(key, player, values));
     }
 
+    public static void announce(Player player, String key) {
+        Call.announce(player.con, get(key, player));
+    }
+
+    public static void announce(Player player, String key, Object... values) {
+        Call.announce(player.con, format(key, player, values));
+    }
+
     public static void sendToChat(String key, Object... values) {
         Groups.player.each(player -> bundled(player, key, values));
     }
 
     public static void sendToChat(Boolf<Player> filter, String key, Object... values) {
         Groups.player.each(filter, player -> bundled(player, key, values));
+    }
+
+    public static void announce(String key, Object... values) {
+        Groups.player.each(player -> announce(player, key, values));
+    }
+
+    public static void announce(Boolf<Player> filter, String key, Object... values) {
+        Groups.player.each(filter, player -> announce(player, key, values));
     }
 
     /** Used in some player data classes to shorten code. */
