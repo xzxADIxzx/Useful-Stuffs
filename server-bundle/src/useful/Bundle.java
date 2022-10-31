@@ -54,14 +54,14 @@ public class Bundle {
     public static String get(String key, LocaleProvider provider) {
         return get(key, key, provider.locale());
     }
-    
+
     public static String get(String key, Locale locale) {
         return get(key, key, locale);
     }
-    
+
     public static String get(String key, String defaultValue, Player player) {
         return get(key, defaultValue, locale(player));
-    }    
+    }
 
     public static String get(String key, String defaultValue, Locale locale) {
         if (locale.toString().equals("router")) return "router";
@@ -80,7 +80,7 @@ public class Bundle {
     public static String format(String key, LocaleProvider provider, Object... values) {
         return format(key, key, provider.locale(), values);
     }
-    
+
     public static String format(String key, Locale locale, Object... values) {
         return format(key, key, locale, values);
     }
@@ -105,10 +105,14 @@ public class Bundle {
     public static void bundled(Player player, String key, Object... values) {
         player.sendMessage(format(key, player, values));
     }
-    
+
+    public static void bundled(Player player, Player from, String text, String key) {
+        player.sendMessage(get(key, player), from, text);
+    }
+
     public static void bundled(Player player, Player from, String text, String key, Object... values) {
         player.sendMessage(format(key, player, values), from, text);
-    }    
+    }
 
     public static void announce(Player player, String key) {
         Call.announce(player.con, get(key, player));
