@@ -41,7 +41,7 @@ public class Bundle {
 
         Log.info("Loaded @ locales, default is @.", supported.size, defaultLocale);
     }
-    
+
     public static Locale locale(Player player) {
         return locale(player.locale);
     }
@@ -58,7 +58,7 @@ public class Bundle {
     public static String get(String key, LocaleProvider provider) {
         return get(key, key, provider.locale());
     }
-    
+
     public static String get(String key, String locale) {
         return get(key, key, locale(locale));
     }
@@ -88,7 +88,7 @@ public class Bundle {
     public static String format(String key, LocaleProvider provider, Object... values) {
         return format(key, key, provider.locale(), values);
     }
-    
+
     public static String format(String key, String locale, Object... values) {
         return format(key, key, locale(locale), values);
     }

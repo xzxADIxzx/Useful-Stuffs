@@ -24,6 +24,7 @@ public class DynamicMenus {
 
     /** Clear all listeners. Can be useful in case of game over or world loading. */
     public static void clear() {
+        id = 0;
         listeners.clear();
     }
 
