@@ -32,7 +32,7 @@ public class Bundle {
         mods.getMod(main).root.child("bundles").walk(fi -> {
             if (!fi.extEquals("properties")) return;
 
-            String[] codes = fi.nameWithoutExtension().split("_");
+            var codes = fi.nameWithoutExtension().split("_");
             supported.add(codes.length == 2 ? new Locale(codes[1]) : new Locale(codes[1], codes[2]));
         });
 
@@ -41,9 +41,13 @@ public class Bundle {
 
         Log.info("Loaded @ locales, default is @.", supported.size, defaultLocale);
     }
-
+    
     public static Locale locale(Player player) {
-        Locale locale = supported.find(loc -> player.locale.startsWith(loc.toString())); // toString because Mindustry uses _
+        return locale(player.locale);
+    }
+
+    public static Locale locale(String code) {
+        var locale = supported.find(loc -> code.startsWith(loc.toString())); // toString because Mindustry uses _
         return locale == null ? defaultLocale : locale;
     }
 
@@ -53,6 +57,10 @@ public class Bundle {
 
     public static String get(String key, LocaleProvider provider) {
         return get(key, key, provider.locale());
+    }
+    
+    public static String get(String key, String locale) {
+        return get(key, key, locale(locale));
     }
 
     public static String get(String key, Locale locale) {
@@ -66,7 +74,7 @@ public class Bundle {
     public static String get(String key, String defaultValue, Locale locale) {
         if (locale.toString().equals("router")) return "router";
         try {
-            ResourceBundle bundle = bundles.get(locale, bundles.get(defaultLocale));
+            var bundle = bundles.get(locale, bundles.get(defaultLocale));
             return bundle.getString(key);
         } catch (Throwable ignored) {
             return defaultValue; // missing resource
@@ -79,6 +87,10 @@ public class Bundle {
 
     public static String format(String key, LocaleProvider provider, Object... values) {
         return format(key, key, provider.locale(), values);
+    }
+    
+    public static String format(String key, String locale, Object... values) {
+        return format(key, key, locale(locale), values);
     }
 
     public static String format(String key, Locale locale, Object... values) {
