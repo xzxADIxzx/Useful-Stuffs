@@ -4,6 +4,7 @@ import arc.func.Boolf;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
 import arc.util.Log;
+import arc.util.TextFormatter;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
@@ -11,7 +12,6 @@ import mindustry.mod.Mod;
 
 import static mindustry.Vars.*;
 
-import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -107,7 +107,7 @@ public class Bundle {
         var pattern = get(key, defaultValue, locale);
         if (values.length == 0) return pattern;
 
-        return MessageFormat.format(pattern, values);
+        return new TextFormatter(locale, true).format(pattern, values);
     }
 
     public static void bundled(Player player, String key) {
