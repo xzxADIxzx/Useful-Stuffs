@@ -15,7 +15,7 @@ public class DynamicMenus {
 
     public static void load() {
         Events.on(MenuOptionChooseEvent.class, event -> {
-            if (event.option >= 0) return; // option selected on the menu that has been registered via Menus
+            if (event.menuId >= 0) return; // option selected on the menu that has been registered via Menus
 
             var listener = listeners.remove(event.menuId);
             if (listener != null) listener.get(event.player, event.option);
