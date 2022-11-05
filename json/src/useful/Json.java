@@ -74,6 +74,11 @@ public class Json {
         return values.contains(key);
     }
 
+    /** Remove all values from json. */
+    public void clear() {
+        values.clear();
+    }
+
     /** @return a string representation of this {@link Json}. */
     public String write(JsonStyle style) {
         JsonStyle.indent++;
@@ -217,6 +222,11 @@ public class Json {
 
         public boolean contains(String key) {
             return keys.contains(key);
+        }
+
+        public void clear() {
+            keys.clear();
+            values.clear();
         }
 
         public interface Consumer {
