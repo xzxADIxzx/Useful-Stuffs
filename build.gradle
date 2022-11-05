@@ -1,6 +1,10 @@
 allprojects {
 	group = 'com.github.xzxADIxzx.Useful-Stuffs'
 	version = '1.4.0'
+
+	ext {
+		mindustryVersion = 'v140.1'
+	}
 }
 
 subprojects {

@@ -2,10 +2,6 @@ apply plugin: 'java'
 
 sourceSets.main.java.srcDirs = ['src']
 
-ext {
-	mindustryVersion = 'v140'
-}
-
 dependencies {
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
