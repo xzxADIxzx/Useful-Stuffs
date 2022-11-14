@@ -1,6 +1,5 @@
 package useful;
 
-import arc.func.Cons;
 import arc.graphics.Color;
 import arc.struct.Seq;
 import arc.util.Strings;
@@ -8,43 +7,25 @@ import mindustry.gen.Player;
 
 public class Prefixes {
 
+    /** All player prefixes datas. */
     public static Seq<PrefixData> datas = new Seq<>();
 
-    // region data
-
+    /** Returns the player's data or creates a new one if it doesn't exist. */
     public static PrefixData get(Player player) {
         PrefixData data = datas.find(d -> d.player == player);
         return data == null ? datas.add(new PrefixData(player)).peek() : data;
     }
 
-    public static void add(Player player, Prefix prefix) {
-        get(player).with(pfs -> pfs.add(prefix)).apply();
-    }
-
-    public static void remove(Player player, Prefix prefix) {
-        get(player).with(pfs -> pfs.remove(prefix)).apply();
-    }
-
-    public static boolean contains(Player player, Prefix prefix) {
-        return get(player).prefixes.contains(prefix);
-    }
-
-    public static void clear(Player player) {
-        get(player).with(Seq::clear).apply();
-    }
-
-    // endregion
-    // region global
-
+    /** Removes all prefixes from player nicknames and clears {@link #datas}. */
     public static void clear() {
+        datas.each(data -> data.clear().apply());
         datas.clear();
     }
 
+    /** Removes disconnected players from the {@link #datas}. */
     public static void removeDisconnected() {
         datas.filter(data -> data.player.con.isConnected());
     }
-
-    // endregion
 
     public static class Prefix {
 
@@ -60,6 +41,7 @@ public class Prefixes {
             this(icon, color.toString());
         }
 
+        /** Applies prefix to the player's nickname. */
         public void apply(Player player) {
             player.name = Strings.format("@ @", full, player.getInfo().lastName);
         }
@@ -74,13 +56,34 @@ public class Prefixes {
             this.player = player;
         }
 
+        /** Applies a top prefix to the player's nickname. */
         public void apply() {
-            if (prefixes.any()) prefixes.peek().apply(player);
-            else player.name = player.getInfo().lastName;
+            if (prefixes.any())
+                prefixes.peek().apply(player);
+            else
+                player.name = player.getInfo().lastName;
         }
 
-        public PrefixData with(Cons<Seq<Prefix>> cons) {
-            cons.get(prefixes);
+        /** Adds the prefix and returns itself to further change or {@link #apply()} changes. */
+        public PrefixData add(Prefix prefix) {
+            prefixes.add(prefix);
+            return this;
+        }
+
+        /** Removes the prefix and returns itself to further change or {@link #apply()} changes. */
+        public PrefixData remove(Prefix prefix) {
+            prefixes.remove(prefix);
+            return this;
+        }
+
+        /** @return whether the data contains this prefix. */
+        public boolean contains(Prefix prefix) {
+            return prefixes.contains(prefix);
+        }
+
+        /** Clears all prefixes and returns itself to further change or {@link #apply()} changes. */
+        public PrefixData clear() {
+            prefixes.clear();
             return this;
         }
     }
