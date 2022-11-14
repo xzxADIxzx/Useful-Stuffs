@@ -3,7 +3,7 @@ allprojects {
 	version = '1.4.0'
 
 	ext {
-		mindustryVersion = 'v140.1'
+		mindustryVersion = 'v140.4'
 	}
 }
 
