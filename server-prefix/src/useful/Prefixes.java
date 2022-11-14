@@ -32,13 +32,26 @@ public class Prefixes {
         public String icon;
         public String full;
 
+        /** Monocolor prefix with hex color. */
         public Prefix(String icon, String color) {
             this.icon = icon;
             this.full = Strings.format("[#@]<@>[]", color, icon);
         }
 
+        /** Monocolor prefix. */
         public Prefix(String icon, Color color) {
             this(icon, color.toString());
+        }
+
+        /** Multicolor prefix with hex color. */
+        public Prefix(String icon, String bracketsColor, String iconColor) {
+            this.icon = icon;
+            this.full = Strings.format("[#@]<[#@]@[]>[]", bracketsColor, iconColor, icon);
+        }
+
+        /** Multicolor prefix. */
+        public Prefix(String icon, Color bracketsColor, Color iconColor) {
+            this(icon, bracketsColor.toString(), iconColor.toString());
         }
 
         /** Applies prefix to the player's nickname. */
