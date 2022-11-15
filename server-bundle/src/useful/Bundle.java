@@ -28,7 +28,6 @@ public class Bundle {
     public static Locale defaultLocale;
 
     public static void load(Class<? extends Mod> main) {
-        supported.add(new Locale("router")); // :3
         mods.getMod(main).root.child("bundles").walk(fi -> {
             if (!fi.extEquals("properties")) return;
 
@@ -37,6 +36,8 @@ public class Bundle {
         });
 
         supported.each(locale -> bundles.put(locale, ResourceBundle.getBundle("bundles.bundle", locale)));
+        supported.add(new Locale("router")); // :3
+
         defaultLocale = supported.find(locale -> locale.toString().equals("en"));
 
         Log.info("Loaded @ locales, default is @.", supported.size, defaultLocale);
