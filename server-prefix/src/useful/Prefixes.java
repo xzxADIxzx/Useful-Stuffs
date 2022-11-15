@@ -3,16 +3,28 @@ package useful;
 import arc.func.Cons;
 import arc.graphics.Color;
 import arc.struct.Seq;
+import arc.util.Reflect;
 import arc.util.Strings;
 import mindustry.gen.Player;
+import mindustry.mod.Mod;
 
 public class Prefixes {
 
     /** All player prefixes datas. */
-    public static Seq<PrefixData> datas = new Seq<>();
+    public static Seq<PrefixData> datas;
+
+    /** Creates new {@link #datas} or loads already created from another class loader. */
+    public static void load(Class<? extends Mod> main) {
+        try {
+            Class<?> singleton = main.getClassLoader().getParent().loadClass("useful.Prefixes");
+            datas = Reflect.get(singleton, "datas"); // use already create datas
+        } catch (Throwable ignored) {
+            datas = new Seq<>(); // singleton not found
+        }
+    }
 
     /** Iterate over all values in {@link #datas}. */
-    public static void each(Cons<PrefixData> cons){
+    public static void each(Cons<PrefixData> cons) {
         datas.each(cons);
     }
 
