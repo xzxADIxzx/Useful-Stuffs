@@ -1,5 +1,6 @@
 package useful;
 
+import arc.func.Cons;
 import arc.graphics.Color;
 import arc.struct.Seq;
 import arc.util.Strings;
@@ -9,6 +10,11 @@ public class Prefixes {
 
     /** All player prefixes datas. */
     public static Seq<PrefixData> datas = new Seq<>();
+
+    /** Iterate over all values in {@link #datas}. */
+    public static void each(Cons<PrefixData> cons){
+        datas.each(cons);
+    }
 
     /** Returns the player's data or creates a new one if it doesn't exist. */
     public static PrefixData get(Player player) {
@@ -71,15 +77,13 @@ public class Prefixes {
 
         /** Applies a top prefix to the player's nickname. */
         public void apply() {
-            if (prefixes.any())
-                prefixes.peek().apply(player);
-            else
-                player.name = player.getInfo().lastName;
+            if (prefixes.any()) prefixes.peek().apply(player);
+            else player.name = player.getInfo().lastName;
         }
 
         /** Adds the prefix and returns itself to further change or {@link #apply()} changes. */
         public PrefixData add(Prefix prefix) {
-            prefixes.add(prefix);
+            prefixes.addUnique(prefix);
             return this;
         }
 
