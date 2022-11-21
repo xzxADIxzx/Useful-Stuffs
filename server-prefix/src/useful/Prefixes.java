@@ -13,6 +13,11 @@ public class Prefixes {
     /** All player prefixes datas. */
     public static Seq<PrefixData> datas;
 
+    /** Creates new {@link #datas}. */
+    public static void load() {
+        datas = new Seq<>();
+    }
+
     /** Creates new {@link #datas} or loads already created from another class loader. */
     public static void load(Class<? extends Mod> main) {
         try {
