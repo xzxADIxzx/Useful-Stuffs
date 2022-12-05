@@ -106,7 +106,7 @@ public class Json {
 
     /** @return {@link Json} parsed from the given string. */
     public static Json read(String json) {
-        JsonCutter cutter = new JsonCutter(json);
+        JsonCutter cutter = JsonCutter.json(json);
         Json result = new Json();
 
         while (cutter.hasNext()) {
@@ -283,18 +283,26 @@ public class Json {
         private final String base;
         private int index;
 
-        public JsonCutter(String base) {
-            base = base.replaceAll("\n", "").trim();
-
-            if (base.length() < 2) throw new RuntimeException("Minimum json length is 2 characters!");
-            if (base.charAt(0) != '{' || base.charAt(base.length() - 1) != '}')
-                throw new RuntimeException("Json must start and end with curly braces!");
-
+        private JsonCutter(String base) {
             this.base = base.substring(1, base.length() - 1);
         }
 
-        public static JsonCutter array(String base) { // hacky
-            return new JsonCutter("{" + base.substring(1, base.length() - 1) + "}");
+        public static JsonCutter json(String base) {
+            base = base.replaceAll("\n", "").trim();
+
+            if (base.length() < 2) throw new RuntimeException("Minimum json length is 2 characters!");
+            if (base.charAt(0) != '{' || base.charAt(base.length() - 1) != '}') throw new RuntimeException("Json must be enclosed in curly braces!");
+
+            return new JsonCutter(base);
+        }
+
+        public static JsonCutter array(String base) {
+            base = base.replaceAll("\n", "").trim();
+
+            if (base.length() < 2) throw new RuntimeException("Minimum array length is 2 characters!");
+            if (base.charAt(0) != '[' || base.charAt(base.length() - 1) != ']') throw new RuntimeException("Array must be enclosed in square brackets!");
+
+            return new JsonCutter(base);
         }
 
         public String next() {
