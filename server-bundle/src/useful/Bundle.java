@@ -111,6 +111,8 @@ public class Bundle {
         return new TextFormatter(locale, true).format(pattern, values);
     }
 
+    // region single
+
     public static void bundled(Player player, String key) {
         player.sendMessage(get(key, player));
     }
@@ -127,6 +129,14 @@ public class Bundle {
         player.sendMessage(format(key, player, values), from, text);
     }
 
+    public static void setHud(Player player, String key) {
+        Call.setHudText(player.con, get(key, player));
+    }
+
+    public static void setHud(Player player, String key, Object... values) {
+        Call.setHudText(player.con, format(key, player, values));
+    }
+
     public static void announce(Player player, String key) {
         Call.announce(player.con, get(key, player));
     }
@@ -134,6 +144,17 @@ public class Bundle {
     public static void announce(Player player, String key, Object... values) {
         Call.announce(player.con, format(key, player, values));
     }
+
+    public static void label(Player player, float duration, float x, float y, String key) {
+        Call.label(player.con, get(key, player), duration, x, y);
+    }
+
+    public static void label(Player player, float duration, float x, float y, String key, Object... values) {
+        Call.label(player.con, format(key, player, values), duration, x, y);
+    }
+
+    // endregion
+    // region group
 
     public static void sendToChat(String key, Object... values) {
         Groups.player.each(player -> bundled(player, key, values));
@@ -143,6 +164,14 @@ public class Bundle {
         Groups.player.each(filter, player -> bundled(player, key, values));
     }
 
+    public static void setHud(String key, Object... values) {
+        Groups.player.each(player -> setHud(player, key, values));
+    }
+
+    public static void setHud(Boolf<Player> filter, String key, Object... values) {
+        Groups.player.each(filter, player -> setHud(player, key, values));
+    }
+
     public static void announce(String key, Object... values) {
         Groups.player.each(player -> announce(player, key, values));
     }
@@ -150,6 +179,16 @@ public class Bundle {
     public static void announce(Boolf<Player> filter, String key, Object... values) {
         Groups.player.each(filter, player -> announce(player, key, values));
     }
+
+    public static void label(float duration, float x, float y, String key, Object... values) {
+        Groups.player.each(player -> label(player, duration, x, y, key, values));
+    }
+
+    public static void label(Boolf<Player> filter, float duration, float x, float y, String key, Object... values) {
+        Groups.player.each(filter, player -> label(player, duration, x, y, key, values));
+    }
+
+    // endregion
 
     /** Used in some player data classes to shorten code. */
     public static interface LocaleProvider {
