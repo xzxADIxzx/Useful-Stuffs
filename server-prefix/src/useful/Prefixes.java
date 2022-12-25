@@ -24,7 +24,7 @@ public class Prefixes {
             Class<?> singleton = main.getClassLoader().getParent().loadClass("useful.Prefixes");
             datas = Reflect.get(singleton, "datas"); // use already created datas
 
-            if (datas == null) datas = new Seq<>(); // datas is not loaded, this instance will be singleton
+            if (datas == null) datas = new Seq<>(); // datas are not loaded, this instance will be singleton
         } catch (Throwable ignored) {
             datas = new Seq<>(); // singleton not found
         }

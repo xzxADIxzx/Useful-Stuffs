@@ -11,6 +11,7 @@ import mindustry.gen.Groups;
 import static mindustry.Vars.*;
 
 /** Adds GitHub Actions IPs to blacklist. */
+
 public class AntiDdos {
 
     public static final String actionsURL = "https://api.github.com/meta";
@@ -35,6 +36,6 @@ public class AntiDdos {
                 player.con.close();
                 netServer.admins.blacklistDos(player.con.address);
             }
-        ), 0f, 3f);
+        ), 0f, 1f);
     }
 }
