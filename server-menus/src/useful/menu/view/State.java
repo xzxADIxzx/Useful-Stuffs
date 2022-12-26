@@ -1,4 +1,4 @@
-package useful.menu;
+package useful.menu.view;
 
 import arc.struct.ObjectMap;
 
@@ -20,12 +20,12 @@ public record State(ObjectMap<String, Object> map) {
     }
 
     public <T> T get(StateKey<T> key, T def) {
-        return (T) map.get(key.name(), def);
+        return (T) map.get(key.name(), () -> def);
     }
 
     public boolean contains(StateKey<?> key) {
         return map.containsKey(key.name());
     }
 
-    public record StateKey<V>(String name, Class<V> type) {}
+    public record StateKey<T>(String name, Class<T> type) {}
 }
