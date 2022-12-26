@@ -53,6 +53,7 @@ public class MenuInterface {
     }
 
     public class MenuView {
+
         public final Player player;
         public final State state;
 
