@@ -125,11 +125,37 @@ public class MenuInterface {
             return this;
         }
 
-        public MenuView addOptionRow(MenuOption... options) {
+        public MenuView addOptionRow(String button, Action<MenuView> action, Object... values) {
+            return addOption(button, action, values).row();
+        }
+
+        public MenuView addOptionRow(char icon, Action<MenuView> action) {
+            return addOption(icon, action).row();
+        }
+
+        public MenuView addOptionRow(MenuOption option) {
+            return addOption(option).row();
+        }
+
+        public MenuView addOptionsRow(MenuOption... options) {
             if (this.options.size > 0 && this.options.peek().size > 0)
                 this.row();
 
             this.options.add(Seq.with(options));
+            return this;
+        }
+
+        public MenuView addOptionsRow(int maxPerRow, MenuOption... options) {
+            if (this.options.size > 0 && this.options.peek().size > 0)
+                this.row();
+
+            for (var option : options) {
+                addOption(option);
+
+                if (this.options.peek().size > maxPerRow)
+                    this.row();
+            }
+
             return this;
         }
 
