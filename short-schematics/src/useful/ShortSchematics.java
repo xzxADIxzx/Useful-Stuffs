@@ -32,15 +32,15 @@ public class ShortSchematics {
         return write(Schematics.readBase64(base));
     }
 
-    public static String write(Schematic schem) {
-        schem.tiles.sort(st -> st.x + st.y * schem.width);
+    public static String write(Schematic schematic) {
+        schematic.tiles.sort(st -> st.x + st.y * schematic.width);
 
         Seq<Short> out = new Seq<>();
-        out.add((short) (schem.width),
-                (short) (schem.height));
+        out.add((short) (schematic.width),
+                (short) (schematic.height));
 
-        Stile last = schem.tiles.get(0);
-        for (Stile st : schem.tiles) {
+        Stile last = schematic.tiles.get(0);
+        for (Stile st : schematic.tiles) {
             if (subsequence(last, st)) { // tiles are in sequence one after another
                 if (out.get(out.size - 2) == -1) out.add((short) (out.pop() + 1));
                 else out.add((short) -1, (short) 1);

@@ -16,7 +16,7 @@ public class MenuInterface {
     public final Seq<Cons<MenuView>> transformers = new Seq<>();
 
     public final int id;
-    public Action<MenuView> closeAction = Action.none();
+    public Action closeAction = Action.none();
 
     {
         Events.on(PlayerLeave.class, event -> views.remove(event.player));
@@ -56,13 +56,12 @@ public class MenuInterface {
         return this;
     }
 
-    public MenuInterface closed(Action<MenuView> closeAction) {
+    public MenuInterface closed(Action closeAction) {
         this.closeAction = closeAction;
         return this;
     }
 
     public class MenuView {
-
         public final Player player;
         public final State state;
 
@@ -123,11 +122,11 @@ public class MenuInterface {
             return this;
         }
 
-        public MenuView addOption(String button, Action<MenuView> action, Object... values) {
+        public MenuView addOption(String button, Action action, Object... values) {
             return addOption(MenuOption.of(MenuFormatter.format(player, button, values), action));
         }
 
-        public MenuView addOption(char icon, Action<MenuView> action) {
+        public MenuView addOption(char icon, Action action) {
             return addOption(MenuOption.of(icon, action));
         }
 
@@ -139,11 +138,11 @@ public class MenuInterface {
             return this;
         }
 
-        public MenuView addOptionRow(String button, Action<MenuView> action, Object... values) {
+        public MenuView addOptionRow(String button, Action action, Object... values) {
             return addOption(button, action, values).row();
         }
 
-        public MenuView addOptionRow(char icon, Action<MenuView> action) {
+        public MenuView addOptionRow(char icon, Action action) {
             return addOption(icon, action).row();
         }
 
@@ -180,13 +179,18 @@ public class MenuInterface {
                 if (i > id)
                     return row.get(id - i + row.size);
             }
+
             return null;
         }
 
         public void runOption(int id) {
             var option = getOption(id);
-            if (option != null) option.action().get(this);
-            else closeAction.get(this);
+            if (option == null) {
+                closeAction.get(this);
+                return;
+            }
+
+            option.action().get(this);
         }
 
         public MenuInterface getInterface() {
