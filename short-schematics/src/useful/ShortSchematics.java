@@ -16,14 +16,13 @@ import static mindustry.Vars.*;
  * 
  * @author xzxADIxzx
  */
-
 public class ShortSchematics {
 
     /** Version of the script, used to avoid errors when decompiling the string. */
     public static final int version = 0;
 
     /** List of all characters that are used to store integers. */
-    public static final String symbols = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyXxZz" // I know it's a bad idea
+    public static final String symbols = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyXxZz" // i know it's a bad idea
                                        + "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫЫЬьЭэЮюЯя";
 
     /** Maximum value that can be stored in one character. */

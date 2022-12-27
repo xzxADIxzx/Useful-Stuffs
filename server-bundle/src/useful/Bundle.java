@@ -20,7 +20,6 @@ import java.util.ResourceBundle;
  * 
  * @author xzxADIxzx
  */
-
 public class Bundle {
 
     public static final Seq<Locale> supported = new Seq<>();
@@ -32,7 +31,7 @@ public class Bundle {
         load(main, "en");
     }
 
-    public static void load(Class<? extends Mod> main, String defLocale) {
+    public static void load(Class<? extends Mod> main, String defaultLocaleCode) {
         mods.getMod(main).root.child("bundles").walk(fi -> {
             if (!fi.extEquals("properties")) return;
 
@@ -43,7 +42,7 @@ public class Bundle {
         supported.each(locale -> bundles.put(locale, ResourceBundle.getBundle("bundles.bundle", locale)));
         supported.add(new Locale("router")); // :3
 
-        defaultLocale = supported.find(locale -> locale.toString().equals(defLocale));
+        defaultLocale = supported.find(locale -> locale.toString().equals(defaultLocaleCode));
 
         Log.info("Loaded @ locales, default is @.", supported.size, defaultLocale);
     }
