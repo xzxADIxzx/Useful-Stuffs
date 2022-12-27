@@ -30,13 +30,22 @@ public class MenuInterface {
     }
 
     public MenuView open(Player player) {
-        return open(player, new State(new ObjectMap<>()));
+        return open(player, new State());
     }
 
     public MenuView open(Player player, State state) {
+        return open(player, state, view -> {});
+    }
+
+    public MenuView open(Player player, Cons<MenuView> transformer) {
+        return open(player, new State(), transformer);
+    }
+
+    public MenuView open(Player player, State state, Cons<MenuView> transformer) {
         return views.get(player, () -> {
             var view = new MenuView(player, state);
-            transformers.each(transformer -> transformer.get(view));
+            transformers.each(view::transform);
+            view.transform(transformer);
 
             return view.show();
         });
@@ -64,6 +73,10 @@ public class MenuInterface {
         public MenuView(Player player, State state) {
             this.player = player;
             this.state = state;
+        }
+
+        public void transform(Cons<MenuView> transformer) {
+            transformer.get(this);
         }
 
         public MenuView show() {

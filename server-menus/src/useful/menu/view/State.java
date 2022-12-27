@@ -5,6 +5,10 @@ import arc.struct.ObjectMap;
 @SuppressWarnings("unchecked")
 public record State(ObjectMap<String, Object> map) {
 
+    public State() {
+        this(new ObjectMap<>());
+    }
+
     public <T> State with(StateKey<T> key, T value) {
         map.put(key.name(), value);
         return this;
