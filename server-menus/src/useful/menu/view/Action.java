@@ -3,7 +3,7 @@ package useful.menu.view;
 import arc.func.Cons;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
-import useful.menu.view.MenuInterface.MenuView;
+import useful.menu.view.Menu.MenuView;
 import useful.menu.view.State.StateKey;
 
 @FunctionalInterface

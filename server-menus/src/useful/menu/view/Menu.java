@@ -9,8 +9,9 @@ import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.ui.Menus;
 import useful.menu.MenuFormatter;
+import useful.menu.view.State.StateKey;
 
-public class MenuInterface {
+public class Menu {
 
     public final ObjectMap<Player, MenuView> views = new ObjectMap<>();
     public final Seq<Cons<MenuView>> transformers = new Seq<>();
@@ -51,12 +52,20 @@ public class MenuInterface {
         });
     }
 
-    public MenuInterface transform(Cons<MenuView> transformer) {
+    public <T> MenuView openWith(Player player, StateKey<T> key, T value) {
+        return open(player, new State().with(key, value));
+    }
+
+    public <T> MenuView openWith(Player player, StateKey<T> key, T value, Cons<MenuView> transformer) {
+        return open(player, new State().with(key, value), transformer);
+    }
+
+    public Menu transform(Cons<MenuView> transformer) {
         this.transformers.add(transformer);
         return this;
     }
 
-    public MenuInterface closed(Action closeAction) {
+    public Menu closed(Action closeAction) {
         this.closeAction = closeAction;
         return this;
     }
@@ -163,10 +172,10 @@ public class MenuInterface {
                 this.row();
 
             for (var option : options) {
-                addOption(option);
-
-                if (this.options.peek().size > maxPerRow)
+                if (this.options.peek().size >= maxPerRow)
                     this.row();
+
+                addOption(option);
             }
 
             return this;
@@ -193,8 +202,8 @@ public class MenuInterface {
             option.action().get(this);
         }
 
-        public MenuInterface getInterface() {
-            return MenuInterface.this;
+        public Menu getInterface() {
+            return Menu.this;
         }
     }
 }
