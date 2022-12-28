@@ -1,6 +1,6 @@
 package useful.menu.view;
 
-import arc.func.Cons;
+import arc.func.*;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import useful.menu.view.Menu.MenuView;
@@ -22,17 +22,22 @@ public interface Action extends Cons<MenuView> {
     }
 
     static Action open() {
-        return view -> view.getMenu().open(view.player, view.state);
+        return view -> view.getMenu().open(view.player, view.state, view.transformer);
     }
 
     static <T> Action openWith(StateKey<T> key, T value) {
         return view ->
-                view.getMenu().open(view.player, view.state.with(key, value));
+                view.getMenu().open(view.player, view.state.put(key, value), view.transformer);
     }
 
     static <T> Action openWithout(StateKey<T> key) {
         return view ->
-                view.getMenu().open(view.player, view.state.remove(key));
+                view.getMenu().open(view.player, view.state.remove(key), view.transformer);
+    }
+
+    static <T> Action openChange(StateKey<T> key, Func<T, T> value) {
+        return view ->
+                view.getMenu().open(view.player, view.state.put(key, value.get(view.state.get(key))), view.transformer);
     }
 
     static Action uri(String uri) {

@@ -9,7 +9,11 @@ public record State(ObjectMap<String, Object> map) {
         this(new ObjectMap<>());
     }
 
-    public <T> State with(StateKey<T> key, T value) {
+    public static <T> State with(StateKey<T> key, T value) {
+        return new State().put(key, value);
+    }
+
+    public <T> State put(StateKey<T> key, T value) {
         map.put(key.name(), value);
         return this;
     }
