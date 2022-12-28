@@ -85,12 +85,12 @@ public class MenuInterface {
         }
 
         public MenuView title(String title, Object... values) {
-            this.title = MenuFormatter.format(player, title, values);
+            this.title = MenuFormatter.format(title, player, values);
             return this;
         }
 
         public MenuView content(String content, Object... values) {
-            this.content = MenuFormatter.format(player, content, values);
+            this.content = MenuFormatter.format(content, player, values);
             return this;
         }
 
@@ -123,7 +123,7 @@ public class MenuInterface {
         }
 
         public MenuView addOption(String button, Action action, Object... values) {
-            return addOption(MenuOption.of(MenuFormatter.format(player, button, values), action));
+            return addOption(MenuOption.of(MenuFormatter.format(button, player, values), action));
         }
 
         public MenuView addOption(char icon, Action action) {

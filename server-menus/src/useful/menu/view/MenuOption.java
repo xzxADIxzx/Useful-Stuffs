@@ -8,8 +8,8 @@ public record MenuOption(String button, Action action) {
         return new MenuOption("", Action.none());
     }
 
-    public static MenuOption of(Player player, String button, Action action, Object... values) {
-        return new MenuOption(MenuFormatter.format(player, button, values), action);
+    public static MenuOption of(String button, Player player, Action action, Object... values) {
+        return new MenuOption(MenuFormatter.format(button, player, values), action);
     }
 
     public static MenuOption of(String button, Action action) {
