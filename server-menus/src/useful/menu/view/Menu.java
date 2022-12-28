@@ -139,6 +139,10 @@ public class Menu {
             return addOption(MenuOption.of(icon, action));
         }
 
+        public MenuView addOption(OptionData data) {
+            return addOption(data.option(this));
+        }
+
         public MenuView addOption(MenuOption option) {
             if (this.options.size == 0)
                 this.row();
@@ -155,8 +159,16 @@ public class Menu {
             return addOption(icon, action).row();
         }
 
+        public MenuView addOptionRow(OptionData data) {
+            return addOption(data.option(this)).row();
+        }
+
         public MenuView addOptionRow(MenuOption option) {
             return addOption(option).row();
+        }
+
+        public MenuView addOptionsRow(OptionData... datas) {
+            return addOptionsRow((MenuOption[]) Seq.with(datas).map(data -> data.option(this)).toArray(MenuOption.class));
         }
 
         public MenuView addOptionsRow(MenuOption... options) {
@@ -165,6 +177,10 @@ public class Menu {
 
             this.options.add(Seq.with(options));
             return this;
+        }
+
+        public MenuView addOptionsRow(int maxPerRow, OptionData... datas) {
+            return addOptionsRow(maxPerRow, (MenuOption[]) Seq.with(datas).map(data -> data.option(this)).toArray(MenuOption.class));
         }
 
         public MenuView addOptionsRow(int maxPerRow, MenuOption... options) {
@@ -202,8 +218,12 @@ public class Menu {
             option.action().get(this);
         }
 
-        public Menu getInterface() {
+        public Menu getMenu() {
             return Menu.this;
         }
+    }
+
+    public interface OptionData {
+        MenuOption option(MenuView view);
     }
 }

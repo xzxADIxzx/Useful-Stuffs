@@ -22,17 +22,17 @@ public interface Action extends Cons<MenuView> {
     }
 
     static Action open() {
-        return view -> view.getInterface().open(view.player, view.state);
+        return view -> view.getMenu().open(view.player, view.state);
     }
 
     static <T> Action openWith(StateKey<T> key, T value) {
         return view ->
-                view.getInterface().open(view.player, view.state.with(key, value));
+                view.getMenu().open(view.player, view.state.with(key, value));
     }
 
     static <T> Action openWithout(StateKey<T> key) {
         return view ->
-                view.getInterface().open(view.player, view.state.remove(key));
+                view.getMenu().open(view.player, view.state.remove(key));
     }
 
     static Action uri(String uri) {
