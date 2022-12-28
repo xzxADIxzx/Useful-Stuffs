@@ -35,7 +35,7 @@ public interface Action extends Cons<MenuView> {
                 view.getMenu().open(view.player, view.state.remove(key), view.transformer);
     }
 
-    static <T> Action openChange(StateKey<T> key, Cons<T> cons) {
+    static <T> Action openUse(StateKey<T> key, Cons<T> cons) {
         return view -> {
             var value = view.state.get(key);
             cons.get(value);
@@ -44,7 +44,7 @@ public interface Action extends Cons<MenuView> {
         };
     }
 
-    static <T> Action openChange(StateKey<T> key, Func<T, T> func) {
+    static <T> Action openGet(StateKey<T> key, Func<T, T> func) {
         return view -> {
             var value = func.get(view.state.get(key));
 
