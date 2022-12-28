@@ -35,16 +35,28 @@ public interface Action extends Cons<MenuView> {
                 view.getMenu().open(view.player, view.state.remove(key), view.transformer);
     }
 
-    static <T> Action openChange(StateKey<T> key, Func<T, T> value) {
-        return view ->
-                view.getMenu().open(view.player, view.state.put(key, value.get(view.state.get(key))), view.transformer);
+    static <T> Action openChange(StateKey<T> key, Cons<T> cons) {
+        return view -> {
+            var value = view.state.get(key);
+            cons.get(value);
+
+            view.getMenu().open(view.player, view.state.put(key, value), view.transformer);
+        };
+    }
+
+    static <T> Action openChange(StateKey<T> key, Func<T, T> func) {
+        return view -> {
+            var value = func.get(view.state.get(key));
+
+            view.getMenu().open(view.player, view.state.put(key, value), view.transformer);
+        };
     }
 
     static Action uri(String uri) {
         return view -> Call.openURI(view.player.con, uri);
     }
 
-    default Action andThen(Action after) {
+    default Action then(Action after) {
         return view -> {
             get(view);
             after.get(view);
