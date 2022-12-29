@@ -44,10 +44,4 @@ public record MenuOption(String button, Action action) {
     public static MenuOption of(char icon, Action action) {
         return new MenuOption(String.valueOf(icon), action);
     }
-
-    public static MenuOption disabled(boolean disabled, String button, Action action) {
-        return disabled ?
-                new MenuOption("[gray]" + button, Action.none()) :
-                new MenuOption(button, action);
-    }
 }

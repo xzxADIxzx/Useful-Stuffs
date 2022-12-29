@@ -17,17 +17,6 @@ public interface Action extends Cons<MenuView> {
         return action; // For chaining
     }
 
-    static Action many(Action... actions) {
-        if (actions.length == 0) return none();
-
-        var action = actions[0];
-        for (int i = 1; i < actions.length; i++) {
-            action = action.then(actions[i]);
-        }
-
-        return action;
-    }
-
     static Action run(Runnable runnable) {
         return view -> runnable.run();
     }

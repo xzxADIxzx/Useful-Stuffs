@@ -145,6 +145,11 @@ public class Menu {
             return this;
         }
 
+        // Special case: it uses the current player to create an option
+        public MenuOption option(String button, Action action, Object... values) {
+            return MenuOption.of(button, player, action, values);
+        }
+
         public MenuView addOptionNone(String button, Object... values) {
             return addOption(MenuOption.none(MenuFormatter.format(button, player, values)));
         }
