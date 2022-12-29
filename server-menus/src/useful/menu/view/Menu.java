@@ -150,6 +150,16 @@ public class Menu {
             return MenuOption.of(button, player, action, values);
         }
 
+        // Special case: it uses the current player to create an option
+        public MenuOption optionRun(String button, Runnable runnable, Object... values) {
+            return MenuOption.of(button, player, Action.run(runnable), values);
+        }
+
+        // Special case: it uses the current player to create an option
+        public MenuOption optionPlayer(String button, Cons<Player> cons, Object... values) {
+            return MenuOption.of(button, player, Action.player(cons), values);
+        }
+
         public MenuView addOptionNone(String button, Object... values) {
             return addOption(MenuOption.none(MenuFormatter.format(button, player, values)));
         }

@@ -80,9 +80,9 @@ public class Bundle {
         if (locale.toString().equals("router")) return "router";
         try {
             var bundle = bundles.get(locale, bundles.get(defaultLocale));
-            return bundle.getString(key);
+            return bundle.containsKey(key) ? bundle.getString(key) : defaultValue;
         } catch (Throwable ignored) {
-            return defaultValue; // missing resource
+            return defaultValue;
         }
     }
 
