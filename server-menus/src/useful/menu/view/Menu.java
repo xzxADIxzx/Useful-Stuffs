@@ -229,7 +229,7 @@ public class Menu {
         }
 
         public MenuView addOptionsRow(int maxPerRow, MenuOption... options) {
-            if (this.options.size > 0 && this.options.peek().size > 0)
+            if (this.options.size == 0 || this.options.peek().size > 0)
                 this.row();
 
             for (var option : options) {
