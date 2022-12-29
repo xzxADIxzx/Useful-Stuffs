@@ -21,39 +21,43 @@ public interface Action extends Cons<MenuView> {
         return view -> action.get(view.player);
     }
 
-    static Action open() {
-        return view -> view.getMenu().open(view.player, view.state, view.transformer);
+    static Action show() {
+        return view -> view.getMenu().show(view.player, view.state, view.transformer);
     }
 
-    static <T> Action openWith(StateKey<T> key, T value) {
+    static <T> Action showWith(StateKey<T> key, T value) {
         return view ->
-                view.getMenu().open(view.player, view.state.put(key, value), view.transformer);
+                view.getMenu().show(view.player, view.state.put(key, value), view.transformer);
     }
 
-    static <T> Action openWithout(StateKey<T> key) {
+    static <T> Action showWithout(StateKey<T> key) {
         return view ->
-                view.getMenu().open(view.player, view.state.remove(key), view.transformer);
+                view.getMenu().show(view.player, view.state.remove(key), view.transformer);
     }
 
-    static <T> Action openUse(StateKey<T> key, Cons<T> cons) {
+    static <T> Action showConsume(StateKey<T> key, Cons<T> cons) {
         return view -> {
             var value = view.state.get(key);
             cons.get(value);
 
-            view.getMenu().open(view.player, view.state.put(key, value), view.transformer);
+            view.getMenu().show(view.player, view.state.put(key, value), view.transformer);
         };
     }
 
-    static <T> Action openGet(StateKey<T> key, Func<T, T> func) {
+    static <T> Action showGet(StateKey<T> key, Func<T, T> func) {
         return view -> {
             var value = func.get(view.state.get(key));
 
-            view.getMenu().open(view.player, view.state.put(key, value), view.transformer);
+            view.getMenu().show(view.player, view.state.put(key, value), view.transformer);
         };
     }
 
     static Action uri(String uri) {
         return view -> Call.openURI(view.player.con, uri);
+    }
+
+    static Action connect(String ip, int port) {
+        return view -> Call.connect(view.player.con, ip, port);
     }
 
     default Action then(Action after) {

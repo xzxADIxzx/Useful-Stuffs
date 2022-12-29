@@ -30,19 +30,19 @@ public class Menu {
         });
     }
 
-    public MenuView open(Player player) {
-        return open(player, new State());
+    public MenuView show(Player player) {
+        return show(player, new State());
     }
 
-    public MenuView open(Player player, State state) {
-        return open(player, state, view -> {});
+    public MenuView show(Player player, State state) {
+        return show(player, state, view -> {});
     }
 
-    public MenuView open(Player player, Cons<MenuView> transformer) {
-        return open(player, new State(), transformer);
+    public MenuView show(Player player, Cons<MenuView> transformer) {
+        return show(player, new State(), transformer);
     }
 
-    public MenuView open(Player player, State state, Cons<MenuView> transformer) {
+    public MenuView show(Player player, State state, Cons<MenuView> transformer) {
         return views.get(player, () -> {
             var view = new MenuView(player, state, transformer);
             transformers.each(view::transform);
@@ -52,20 +52,20 @@ public class Menu {
         });
     }
 
-    public <T> MenuView openWith(Player player, StateKey<T> key, T value) {
-        return open(player, State.with(key, value));
+    public <T> MenuView showWith(Player player, StateKey<T> key, T value) {
+        return show(player, State.with(key, value));
     }
 
-    public <T> MenuView openWith(Player player, StateKey<T> key, T value, Cons<MenuView> transformer) {
-        return open(player, State.with(key, value), transformer);
+    public <T> MenuView showWith(Player player, StateKey<T> key, T value, Cons<MenuView> transformer) {
+        return show(player, State.with(key, value), transformer);
     }
 
-    public <T1, T2> MenuView openWith(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2) {
-        return open(player, State.with(key1, value1).put(key2, value2));
+    public <T1, T2> MenuView showWith(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2) {
+        return show(player, State.with(key1, value1).put(key2, value2));
     }
 
-    public <T1, T2> MenuView openWith(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2, Cons<MenuView> transformer) {
-        return open(player, State.with(key1, value1).put(key2, value2), transformer);
+    public <T1, T2> MenuView showWith(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2, Cons<MenuView> transformer) {
+        return show(player, State.with(key1, value1).put(key2, value2), transformer);
     }
 
     public Menu transform(Cons<MenuView> transformer) {
@@ -145,6 +145,22 @@ public class Menu {
             return this;
         }
 
+        public MenuView addOptionNone(String button, Object... values) {
+            return addOption(MenuOption.none(MenuFormatter.format(button, player, values)));
+        }
+
+        public MenuView addOptionNone(char icon) {
+            return addOption(MenuOption.none(icon));
+        }
+
+        public MenuView addOptionPlayer(String button, Cons<Player> cons, Object... values) {
+            return addOption(MenuOption.player(MenuFormatter.format(button, player, values), cons));
+        }
+
+        public MenuView addOptionPlayer(char icon, Cons<Player> cons) {
+            return addOption(MenuOption.player(icon, cons));
+        }
+
         public MenuView addOption(String button, Action action, Object... values) {
             return addOption(MenuOption.of(MenuFormatter.format(button, player, values), action));
         }
@@ -212,6 +228,8 @@ public class Menu {
         }
 
         public MenuOption getOption(int id) {
+            if (id < 0) return null;
+
             int i = 0;
             for (var row : options) {
                 i += row.size;
