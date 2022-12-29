@@ -13,6 +13,10 @@ public interface Action extends Cons<MenuView> {
         return view -> {};
     }
 
+    static Action view(Action action) {
+        return action; // For chaining
+    }
+
     static Action run(Runnable runnable) {
         return view -> runnable.run();
     }
