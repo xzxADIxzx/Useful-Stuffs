@@ -82,7 +82,7 @@ public class Bundle {
             var bundle = bundles.get(locale, bundles.get(defaultLocale));
             return bundle.containsKey(key) ? bundle.getString(key) : defaultValue;
         } catch (Throwable ignored) {
-            return defaultValue;
+            return defaultValue; // null pointer from containsKey
         }
     }
 
