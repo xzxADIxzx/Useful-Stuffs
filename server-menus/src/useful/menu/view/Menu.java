@@ -73,6 +73,15 @@ public class Menu {
         return this;
     }
 
+    public Menu transformIf(StateKey<Boolean> key, Cons<MenuView> transformer1, Cons<MenuView> transformer2) {
+        return transform(view -> {
+            if (view.state.get(key))
+                transformer1.get(view);
+            else
+                transformer2.get(view);
+        });
+    }
+
     public Menu closed(Action closeAction) {
         this.closeAction = closeAction;
         return this;
@@ -160,11 +169,11 @@ public class Menu {
             return MenuOption.of(button, player, Action.player(cons), values);
         }
 
-        public MenuView addOptionNone(String button, Object... values) {
+        public MenuView addOption(String button, Object... values) {
             return addOption(MenuOption.none(MenuFormatter.format(button, player, values)));
         }
 
-        public MenuView addOptionNone(char icon) {
+        public MenuView addOption(char icon) {
             return addOption(MenuOption.none(icon));
         }
 
@@ -194,22 +203,6 @@ public class Menu {
 
             this.options.peek().add(option);
             return this;
-        }
-
-        public MenuView addOptionRow(String button, Action action, Object... values) {
-            return addOption(button, action, values).row();
-        }
-
-        public MenuView addOptionRow(char icon, Action action) {
-            return addOption(icon, action).row();
-        }
-
-        public MenuView addOptionRow(OptionData data) {
-            return addOption(data.option(this)).row();
-        }
-
-        public MenuView addOptionRow(MenuOption option) {
-            return addOption(option).row();
         }
 
         public MenuView addOptionsRow(OptionData... datas) {
