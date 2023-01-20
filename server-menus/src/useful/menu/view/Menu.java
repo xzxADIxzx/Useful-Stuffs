@@ -42,11 +42,17 @@ public class Menu {
         return show(player, new State(), transformer);
     }
 
+    public MenuView showIf(Player player, StateKey<Boolean> condition, Cons<MenuView> transformer) {
+        return show(player, new State(), view -> {
+            if (view.state.get(condition))
+                transformer.get(view);
+        });
+    }
+
     public MenuView show(Player player, State state, Cons<MenuView> transformer) {
         return views.get(player, () -> {
             var view = new MenuView(player, state, transformer);
             transformers.each(view::transform);
-            view.transform(view.transformer);
 
             return view.show();
         });
@@ -60,6 +66,13 @@ public class Menu {
         return show(player, State.with(key, value), transformer);
     }
 
+    public <T> MenuView showWithIf(Player player, StateKey<T> key, T value, StateKey<Boolean> condition, Cons<MenuView> transformer) {
+        return show(player, State.with(key, value), view -> {
+            if (view.state.get(condition))
+                transformer.get(view);
+        });
+    }
+
     public <T1, T2> MenuView showWith(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2) {
         return show(player, State.with(key1, value1).put(key2, value2));
     }
@@ -68,14 +81,21 @@ public class Menu {
         return show(player, State.with(key1, value1).put(key2, value2), transformer);
     }
 
+    public <T1, T2> MenuView showWithIf(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2, StateKey<Boolean> condition, Cons<MenuView> transformer) {
+        return show(player, State.with(key1, value1).put(key2, value2), view -> {
+            if (view.state.get(condition))
+                transformer.get(view);
+        });
+    }
+
     public Menu transform(Cons<MenuView> transformer) {
         this.transformers.add(transformer);
         return this;
     }
 
-    public Menu transformIf(StateKey<Boolean> key, Cons<MenuView> transformer1, Cons<MenuView> transformer2) {
+    public Menu transformIf(StateKey<Boolean> condition, Cons<MenuView> transformer1, Cons<MenuView> transformer2) {
         return transform(view -> {
-            if (view.state.get(key))
+            if (view.state.get(condition))
                 transformer1.get(view);
             else
                 transformer2.get(view);
@@ -97,14 +117,13 @@ public class Menu {
         public Seq<Seq<MenuOption>> options = new Seq<>();
         public Cons<MenuView> transformer;
 
-        public MenuView(Player player, State state) {
-            this(player, state, view -> {});
-        }
-
         public MenuView(Player player, State state, Cons<MenuView> transformer) {
             this.player = player;
             this.state = state;
             this.transformer = transformer;
+
+            // Transform this menu
+            this.transform(transformer);
         }
 
         public void transform(Cons<MenuView> transformer) {

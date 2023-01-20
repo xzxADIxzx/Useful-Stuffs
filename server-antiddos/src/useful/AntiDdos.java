@@ -16,6 +16,8 @@ public class AntiDdos {
     public static final String actionsURL = "https://api.github.com/meta";
     public static final Seq<String> ips = new Seq<>();
 
+    public static int noSnapshotsKickTime = 10000, noSnapshotsCheckInterval = 1;
+
     public static void load() {
         Http.get(actionsURL, result -> {
             var json = Jval.read(result.getResultAsString());
@@ -29,12 +31,12 @@ public class AntiDdos {
         }, error -> Log.err("Failed to fetch GitHub Actions IPs", error));
 
         Timer.schedule(() -> Groups.player.each(
-            player -> Time.timeSinceMillis(player.con.connectTime) > 10000 && Time.timeSinceMillis(player.con.lastReceivedClientTime) <= 0,
+            player -> Time.timeSinceMillis(player.con.connectTime) > noSnapshotsKickTime && Time.timeSinceMillis(player.con.lastReceivedClientTime) <= 0,
             player -> {
                 Log.warn("Blacklisting IP '@' as potential DOS attack - no snapshots received.", player.con.address);
                 player.con.close();
                 netServer.admins.blacklistDos(player.con.address);
             }
-        ), 0f, 1f);
+        ), 0f, noSnapshotsCheckInterval);
     }
 }
