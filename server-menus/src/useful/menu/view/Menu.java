@@ -66,6 +66,13 @@ public class Menu {
         });
     }
 
+    public MenuView showWithIfNot(Player player, StateKey<Boolean> key, boolean value, Cons<MenuView> transformer) {
+        return show(player, State.with(key, value), view -> {
+            if (!view.state.get(key))
+                transformer.get(view);
+        });
+    }
+
     public <T1, T2> MenuView showWith(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2) {
         return show(player, State.with(key1, value1).put(key2, value2));
     }
