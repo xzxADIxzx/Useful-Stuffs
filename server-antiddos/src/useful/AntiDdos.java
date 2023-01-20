@@ -31,7 +31,7 @@ public class AntiDdos {
         }, error -> Log.err("Failed to fetch GitHub Actions IPs", error));
 
         Timer.schedule(() -> Groups.player.each(
-            player -> Time.timeSinceMillis(player.con.connectTime) > noSnapshotsKickTime && Time.timeSinceMillis(player.con.lastReceivedClientTime) <= 0,
+            player -> Time.timeSinceMillis(player.con.connectTime) > noSnapshotsKickTime && player.con.lastReceivedClientSnapshot == -1,
             player -> {
                 Log.warn("Blacklisting IP '@' as potential DOS attack - no snapshots received.", player.con.address);
                 player.con.close();
