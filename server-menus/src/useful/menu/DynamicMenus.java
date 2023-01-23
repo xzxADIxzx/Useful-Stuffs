@@ -54,4 +54,12 @@ public class DynamicMenus {
     public static void menu(Player player, String title, String message, String[][] options, Intc listener) {
         Call.menu(player.con, register(listener), title, message, options);
     }
+
+    public static void formattedMenu(Player player, String title, String message, String[][] options, MenuListener listener) {
+        Call.menu(player.con, register(listener), MenuFormatter.format(title, player), MenuFormatter.format(message, player), MenuFormatter.format(options, player));
+    }
+
+    public static void formattedMenu(Player player, String title, String message, String[][] options, Intc listener) {
+        Call.menu(player.con, register(listener), MenuFormatter.format(title, player), MenuFormatter.format(message, player), MenuFormatter.format(options, player));
+    }
 }

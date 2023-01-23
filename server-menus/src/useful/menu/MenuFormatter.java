@@ -15,4 +15,12 @@ public class MenuFormatter {
     public static String format(String text, Player player, Object... values) {
         return formatter.get(text, player, values);
     }
+
+    public static String[][] format(String[][] texts, Player player) {
+        for (int x = 0; x < texts.length; x++)
+            for (int y = 0; y < texts[x].length; y++)
+                texts[x][y] = format(texts[x][y], player);
+
+        return texts;
+    }
 }
