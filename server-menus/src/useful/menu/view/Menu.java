@@ -86,6 +86,13 @@ public class Menu {
         return this;
     }
 
+    public Menu transformIf(StateKey<Boolean> condition, Cons<MenuView> transformer) {
+        return transform(view -> {
+            if (view.state.get(condition))
+                transformer.get(view);
+        });
+    }
+
     public Menu transformIf(StateKey<Boolean> condition, Cons<MenuView> transformer1, Cons<MenuView> transformer2) {
         return transform(view -> {
             if (view.state.get(condition))
