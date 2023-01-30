@@ -29,6 +29,10 @@ public interface Action extends Cons<MenuView> {
         return view -> view.getMenu().show(view.player, view.state, view.transformer);
     }
 
+    static Action showOther(Menu menu) {
+        return view -> menu.show(view.player, view.state);
+    }
+
     static <T> Action showWith(StateKey<T> key, T value) {
         return view ->
                 view.getMenu().show(view.player, view.state.put(key, value), view.transformer);
@@ -49,11 +53,8 @@ public interface Action extends Cons<MenuView> {
     }
 
     static <T> Action showGet(StateKey<T> key, Func<T, T> func) {
-        return view -> {
-            var value = func.get(view.state.get(key));
-
-            view.getMenu().show(view.player, view.state.put(key, value), view.transformer);
-        };
+        return view ->
+                view.getMenu().show(view.player, view.state.put(key, func.get(view.state.get(key))), view.transformer);
     }
 
     static Action uri(String uri) {
