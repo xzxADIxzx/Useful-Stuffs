@@ -130,6 +130,22 @@ public class Menu {
             transformer.get(this);
         }
 
+        public <T> State put(StateKey<T> key, T value) {
+            return state.put(key, value);
+        }
+
+        public <T> State remove(StateKey<T> key) {
+            return state.remove(key);
+        }
+
+        public <T> T get(StateKey<T> key) {
+            return state.get(key);
+        }
+
+        public <T> T get(StateKey<T> key, T def) {
+            return state.get(key, def);
+        }
+
         public MenuView show() {
             Call.menu(player.con, id, title, content, options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
             return this;
