@@ -20,9 +20,11 @@ public class DynamicMenus {
             var listener = listeners.remove(event.menuId);
             if (listener != null) listener.get(event.player, event.option);
         });
+        
+        Events.on(ResetEvent.class, event -> clear());
     }
 
-    /** Clear all listeners. Can be useful in case of game over or world loading. */
+    /** Clear all listeners. */
     public static void clear() {
         id = 0;
         listeners.clear();
