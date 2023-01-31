@@ -35,8 +35,16 @@ public class Menu {
     }
 
     public MenuView show(Player player, State state) {
+        return show(player, state, view -> {});
+    }
+
+    public MenuView show(Player player, Cons<MenuView> transformer) {
+        return show(player, new State(), transformer);
+    }
+
+    public MenuView show(Player player, State state, Cons<MenuView> transformer) {
         return views.get(player, () -> {
-            var view = new MenuView(player, state);
+            var view = new MenuView(player, state, transformer);
             transformers.each(view::transform);
 
             return view.show();
@@ -47,8 +55,30 @@ public class Menu {
         return show(player, State.with(key, value));
     }
 
+    public <T> MenuView showWith(Player player, StateKey<T> key, T value, Cons<MenuView> transformer) {
+        return show(player, State.with(key, value), transformer);
+    }
+
+    public MenuView showWithIf(Player player, StateKey<Boolean> key, boolean value, Cons<MenuView> transformer) {
+        return show(player, State.with(key, value), view -> {
+            if (view.state.get(key))
+                transformer.get(view);
+        });
+    }
+
+    public MenuView showWithIfNot(Player player, StateKey<Boolean> key, boolean value, Cons<MenuView> transformer) {
+        return show(player, State.with(key, value), view -> {
+            if (!view.state.get(key))
+                transformer.get(view);
+        });
+    }
+
     public <T1, T2> MenuView showWith(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2) {
         return show(player, State.with(key1, value1).put(key2, value2));
+    }
+
+    public <T1, T2> MenuView showWith(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2, Cons<MenuView> transformer) {
+        return show(player, State.with(key1, value1).put(key2, value2), transformer);
     }
 
     public Menu transform(Cons<MenuView> transformer) {
@@ -85,13 +115,15 @@ public class Menu {
         public String content = "";
 
         public Seq<Seq<MenuOption>> options = new Seq<>();
+        public Cons<MenuView> transformer;
 
-        // The menu from which this was opened. Used in the back() method
-        public Menu from;
-
-        public MenuView(Player player, State state) {
+        public MenuView(Player player, State state, Cons<MenuView> transformer) {
             this.player = player;
             this.state = state;
+            this.transformer = transformer;
+
+            // Transform this menu
+            this.transform(transformer);
         }
 
         public void transform(Cons<MenuView> transformer) {
