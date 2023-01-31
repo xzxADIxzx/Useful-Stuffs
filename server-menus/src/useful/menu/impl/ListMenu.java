@@ -22,6 +22,10 @@ public class ListMenu extends Menu {
         return this;
     }
 
+    public MenuView show(Player player, int _page, int _pages, String title, Func<Integer, String> content) {
+        return show(player, _page, _pages, page -> title, content);
+    }
+
     public MenuView show(Player player, int _page, int _pages, Func<Integer, String> title, Func<Integer, String> content) {
         return showWith(player, PAGE, _page, PAGES, _pages, menu -> {
             menu.title(title.get(menu.get(PAGE)));
