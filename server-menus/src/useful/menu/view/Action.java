@@ -26,7 +26,10 @@ public interface Action extends Cons<MenuView> {
     }
 
     static Action open(Menu menu) {
-        return view -> menu.show(view.player, view.state);
+        return view -> {
+            var opened = menu.show(view.player, view.state);
+            opened.from = view.getMenu();
+        };
     }
 
     static Action back() {
