@@ -25,22 +25,29 @@ public interface Action extends Cons<MenuView> {
         return view -> action.get(view.player);
     }
 
-    static Action show() {
-        return view -> view.getMenu().show(view.player, view.state, view.transformer);
+    static Action open(Menu menu) {
+        return view -> menu.show(view.player, view.state);
     }
 
-    static Action showOther(Menu menu) {
-        return view -> menu.show(view.player, view.state);
+    static Action back() {
+        return view -> {
+            var menu = view.from != null ? view.from : view.getMenu();
+            menu.show(view.player, view.state);
+        };
+    }
+
+    static Action show() {
+        return view -> view.getMenu().show(view.player, view.state);
     }
 
     static <T> Action showWith(StateKey<T> key, T value) {
         return view ->
-                view.getMenu().show(view.player, view.state.put(key, value), view.transformer);
+                view.getMenu().show(view.player, view.state.put(key, value));
     }
 
     static <T> Action showWithout(StateKey<T> key) {
         return view ->
-                view.getMenu().show(view.player, view.state.remove(key), view.transformer);
+                view.getMenu().show(view.player, view.state.remove(key));
     }
 
     static <T> Action showConsume(StateKey<T> key, Cons<T> cons) {
@@ -48,13 +55,13 @@ public interface Action extends Cons<MenuView> {
             var value = view.state.get(key);
             cons.get(value);
 
-            view.getMenu().show(view.player, view.state.put(key, value), view.transformer);
+            view.getMenu().show(view.player, view.state.put(key, value));
         };
     }
 
     static <T> Action showGet(StateKey<T> key, Func<T, T> func) {
         return view ->
-                view.getMenu().show(view.player, view.state.put(key, func.get(view.state.get(key))), view.transformer);
+                view.getMenu().show(view.player, view.state.put(key, func.get(view.state.get(key))));
     }
 
     static Action uri(String uri) {
