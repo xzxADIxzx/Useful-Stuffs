@@ -81,6 +81,13 @@ public class Menu {
         return show(player, State.with(key1, value1).put(key2, value2), transformer);
     }
 
+    public MenuView showFrom(MenuView menu) {
+        var view = show(menu.player, menu.state);
+        view.from = menu.getMenu();
+
+        return view;
+    }
+
     public Menu transform(Cons<MenuView> transformer) {
         this.transformers.add(transformer);
         return this;
@@ -115,7 +122,10 @@ public class Menu {
         public String content = "";
 
         public Seq<Seq<MenuOption>> options = new Seq<>();
-        public Cons<MenuView> transformer;
+        public Cons<MenuView> transformer; // Не работает при вызове back()!
+
+        // Меню, с которого это было открыто
+        public Menu from;
 
         public MenuView(Player player, State state, Cons<MenuView> transformer) {
             this.player = player;
@@ -199,25 +209,12 @@ public class Menu {
             return MenuOption.of(button, player, Action.run(runnable), values);
         }
 
-        // Special case: it uses the current player to create an option
-        public MenuOption optionPlayer(String button, Cons<Player> cons, Object... values) {
-            return MenuOption.of(button, player, Action.player(cons), values);
-        }
-
         public MenuView addOption(String button, Object... values) {
             return addOption(MenuOption.none(MenuFormatter.format(button, player, values)));
         }
 
         public MenuView addOption(char icon) {
             return addOption(MenuOption.none(icon));
-        }
-
-        public MenuView addOptionPlayer(String button, Cons<Player> cons, Object... values) {
-            return addOption(MenuOption.player(MenuFormatter.format(button, player, values), cons));
-        }
-
-        public MenuView addOptionPlayer(char icon, Cons<Player> cons) {
-            return addOption(MenuOption.player(icon, cons));
         }
 
         public MenuView addOption(String button, Action action, Object... values) {
@@ -240,8 +237,8 @@ public class Menu {
             return this;
         }
 
-        public MenuView addOptionsRow(OptionData... datas) {
-            return addOptionsRow((MenuOption[]) Seq.with(datas).map(data -> data.option(this)).toArray(MenuOption.class));
+        public MenuView addOptionsRow(OptionData... values) {
+            return addOptionsRow((MenuOption[]) Seq.with(values).map(value -> value.option(this)).toArray(MenuOption.class));
         }
 
         public MenuView addOptionsRow(MenuOption... options) {
@@ -252,8 +249,8 @@ public class Menu {
             return this;
         }
 
-        public MenuView addOptionsRow(int maxPerRow, OptionData... datas) {
-            return addOptionsRow(maxPerRow, (MenuOption[]) Seq.with(datas).map(data -> data.option(this)).toArray(MenuOption.class));
+        public MenuView addOptionsRow(int maxPerRow, OptionData... values) {
+            return addOptionsRow(maxPerRow, (MenuOption[]) Seq.with(values).map(value -> value.option(this)).toArray(MenuOption.class));
         }
 
         public MenuView addOptionsRow(int maxPerRow, MenuOption... options) {

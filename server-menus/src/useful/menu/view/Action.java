@@ -1,8 +1,8 @@
 package useful.menu.view;
 
-import arc.func.*;
+import arc.func.Cons;
+import arc.func.Func;
 import mindustry.gen.Call;
-import mindustry.gen.Player;
 import useful.menu.view.Menu.MenuView;
 import useful.menu.view.State.StateKey;
 
@@ -21,16 +21,19 @@ public interface Action extends Cons<MenuView> {
         return view -> runnable.run();
     }
 
-    static Action player(Cons<Player> action) {
-        return view -> action.get(view.player);
+    static Action open(Menu menu) {
+        return menu::showFrom;
+    }
+
+    static Action back() {
+        return view -> {
+            var menu = view.from == null ? view.getMenu() : view.from;
+            menu.show(view.player, view.state);
+        };
     }
 
     static Action show() {
         return view -> view.getMenu().show(view.player, view.state, view.transformer);
-    }
-
-    static Action showOther(Menu menu) {
-        return view -> menu.show(view.player, view.state);
     }
 
     static <T> Action showWith(StateKey<T> key, T value) {
