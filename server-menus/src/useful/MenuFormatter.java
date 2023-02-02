@@ -8,10 +8,6 @@ public class MenuFormatter {
 
     public static Func3<String, Player, Object[], String> formatter = (text, player, values) -> Strings.format(text, values);
 
-    public static void setFormatter(Func2<String, Object[], String> formatter) {
-        setFormatter((text, player, values) -> formatter.get(text, values));
-    }
-
     public static void setFormatter(Func3<String, Player, Object[], String> formatter) {
         MenuFormatter.formatter = formatter;
     }
