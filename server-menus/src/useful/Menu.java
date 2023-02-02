@@ -116,7 +116,8 @@ public class Menu {
         }
 
         public MenuView option(OptionData provider) {
-            return option(provider.option(this));
+            provider.option(this);
+            return this;
         }
 
         public MenuView option(MenuOption option) {
@@ -128,7 +129,17 @@ public class Menu {
         }
 
         public MenuView options(int maxPerRow, OptionData... datas) {
-            return options(maxPerRow, (MenuOption[]) Seq.with(datas).map(data -> data.option(this)).toArray(MenuOption.class));
+            if (this.options.isEmpty() || this.options.peek().isEmpty())
+                this.row();
+
+            for (var data : datas) {
+                if (this.options.peek().size >= maxPerRow)
+                    this.row();
+
+                option(data);
+            }
+
+            return this;
         }
 
         public MenuView options(int maxPerRow, MenuOption... options) {
@@ -139,7 +150,7 @@ public class Menu {
                 if (this.options.peek().size >= maxPerRow)
                     this.row();
 
-                this.options.peek().add(option);
+                option(option);
             }
 
             return this;
@@ -159,7 +170,7 @@ public class Menu {
         }
 
         public interface OptionData {
-            MenuOption option(MenuView menu);
+            void option(MenuView menu); // SHOULD add an option
         }
     }
 }
