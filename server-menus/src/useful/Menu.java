@@ -73,6 +73,8 @@ public class Menu {
         public final Player player;
         public final State state;
 
+        public MenuView previous;
+
         public String title = "";
         public String content = "";
 

@@ -15,6 +15,22 @@ public interface Action extends Cons<Menu.MenuView> {
         return view -> runnable.run();
     }
 
+    static Action open(Menu menu) {
+        return view -> {
+            var open = menu.show(view.player, view.state);
+            open.previous = view;
+        };
+    }
+
+    static Action back() {
+        return view -> {
+            if (view.previous == null) return;
+
+            var open = view.previous.menu().show(view.player, view.state);
+            open.previous = view.previous.previous;
+        };
+    }
+
     static Action show() {
         return view -> view.menu().show(view.player, view.state);
     }
@@ -55,10 +71,10 @@ public interface Action extends Cons<Menu.MenuView> {
         };
     }
 
-    default Action then(Action other) {
+    default Action then(Action second) {
         return view -> {
             get(view);
-            other.get(view);
+            second.get(view);
         };
     }
 }
