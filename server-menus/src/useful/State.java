@@ -1,16 +1,16 @@
-package useful.menu.view;
+package useful;
 
 import arc.struct.ObjectMap;
 
 @SuppressWarnings("unchecked")
 public record State(ObjectMap<String, Object> map) {
 
-    public State() {
-        this(new ObjectMap<>());
+    public static <T> State create() {
+        return new State(new ObjectMap<>());
     }
 
-    public static <T> State with(StateKey<T> key, T value) {
-        return new State().put(key, value);
+    public static <T> State create(StateKey<T> key, T value) {
+        return new State(new ObjectMap<>()).put(key, value);
     }
 
     public <T> State put(StateKey<T> key, T value) {
