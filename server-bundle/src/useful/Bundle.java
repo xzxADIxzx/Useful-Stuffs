@@ -168,6 +168,14 @@ public class Bundle {
         Groups.player.each(filter, player -> bundled(player, key, values));
     }
 
+    public static void sendToChat(Player from, String text, String key, Object... values) {
+        Groups.player.each(player -> bundled(player, from, text, key, values));
+    }
+
+    public static void sendToChat(Boolf<Player> filter, Player from, String text, String key, Object... values) {
+        Groups.player.each(filter, player -> bundled(player, from, text, key, values));
+    }
+
     public static void setHud(String key, Object... values) {
         Groups.player.each(player -> setHud(player, key, values));
     }
