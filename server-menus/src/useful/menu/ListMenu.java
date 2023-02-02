@@ -3,7 +3,6 @@ package useful.menu;
 import arc.func.Func;
 import mindustry.gen.Player;
 import useful.*;
-import useful.rewrite.*;
 import useful.State.StateKey;
 
 @SuppressWarnings("unchecked")

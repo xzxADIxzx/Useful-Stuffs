@@ -2,7 +2,6 @@ package useful.menu;
 
 import mindustry.gen.Player;
 import useful.*;
-import useful.rewrite.*;
 import useful.State.StateKey;
 
 public class ConfirmMenu extends Menu {
