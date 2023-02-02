@@ -48,10 +48,17 @@ public interface Action extends Cons<Menu.MenuView> {
         return view -> Call.connect(view.player.con, ip, port);
     }
 
-    default Action then(Action after) {
+    static Action then(Action first, Action second) {
+        return view -> {
+            first.get(view);
+            second.get(view);
+        };
+    }
+
+    default Action then(Action other) {
         return view -> {
             get(view);
-            after.get(view);
+            other.get(view);
         };
     }
 }
