@@ -57,15 +57,15 @@ public class Menu {
         });
     }
 
-    public <T> MenuView show(Player player, State state, State.StateKey<T> key, T value) {
+    public <T> MenuView show(Player player, State.StateKey<T> key, T value) {
         return show(player, State.create(key, value));
     }
 
-    public <T1, T2> MenuView show(Player player, State state, State.StateKey<T1> key1, T1 value1, State.StateKey<T2> key2, T2 value2) {
+    public <T1, T2> MenuView show(Player player, State.StateKey<T1> key1, T1 value1, State.StateKey<T2> key2, T2 value2) {
         return show(player, State.create(key1, value1).put(key2, value2));
     }
 
-    public <T1, T2, T3> MenuView show(Player player, State state, State.StateKey<T1> key1, T1 value1, State.StateKey<T2> key2, T2 value2, State.StateKey<T3> key3, T3 value3) {
+    public <T1, T2, T3> MenuView show(Player player, State.StateKey<T1> key1, T1 value1, State.StateKey<T2> key2, T2 value2, State.StateKey<T3> key3, T3 value3) {
         return show(player, State.create(key1, value1).put(key2, value2).put(key3, value3));
     }
 
