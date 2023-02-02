@@ -32,15 +32,15 @@ public interface Action extends Cons<Menu.MenuView> {
     }
 
     static Action show() {
-        return view -> view.menu().show(view.player, view.state);
+        return view -> view.menu().show(view.player, view.state, view.previous);
     }
 
     static <T> Action showWith(State.StateKey<T> key, T value) {
-        return view -> view.menu().show(view.player, view.state.put(key, value));
+        return view -> view.menu().show(view.player, view.state.put(key, value), view.previous);
     }
 
     static <T> Action showWithout(State.StateKey<T> key) {
-        return view -> view.menu().show(view.player, view.state.remove(key));
+        return view -> view.menu().show(view.player, view.state.remove(key), view.previous);
     }
 
     static <T> Action showUse(State.StateKey<T> key, Cons<T> cons) {
@@ -48,12 +48,12 @@ public interface Action extends Cons<Menu.MenuView> {
             var value = view.state.get(key);
             cons.get(value);
 
-            view.menu().show(view.player, view.state.put(key, value));
+            view.menu().show(view.player, view.state.put(key, value), view.previous);
         };
     }
 
     static <T> Action showGet(State.StateKey<T> key, Func<T, T> func) {
-        return view -> view.menu().show(view.player, view.state.put(key, func.get(view.state.get(key))));
+        return view -> view.menu().show(view.player, view.state.put(key, func.get(view.state.get(key))), view.previous);
     }
 
     static Action uri(String uri) {

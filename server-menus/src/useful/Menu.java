@@ -49,8 +49,12 @@ public class Menu {
     }
 
     public MenuView show(Player player, State state) {
+        return show(player, state, null);
+    }
+
+    public MenuView show(Player player, State state, MenuView previous) {
         return views.get(player, () -> {
-            var view = new MenuView(player, state);
+            var view = new MenuView(player, state, previous);
             transformers.each(transformer -> transformer.get(view));
 
             return view.show();
@@ -73,6 +77,7 @@ public class Menu {
         public final Player player;
         public final State state;
 
+        // Previous menu. Might be null
         public MenuView previous;
 
         public String title = "";
@@ -80,9 +85,11 @@ public class Menu {
 
         public Seq<Seq<MenuOption>> options = new Seq<>();
 
-        public MenuView(Player player, State state) {
+        public MenuView(Player player, State state, MenuView previous) {
             this.player = player;
             this.state = state;
+
+            this.previous = previous;
         }
 
         public Menu menu() {
