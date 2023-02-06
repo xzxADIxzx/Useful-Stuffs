@@ -133,6 +133,14 @@ public class Bundle {
         player.sendMessage(format(key, player, values), from, text);
     }
 
+    public static void infoMessage(Player player, String key) {
+        Call.infoMessage(player.con, get(key, player));
+    }
+
+    public static void infoMessage(Player player, String key, Object... values) {
+        Call.infoMessage(player.con, format(key, player, values));
+    }
+
     public static void setHud(Player player, String key) {
         Call.setHudText(player.con, get(key, player));
     }
@@ -174,6 +182,14 @@ public class Bundle {
 
     public static void sendToChat(Boolf<Player> filter, Player from, String text, String key, Object... values) {
         Groups.player.each(filter, player -> bundled(player, from, text, key, values));
+    }
+
+    public static void infoMessage(String key, Object... values) {
+        Groups.player.each(player -> infoMessage(player, key, values));
+    }
+
+    public static void infoMessage(Boolf<Player> filter, String key, Object... values) {
+        Groups.player.each(filter, player -> infoMessage(player, key, values));
     }
 
     public static void setHud(String key, Object... values) {

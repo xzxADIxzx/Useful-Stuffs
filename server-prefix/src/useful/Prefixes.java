@@ -53,7 +53,6 @@ public class Prefixes {
     }
 
     public static class Prefix {
-
         public String icon;
         public String full;
 
@@ -96,7 +95,6 @@ public class Prefixes {
     }
 
     public static class PrefixData {
-
         public final Player player;
         public final Seq<Prefix> prefixes = new Seq<>();
 

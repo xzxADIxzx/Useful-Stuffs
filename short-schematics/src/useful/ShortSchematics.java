@@ -22,7 +22,7 @@ public class ShortSchematics {
     public static final int version = 0;
 
     /** List of all characters that are used to store integers. */
-    public static final String symbols = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyXxZz" // i know it's a bad idea
+    public static final String symbols = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwYyXxZz" // I know it's a bad idea
                                        + "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫЫЬьЭэЮюЯя";
 
     /** Maximum value that can be stored in one character. */
@@ -94,7 +94,6 @@ public class ShortSchematics {
 
     /** Yes it is an iterator, but it is very necessary. */
     public static class Strinter {
-
         private final String base;
         private int index;
 
