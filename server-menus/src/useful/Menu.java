@@ -9,6 +9,12 @@ import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.ui.Menus;
 
+/**
+ * Simple menu interface for Mindustry plugins.
+ * 
+ * @author Phinner 
+ * @source https://github.com/Xpdustry/Nucleus/blob/master/nucleus-mindustry-testing/src/main/java/fr/xpdustry/nucleus/mindustry/testing/ui/menu/MenuInterfaceImpl.java
+ */
 public class Menu {
     public final ObjectMap<Player, MenuView> views = new ObjectMap<>();
     public final Seq<Cons<MenuView>> transformers = new Seq<>();
