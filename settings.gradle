@@ -4,6 +4,3 @@ include 'server-bundle'
 include 'server-menus'
 include 'server-prefix'
 include 'short-schematics'
-include 'collection'
-include 'collections'
-
