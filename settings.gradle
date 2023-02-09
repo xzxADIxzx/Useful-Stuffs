@@ -1,6 +1,7 @@
 include 'json'
 include 'server-antiddos'
 include 'server-bundle'
+include 'server-effects'
 include 'server-menus'
 include 'server-prefix'
 include 'short-schematics'
