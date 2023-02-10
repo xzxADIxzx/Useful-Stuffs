@@ -2,9 +2,8 @@ package useful;
 
 import arc.graphics.Color;
 import arc.math.Mathf;
-import arc.math.geom.*;
+import arc.math.geom.Position;
 import arc.util.Tmp;
-import mindustry.content.Fx;
 import mindustry.entities.Effect;
 import mindustry.gen.Call;
 
@@ -232,7 +231,7 @@ public class Effects {
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, float rotation, Color color, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
     }
 
     // endregion
