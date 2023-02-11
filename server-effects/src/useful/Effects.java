@@ -1,6 +1,7 @@
 package useful;
 
 import arc.graphics.Color;
+import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Position;
 import arc.util.Tmp;
@@ -82,97 +83,81 @@ public class Effects {
     // region circle
 
     public static void circle(Effect effect, float x, float y, float step, float radius) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, Color color) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, color);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, color));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, float rotation) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, rotation);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, float rotation, Color color) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, rotation, color);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, position.getX() + Mathf.cosDeg(deg) * radius, position.getY() + Mathf.sinDeg(deg) * radius);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, Color color) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, position.getX() + Mathf.cosDeg(deg) * radius, position.getY() + Mathf.sinDeg(deg) * radius, color);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, color));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, float rotation) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, position.getX() + Mathf.cosDeg(deg) * radius, position.getY() + Mathf.sinDeg(deg) * radius, rotation);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, float rotation, Color color) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, position.getX() + Mathf.cosDeg(deg) * radius, position.getY() + Mathf.sinDeg(deg) * radius, rotation, color);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color));
     }
 
     // endregion
     // region circle (with data)
 
     public static void circle(Effect effect, float x, float y, float step, float radius, Object data) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, data);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, data));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, Color color, Object data) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, color, data);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, color, data));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, float rotation, Object data) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, rotation, data);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, data));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, float rotation, Color color, Object data) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, x + Mathf.cosDeg(deg) * radius, y + Mathf.sinDeg(deg) * radius, rotation, color, data);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color, data));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, Object data) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, position.getX() + Mathf.cosDeg(deg) * radius, position.getY() + Mathf.sinDeg(deg) * radius, data);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, data));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, Color color, Object data) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, position.getX() + Mathf.cosDeg(deg) * radius, position.getY() + Mathf.sinDeg(deg) * radius, color, data);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, color, data));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, float rotation, Object data) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, position.getX() + Mathf.cosDeg(deg) * radius, position.getY() + Mathf.sinDeg(deg) * radius, rotation, data);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, data));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, float rotation, Color color, Object data) {
-        for (int deg = 0; deg < 360; deg += step)
-            at(effect, position.getX() + Mathf.cosDeg(deg) * radius, position.getY() + Mathf.sinDeg(deg) * radius, rotation, color, data);
+        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
     }
 
     // endregion
     // region poly
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy)));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, Color color) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, color));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, float rotation) {
@@ -184,11 +169,11 @@ public class Effects {
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy)));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, Color color) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, color));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, float rotation) {
@@ -203,11 +188,11 @@ public class Effects {
     // region poly (with data)
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, data));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), data));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, Color color, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, color, data));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color, data));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, float rotation, Object data) {
@@ -219,11 +204,11 @@ public class Effects {
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, data));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), data));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, Color color, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, color, data));
+        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color, data));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, float rotation, Object data) {
