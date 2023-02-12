@@ -21,12 +21,12 @@ public class Utils {
     }
 
     public static void poly(int sides, float step, float angle, float radius, Floatc2 cons) {
-        Tmp.v1.set(1, 1).setLength(radius);
-        Tmp.v2.set(1, 1).setLength(radius);
+        Tmp.v1.set(radius, 0);
+        Tmp.v2.set(radius, 0);
 
         for(int i = 0; i < sides; i++) {
-            Tmp.v1.setAngle(360f / sides * i + 90f).rotate(angle);
-            Tmp.v2.setAngle(360f / sides * (i + 1) + 90f).rotate(angle);
+            Tmp.v1.setAngle(360f / sides * i).rotate(angle);
+            Tmp.v2.setAngle(360f / sides * (i + 1)).rotate(angle);
 
             Geometry.iterateLine(0f, Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, step, cons);
         }

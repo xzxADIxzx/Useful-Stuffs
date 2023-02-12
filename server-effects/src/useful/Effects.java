@@ -1,12 +1,15 @@
 package useful;
 
+import arc.func.*;
 import arc.graphics.Color;
 import arc.math.Angles;
 import arc.math.Mathf;
 import arc.math.geom.Position;
-import arc.util.Tmp;
+import arc.util.*;
+import arc.util.Timer.Task;
 import mindustry.entities.Effect;
 import mindustry.gen.Call;
+import mindustry.gen.Player;
 
 public class Effects {
 
@@ -217,6 +220,80 @@ public class Effects {
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, float rotation, Color color, Object data) {
         Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
+    }
+
+    // endregion
+    // region schedule
+
+    public static void schedule(Player player, float interval, int repeat, Runnable runnable) {
+        schedule(player, 0f, interval, repeat, runnable);
+    }
+
+    public static void schedule(Player player, float delay, float interval, int repeat, Runnable runnable) {
+        Timer.schedule(new Task() {
+            @Override
+            public void run() {
+                if (player == null || !player.con.isConnected()) {
+                    cancel();
+                    return;
+                }
+
+                runnable.run();
+            }
+        }, delay, interval, repeat);
+    }
+
+    public static void schedule(Player player, float interval, int repeat, Floatc cons) {
+        schedule(player, 0f, interval, repeat, cons);
+    }
+
+    public static void schedule(Player player, float delay, float interval, int repeat, Floatc cons) {
+        Timer.schedule(new Task() {
+            @Override
+            public void run() {
+                if (player == null || !player.con.isConnected()) {
+                    cancel();
+                    return;
+                }
+
+                cons.get(Time.time);
+            }
+        }, delay, interval, repeat);
+    }
+
+    public static void schedule(Player player, float interval, int repeat, Cons2<Player, Float> cons) {
+        schedule(player, 0f, interval, repeat, cons);
+    }
+
+    public static void schedule(Player player, float delay, float interval, int repeat, Cons2<Player, Float> cons) {
+        Timer.schedule(new Task() {
+            @Override
+            public void run() {
+                if (player == null || !player.con.isConnected()) {
+                    cancel();
+                    return;
+                }
+
+                cons.get(player, Time.time);
+            }
+        }, delay, interval, repeat);
+    }
+
+    // endregion
+    // region sequence
+
+    public static void sequence(float delay, Runnable... values) {
+        for (int i = 0; i < values.length; i++) {
+            var runnable = values[i];
+            Time.run(delay * i, runnable);
+        }
+    }
+
+    public static void sequence(float delay, Floatc... values) {
+        for (int i = 0; i < values.length; i++) {
+            var cons = values[i];
+            Time.run(delay * i, () -> cons.get(Time.time));
+        }
     }
 
     // endregion
