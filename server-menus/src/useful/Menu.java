@@ -144,7 +144,7 @@ public class Menu {
         }
 
         public MenuView options(int maxPerRow, OptionData... datas) {
-            if (this.options.isEmpty() || this.options.peek().isEmpty())
+            if (this.options.isEmpty() || this.options.peek().any())
                 this.row();
 
             for (var data : datas) {
@@ -158,7 +158,7 @@ public class Menu {
         }
 
         public MenuView options(int maxPerRow, MenuOption... options) {
-            if (this.options.isEmpty() || this.options.peek().isEmpty())
+            if (this.options.isEmpty() || this.options.peek().any())
                 this.row();
 
             for (var option : options) {
@@ -185,7 +185,8 @@ public class Menu {
         }
 
         public interface OptionData {
-            void option(MenuView menu); // SHOULD add an option
+            // MUST add an option
+            void option(MenuView menu);
         }
     }
 }
