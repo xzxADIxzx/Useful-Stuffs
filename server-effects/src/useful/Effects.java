@@ -361,4 +361,43 @@ public class Effects {
     }
 
     // endregion
+    // region stack
+
+    public static void stack(float x, float y, Effect... values) {
+        stack(x, y, Tmp.c1.randHue(), values);
+    }
+
+    public static void stack(float x, float y, Color color, Effect... values) {
+        for (int i = 0; i < values.length; i++)
+            at(values[i], x, y, 360f / values.length * i, color);
+    }
+
+    public static void stack(float x, float y, float rotation, Effect... values) {
+        stack(x, y, rotation, Tmp.c1.randHue(), values);
+    }
+
+    public static void stack(float x, float y, float rotation, Color color, Effect... values) {
+        for (var value : values)
+            at(value, x, y, rotation, color);
+    }
+
+    public static void stack(Position position, Effect... values) {
+        stack(position, Tmp.c1.randHue(), values);
+    }
+
+    public static void stack(Position position, Color color, Effect... values) {
+        for (int i = 0; i < values.length; i++)
+            at(values[i], position, 360f / values.length * i, color);
+    }
+
+    public static void stack(Position position, float rotation, Effect... values) {
+        stack(position, rotation, Tmp.c1.randHue(), values);
+    }
+
+    public static void stack(Position position, float rotation, Color color, Effect... values) {
+        for (var value : values)
+            at(value, position, rotation, color);
+    }
+
+    // endregion
 }
