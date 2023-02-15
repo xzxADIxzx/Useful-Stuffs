@@ -83,7 +83,7 @@ public class Menu {
         public final Player player;
         public final State state;
 
-        // Previous menu. Might be null
+        // Previous menu. Might be null.
         public MenuView previous;
 
         public String title = "";
