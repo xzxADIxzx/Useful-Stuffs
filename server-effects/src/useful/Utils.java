@@ -28,7 +28,7 @@ public class Utils {
             Tmp.v1.setAngle(360f / sides * i).rotate(angle);
             Tmp.v2.setAngle(360f / sides * (i + 1)).rotate(angle);
 
-            Geometry.iterateLine(0f, Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, step, cons);
+            Geometry.iterateLine(0f, Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, step - 0.01f, cons);
         }
     }
 }
