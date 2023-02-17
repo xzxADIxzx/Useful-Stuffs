@@ -71,10 +71,26 @@ public interface Action extends Cons<Menu.MenuView> {
         };
     }
 
-    default Action then(Action second) {
+    static Action then(Action first, Action second, Action third) {
+        return view -> {
+            first.get(view);
+            second.get(view);
+            third.get(view);
+        };
+    }
+
+    default Action after(Action second) {
         return view -> {
             get(view);
             second.get(view);
+        };
+    }
+
+    default Action after(Action second, Action third) {
+        return view -> {
+            get(view);
+            second.get(view);
+            third.get(view);
         };
     }
 }
