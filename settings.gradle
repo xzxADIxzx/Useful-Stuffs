@@ -1,3 +1,4 @@
+include 'collections'
 include 'json'
 include 'server-antiddos'
 include 'server-bundle'

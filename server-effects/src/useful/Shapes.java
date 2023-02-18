@@ -5,7 +5,7 @@ import arc.math.Mathf;
 import arc.math.geom.*;
 import arc.util.Tmp;
 
-public class Utils {
+public class Shapes {
 
     public static void circle(float step, float radius, Floatc2 cons) {
         circle(360f, step, radius, cons);

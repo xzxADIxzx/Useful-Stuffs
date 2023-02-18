@@ -86,204 +86,204 @@ public class Effects {
     // region circle
 
     public static void circle(Effect effect, float x, float y, float step, float radius) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, Color color) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, color));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, color));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, float rotation) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, float rotation, Color color) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, Color color) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, color));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, color));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, float rotation) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, float rotation, Color color) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color));
     }
 
     // endregion
     // region circle (with data)
 
     public static void circle(Effect effect, float x, float y, float step, float radius, Object data) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, data));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, data));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, Color color, Object data) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, color, data));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, color, data));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, float rotation, Object data) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, data));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, data));
     }
 
     public static void circle(Effect effect, float x, float y, float step, float radius, float rotation, Color color, Object data) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color, data));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color, data));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, Object data) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, data));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, data));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, Color color, Object data) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, color, data));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, color, data));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, float rotation, Object data) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, data));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, data));
     }
 
     public static void circle(Effect effect, Position position, float step, float radius, float rotation, Color color, Object data) {
-        Utils.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
+        Shapes.circle(step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
     }
 
     // endregion
     // region poly
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy)));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy)));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, Color color) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, float rotation) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, float rotation, Color color) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy)));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy)));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, Color color) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, float rotation) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, float rotation, Color color) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy)));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy)));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, Color color) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, float rotation) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, float rotation, Color color) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy)));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy)));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, Color color) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, float rotation) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, float rotation, Color color) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color));
     }
 
     // endregion
     // region poly (with data)
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), data));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), data));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, Color color, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color, data));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color, data));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, float rotation, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, data));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, data));
     }
 
     public static void poly(Effect effect, float x, float y, int sides, float step, float radius, float rotation, Color color, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color, data));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color, data));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), data));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), data));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, Color color, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color, data));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color, data));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, float rotation, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, data));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, data));
     }
 
     public static void poly(Effect effect, Position position, int sides, float step, float radius, float rotation, Color color, Object data) {
-        Utils.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
+        Shapes.poly(sides, step, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, Object data) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), data));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, Color color, Object data) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color, data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color, data));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, float rotation, Object data) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, data));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, float rotation, Color color, Object data) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color, data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, rotation, color, data));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, Object data) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), data));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, Color color, Object data) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color, data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color, data));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, float rotation, Object data) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, data));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, float rotation, Color color, Object data) {
-        Utils.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, rotation, color, data));
     }
 
     // endregion
