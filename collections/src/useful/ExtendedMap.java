@@ -1,7 +1,6 @@
 package useful;
 
-import arc.func.Boolf;
-import arc.func.Cons;
+import arc.func.*;
 import arc.struct.ObjectMap;
 
 public class ExtendedMap<K, V> extends ObjectMap<K, V> {
@@ -30,18 +29,26 @@ public class ExtendedMap<K, V> extends ObjectMap<K, V> {
             cons.get(value);
     }
 
-    public K findKey(Boolf<V> filter) {
+    public Entry<K, V> find(Boolf2<K, V> filter) {
         for (var entry : entries())
-            if (filter.get(entry.value))
-                return entry.key;
+            if (filter.get(entry.key, entry.value))
+                return entry;
 
         return null;
     }
 
-    public V findValue(Boolf<K> filter) {
-        for (var entry : entries())
-            if (filter.get(entry.key))
-                return entry.value;
+    public K findKey(Boolf<K> filter) {
+        for (var key : keys())
+            if (filter.get(key))
+                return key;
+
+        return null;
+    }
+
+    public V findValue(Boolf<V> filter) {
+        for (var value : values())
+            if (filter.get(value))
+                return value;
 
         return null;
     }
