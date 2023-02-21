@@ -157,6 +157,14 @@ public class Bundle {
         Call.announce(player.con, format(key, player, values));
     }
 
+    public static void toast(Player player, int icon, String key) {
+        Call.warningToast(player.con, icon, get(key, player));
+    }
+
+    public static void toast(Player player, int icon, String key, Object... values) {
+        Call.warningToast(player.con, icon, format(key, player, values));
+    }
+
     public static void label(Player player, float duration, float x, float y, String key) {
         Call.label(player.con, get(key, player), duration, x, y);
     }
@@ -206,6 +214,14 @@ public class Bundle {
 
     public static void announce(Boolf<Player> filter, String key, Object... values) {
         Groups.player.each(filter, player -> announce(player, key, values));
+    }
+
+    public static void toast(int icon, String key, Object... values) {
+        Groups.player.each(player -> toast(player, icon, key, values));
+    }
+
+    public static void toast(Boolf<Player> filter, int icon, String key, Object... values) {
+        Groups.player.each(filter, player -> toast(player, icon, key, values));
     }
 
     public static void label(float duration, float x, float y, String key, Object... values) {
