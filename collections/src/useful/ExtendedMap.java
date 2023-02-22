@@ -2,6 +2,7 @@ package useful;
 
 import arc.func.*;
 import arc.struct.ObjectMap;
+import arc.struct.Seq;
 
 public class ExtendedMap<K, V> extends ObjectMap<K, V> {
 
@@ -17,6 +18,18 @@ public class ExtendedMap<K, V> extends ObjectMap<K, V> {
 
     public ExtendedMap(ObjectMap<? extends K, ? extends V> map) {
         super(map);
+    }
+
+    public Keys<K> keys() {
+        return new Keys<>(this);
+    }
+
+    public Values<V> values() {
+        return new Values<>(this);
+    }
+
+    public Entries<K, V> entries() {
+        return new Entries<>(this);
     }
 
     public void eachKey(Cons<K> cons) {
