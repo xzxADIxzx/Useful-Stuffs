@@ -52,6 +52,20 @@ public class ExtendedMap<K, V> extends ObjectMap<K, V> {
             if (filter.get(value)) cons.get(value);
     }
 
+    public boolean containsKey(Boolf<K> filter) {
+        for (var key : keys())
+            if (filter.get(key)) return true;
+
+        return false;
+    }
+
+    public boolean containsValue(Boolf<V> filter) {
+        for (var value : values())
+            if (filter.get(value)) return true;
+
+        return false;
+    }
+
     public Entry<K, V> find(Boolf2<K, V> filter) {
         for (var entry : entries())
             if (filter.get(entry.key, entry.value))
