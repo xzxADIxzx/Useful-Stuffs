@@ -8,11 +8,6 @@ repositories {
 }
 
 dependencies {
-    // Don't forget to suffix the version with "-SNAPSHOT" if using the snapshots
-    compileOnly("fr.xpdustry:javelin-mindustry:1.2.0")
-}
-
-dependencies {
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 
