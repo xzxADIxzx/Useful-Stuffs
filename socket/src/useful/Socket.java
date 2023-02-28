@@ -8,6 +8,7 @@ import fr.xpdustry.javelin.JavelinSocket;
 import fr.xpdustry.javelin.JavelinSocket.Status;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 import static arc.Core.app;
 
@@ -32,12 +33,12 @@ public class Socket {
         app.addListener(new ApplicationListener() {
             @Override
             public void init() {
-                socket.start();
+                socket.start().orTimeout(15L, TimeUnit.SECONDS).join();;
             }
 
             @Override
             public void dispose() {
-                socket.close();
+                socket.close().orTimeout(15L, TimeUnit.SECONDS).join();
             }
 
             @Override
