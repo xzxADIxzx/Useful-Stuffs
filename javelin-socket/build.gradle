@@ -1,0 +1,15 @@
+apply plugin: 'java'
+
+sourceSets.main.java.srcDirs = ['src']
+
+repositories {
+    maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots' }
+    maven { url = 'https://maven.xpdustry.fr/releases' }
+}
+
+dependencies {
+    compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+    compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
+
+    implementation "fr.xpdustry:javelin-core:1.2.0"
+}

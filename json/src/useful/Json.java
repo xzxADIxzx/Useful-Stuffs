@@ -84,9 +84,7 @@ public class Json {
         JsonStyle.indent++;
         StringBuilder builder = style.createJson();
 
-        values.each((key, value) -> {
-            builder.append(style.add(serializator.serializeString(key), write(value, style)));
-        });
+        values.each((key, value) -> builder.append(style.add(serializator.serializeString(key), write(value, style))));
 
         JsonStyle.indent--;
         return style.toString(builder);
@@ -125,20 +123,20 @@ public class Json {
     public interface JsonSerializable {
 
         /** @return a {@link Json} representation of this object. */
-        public Json write();
+        Json write();
 
         /** Recreates an object from its {@link Json} representation. */
-        public void read(Json json);
+        void read(Json json);
     }
 
     /** Alternative for {@link JsonSerializable} if you need to parse already existing class into json. */
     public interface JsonSerializer<T> {
 
         /** @return a {@link Json} representation of the given object. */
-        public Json write(T object);
+        Json write(T object);
 
         /** Recreates the given object from its {@link Json} representation. */
-        public void read(T object, Json json);
+        void read(T object, Json json);
     }
 
     /** All json styles that are used during writing. */
@@ -151,7 +149,7 @@ public class Json {
         private final String start, end;
         private final String keyvalue, value;
 
-        private JsonStyle(int spaces, String start, String keyvalue, String value, String end) {
+        JsonStyle(int spaces, String start, String keyvalue, String value, String end) {
             this.spaces = spaces;
             this.start = start;
             this.keyvalue = keyvalue;
@@ -188,7 +186,7 @@ public class Json {
         }
     }
 
-    public class JsonMap {
+    public static class JsonMap {
 
         private final ArrayList<String> keys = new ArrayList<>();
         private final ArrayList<Object> values = new ArrayList<>();
@@ -230,7 +228,7 @@ public class Json {
         }
 
         public interface Consumer {
-            public void get(String key, Object value);
+            void get(String key, Object value);
         }
     }
 
@@ -348,7 +346,7 @@ public class Json {
             int braces = 1; // number of open curly braces
             while (hasNext()) {
                 switch (base.charAt(index++)) {
-                    case '"' -> skipString(); // string may contains curly braces
+                    case '"' -> skipString(); // string may contain curly braces
                     case '{' -> braces++;
                     case '}' -> braces--;
                 }

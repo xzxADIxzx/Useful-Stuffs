@@ -16,13 +16,13 @@ import java.util.ArrayList;
 @SuppressWarnings("unchecked")
 public class JsonSerializator {
 
-    private static ArrayList<Class<?>> unserializable = new ArrayList<>() {{ // ._.
+    private static final ArrayList<Class<?>> unserializable = new ArrayList<>() {{ // ._.
         add(Object.class); add(Byte.class); add(Short.class); add(Integer.class); add(Long.class);
         add(Character.class); add(Boolean.class); add(Float.class); add(Double.class);
     }};
 
-    private ArrayList<ClassSerializerPair<?>> pairs = new ArrayList<>();
-    private ArrayList<StringClassPair> tags = new ArrayList<>();
+    private final ArrayList<ClassSerializerPair<?>> pairs = new ArrayList<>();
+    private final ArrayList<StringClassPair> tags = new ArrayList<>();
 
     // region serialization
 
@@ -138,7 +138,7 @@ public class JsonSerializator {
 
     public <T> void addSerializer(Class<T> referenced, JsonSerializer<T> serializer) {
         if (unserializable.contains(referenced)) return; // pls, don't
-        pairs.add(new ClassSerializerPair<T>(referenced, serializer));
+        pairs.add(new ClassSerializerPair<>(referenced, serializer));
     }
 
     public <T> ClassSerializerPair<T> getSerializer(Class<T> referenced) {
@@ -147,7 +147,7 @@ public class JsonSerializator {
         return null; // no serializer found so we will serialize via reflection
     }
 
-    public <T> void addTag(String tag, Class<?> referenced) {
+    public void addTag(String tag, Class<?> referenced) {
         tags.add(new StringClassPair(tag, referenced));
     }
 
