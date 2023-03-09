@@ -11,5 +11,5 @@ dependencies {
     compileOnly "com.github.Anuken.Arc:arc-core:$mindustryVersion"
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 
-    implementation "fr.xpdustry:javelin-core:1.2.0"
+    implementation "fr.xpdustry:javelin-mindustry:1.2.0"
 }
