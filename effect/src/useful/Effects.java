@@ -188,11 +188,11 @@ public class Effects {
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius) {
-        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy)));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy) + angle));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, Color color) {
-        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy) + angle, color));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, float rotation) {
@@ -204,11 +204,11 @@ public class Effects {
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius) {
-        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy)));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy) + angle));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, Color color) {
-        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy) + angle, color));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, float rotation) {
@@ -255,11 +255,11 @@ public class Effects {
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, Object data) {
-        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy) + angle, data));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, Color color, Object data) {
-        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy), color, data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, x + cx, y + cy, Angles.angle(cx, cy) + angle, color, data));
     }
 
     public static void rotatedPoly(Effect effect, float x, float y, int sides, float step, float angle, float radius, float rotation, Object data) {
@@ -271,11 +271,11 @@ public class Effects {
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, Object data) {
-        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy) + angle, data));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, Color color, Object data) {
-        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy), color, data));
+        Shapes.poly(sides, step, angle, radius, (cx, cy) -> at(effect, position.getX() + cx, position.getY() + cy, Angles.angle(cx, cy) + angle, color, data));
     }
 
     public static void rotatedPoly(Effect effect, Position position, int sides, float step, float angle, float radius, float rotation, Object data) {
