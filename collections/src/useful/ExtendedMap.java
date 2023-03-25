@@ -89,4 +89,15 @@ public class ExtendedMap<K, V> extends ObjectMap<K, V> {
 
         return null;
     }
+
+    public void removeAll(Boolf2<K, V> filter) {
+        each((key, value) -> {
+            if (filter.get(key, value))
+                remove(key);
+        });
+    }
+
+    public void filter(Boolf2<K, V> filter) {
+        removeAll((key, value) -> !filter.get(key, value));
+    }
 }

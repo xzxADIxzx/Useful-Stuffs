@@ -1,6 +1,7 @@
 include 'antiddos'
 include 'bundle'
 include 'collections'
+include 'cooldowns'
 include 'effect'
 include 'events'
 include 'json'
