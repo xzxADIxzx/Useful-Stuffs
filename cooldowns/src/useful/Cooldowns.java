@@ -10,7 +10,7 @@ public class Cooldowns {
     public static final ExtendedMap<String, ExtendedMap<String, Long>> cooldowns = new ExtendedMap<>();
     public static final ExtendedMap<String, Long> defaults = new ExtendedMap<>();
 
-    public static long defaultCooldown = 3L;      // 3 seconds
+    public static long defaultCooldown = 3000L;      // 3 seconds
     public static boolean restrictAdmins = false; // By default, admins are not restricted
 
     public static void defaults(Object... values) {
