@@ -1,13 +1,14 @@
-package useful;
+package useful.menu;
 
-import arc.Events;
-import arc.func.*;
-import arc.struct.ObjectMap;
 import arc.struct.Seq;
-import mindustry.game.EventType.PlayerLeave;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.ui.Menus;
+import useful.Action;
+import useful.Formatter;
+import useful.Interface;
+import useful.State;
+import useful.menu.Menu.MenuView;
 
 /**
  * Simple menu interface for Mindustry plugins.
@@ -15,105 +16,55 @@ import mindustry.ui.Menus;
  * @author Phinner
  * <a href="https://github.com/Xpdustry/Nucleus/blob/master/nucleus-mindustry-testing/src/main/java/fr/xpdustry/nucleus/mindustry/testing/ui/menu/MenuInterfaceImpl.java">The original version of the code</a>
  */
-public class Menu {
-    public final ObjectMap<Player, MenuView> views = new ObjectMap<>();
-    public final Seq<Cons<MenuView>> transformers = new Seq<>();
+public class Menu extends Interface<MenuView> {
 
-    public final int id;
-
-    {
-        this.id = Menus.registerMenu((player, choice) -> {
+    @Override
+    public int register() {
+        return Menus.registerMenu((player, choice) -> {
             var view = views.remove(player);
             if (view == null) return;
 
             var option = view.option(choice);
-            if (option == null) return;
 
-            option.action().get(view);
+            if (option == null) view.closed.run();
+            else option.action().get(view);
         });
-
-        Events.on(PlayerLeave.class, event -> views.remove(event.player));
     }
 
-    public Menu transform(Cons<MenuView> transformer) {
-        this.transformers.add(transformer);
-        return this;
-    }
-
-    public <T> Menu transform(State.StateKey<T> key, Cons2<MenuView, T> transformer) {
-        this.transformers.add(view -> transformer.get(view, view.state.get(key)));
-        return this;
-    }
-
-    public <T1, T2> Menu transform(State.StateKey<T1> key1, State.StateKey<T2> key2, Cons3<MenuView, T1, T2> transformer) {
-        this.transformers.add(view -> transformer.get(view, view.state.get(key1), view.state.get(key2)));
-        return this;
-    }
-
-    public MenuView show(Player player) {
-        return show(player, State.create());
-    }
-
-    public MenuView show(Player player, State state) {
-        return show(player, state, null);
-    }
-
-    public MenuView show(Player player, State state, MenuView previous) {
+    @Override
+    public MenuView show(Player player, State state, View previous) {
         return views.get(player, () -> {
             var view = new MenuView(player, state, previous);
             transformers.each(transformer -> transformer.get(view));
 
-            return view.show();
+            view.show();
+            return view;
         });
     }
 
-    public <T> MenuView show(Player player, State.StateKey<T> key, T value) {
-        return show(player, State.create(key, value));
-    }
-
-    public <T1, T2> MenuView show(Player player, State.StateKey<T1> key1, T1 value1, State.StateKey<T2> key2, T2 value2) {
-        return show(player, State.create(key1, value1).put(key2, value2));
-    }
-
-    public <T1, T2, T3> MenuView show(Player player, State.StateKey<T1> key1, T1 value1, State.StateKey<T2> key2, T2 value2, State.StateKey<T3> key3, T3 value3) {
-        return show(player, State.create(key1, value1).put(key2, value2).put(key3, value3));
-    }
-
-    public class MenuView {
-        public final Player player;
-        public final State state;
-
-        // Previous menu. Might be null.
-        public MenuView previous;
-
+    public class MenuView extends View {
         public String title = "";
         public String content = "";
 
         public Seq<Seq<MenuOption>> options = new Seq<>();
+        public Runnable closed = () -> {};
 
-        public MenuView(Player player, State state, MenuView previous) {
-            this.player = player;
-            this.state = state;
-
-            this.previous = previous;
+        public MenuView(Player player, State state, View previous) {
+            super(player, state, previous);
         }
 
-        public Menu menu() {
-            return Menu.this;
-        }
-
-        public MenuView show() {
+        @Override
+        public void show() {
             Call.menu(player.con, id, title, content, options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
-            return this;
         }
 
         public MenuView title(String title, Object... values) {
-            this.title = MenuFormatter.format(title, player, values);
+            this.title = Formatter.format(title, player, values);
             return this;
         }
 
         public MenuView content(String content, Object... values) {
-            this.content = MenuFormatter.format(content, player, values);
+            this.content = Formatter.format(content, player, values);
             return this;
         }
 
@@ -123,11 +74,11 @@ public class Menu {
         }
 
         public MenuView option(String button, Object... values) {
-            return option(MenuOption.of(MenuFormatter.format(button, player, values)));
+            return option(MenuOption.of(Formatter.format(button, player, values)));
         }
 
         public MenuView option(String button, Action action, Object... values) {
-            return option(MenuOption.of(MenuFormatter.format(button, player, values), action));
+            return option(MenuOption.of(Formatter.format(button, player, values), action));
         }
 
         public MenuView option(OptionData provider) {
@@ -182,6 +133,11 @@ public class Menu {
             }
 
             return null;
+        }
+
+        public MenuView closed(Runnable closed) {
+            this.closed = closed;
+            return this;
         }
 
         public interface OptionData {

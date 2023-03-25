@@ -3,9 +3,11 @@ package useful;
 import arc.func.Cons;
 import arc.func.Func;
 import mindustry.gen.Call;
+import useful.Interface.View;
+import useful.State.StateKey;
 
 @FunctionalInterface
-public interface Action extends Cons<Menu.MenuView> {
+public interface Action extends Cons<View> {
 
     static Action none() {
         return view -> {};
@@ -15,7 +17,7 @@ public interface Action extends Cons<Menu.MenuView> {
         return view -> runnable.run();
     }
 
-    static Action open(Menu menu) {
+    static Action open(Interface<?> menu) {
         return view -> {
             var open = menu.show(view.player, view.state);
             open.previous = view;
@@ -26,34 +28,34 @@ public interface Action extends Cons<Menu.MenuView> {
         return view -> {
             if (view.previous == null) return;
 
-            var open = view.previous.menu().show(view.player, view.state);
+            var open = view.previous.parent().show(view.player, view.state);
             open.previous = view.previous.previous;
         };
     }
 
     static Action show() {
-        return view -> view.menu().show(view.player, view.state, view.previous);
+        return view -> view.parent().show(view.player, view.state, view.previous);
     }
 
-    static <T> Action showWith(State.StateKey<T> key, T value) {
-        return view -> view.menu().show(view.player, view.state.put(key, value), view.previous);
+    static <T> Action showWith(StateKey<T> key, T value) {
+        return view -> view.parent().show(view.player, view.state.put(key, value), view.previous);
     }
 
-    static <T> Action showWithout(State.StateKey<T> key) {
-        return view -> view.menu().show(view.player, view.state.remove(key), view.previous);
+    static <T> Action showWithout(StateKey<T> key) {
+        return view -> view.parent().show(view.player, view.state.remove(key), view.previous);
     }
 
-    static <T> Action showUse(State.StateKey<T> key, Cons<T> cons) {
+    static <T> Action showConsume(StateKey<T> key, Cons<T> cons) {
         return view -> {
             var value = view.state.get(key);
             cons.get(value);
 
-            view.menu().show(view.player, view.state.put(key, value), view.previous);
+            view.parent().show(view.player, view.state.put(key, value), view.previous);
         };
     }
 
-    static <T> Action showGet(State.StateKey<T> key, Func<T, T> func) {
-        return view -> view.menu().show(view.player, view.state.put(key, func.get(view.state.get(key))), view.previous);
+    static <T> Action showGet(StateKey<T> key, Func<T, T> func) {
+        return view -> view.parent().show(view.player, view.state.put(key, func.get(view.state.get(key))), view.previous);
     }
 
     static Action uri(String uri) {

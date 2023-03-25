@@ -15,6 +15,7 @@ public class Cooldowns {
 
     public static void defaults(Object... values) {
         defaults.putAll(values);
+        defaultCooldown = defaults.get("default", defaultCooldown);
     }
 
     public static void defaultCooldown(long cooldown) {

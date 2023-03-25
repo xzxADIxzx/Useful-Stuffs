@@ -1,9 +1,11 @@
-package useful.menu;
+package useful.menu.impl;
 
 import arc.func.Func;
 import mindustry.gen.Player;
-import useful.*;
+import useful.Action;
+import useful.State;
 import useful.State.StateKey;
+import useful.menu.Menu;
 
 @SuppressWarnings("unchecked")
 public class ListMenu extends Menu {

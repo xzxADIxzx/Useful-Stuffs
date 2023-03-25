@@ -1,8 +1,10 @@
-package useful.menu;
+package useful.menu.impl;
 
 import mindustry.gen.Player;
-import useful.*;
+import useful.Action;
+import useful.State;
 import useful.State.StateKey;
+import useful.menu.Menu;
 
 public class ConfirmMenu extends Menu {
     public static final StateKey<String>

@@ -1,4 +1,6 @@
-package useful;
+package useful.menu;
+
+import useful.Action;
 
 public record MenuOption(String button, Action action) {
     public static MenuOption empty() {
