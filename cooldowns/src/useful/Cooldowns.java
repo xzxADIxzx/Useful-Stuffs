@@ -29,7 +29,7 @@ public class Cooldowns {
         Timer.schedule(() -> {
             cooldowns.eachValue(commands -> commands.removeAll((command, time) -> Time.timeSinceMillis(time) > 0));
             cooldowns.removeAll((uuid, commands) -> commands.isEmpty());
-        }, 1f, 1f);
+        }, 60f, 60f);
     }
 
     public static long cooldown(String command) {
