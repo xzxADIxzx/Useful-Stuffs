@@ -7,24 +7,26 @@ import useful.Interface.View;
 import useful.State.StateKey;
 
 @FunctionalInterface
-public interface Action extends Cons<View> {
+@SuppressWarnings("unchecked")
+public interface Action<V extends View> extends Cons<V> {
 
-    static Action none() {
-        return view -> {};
+    static <V extends View> Action<V> none() {
+        return view -> {
+        };
     }
 
-    static Action run(Runnable runnable) {
+    static <V extends View> Action<V> run(Runnable runnable) {
         return view -> runnable.run();
     }
 
-    static Action open(Interface<?> menu) {
+    static <V extends View> Action<V> open(Interface<?> menu) {
         return view -> {
             var open = menu.show(view.player, view.state);
             open.previous = view;
         };
     }
 
-    static Action back() {
+    static <V extends View> Action<V> back() {
         return view -> {
             if (view.previous == null) return;
 
@@ -33,19 +35,19 @@ public interface Action extends Cons<View> {
         };
     }
 
-    static Action show() {
+    static <V extends View> Action<V> show() {
         return view -> view.parent().show(view.player, view.state, view.previous);
     }
 
-    static <T> Action showWith(StateKey<T> key, T value) {
+    static <V extends View, T> Action<V> showWith(StateKey<T> key, T value) {
         return view -> view.parent().show(view.player, view.state.put(key, value), view.previous);
     }
 
-    static <T> Action showWithout(StateKey<T> key) {
+    static <V extends View, T> Action<V> showWithout(StateKey<T> key) {
         return view -> view.parent().show(view.player, view.state.remove(key), view.previous);
     }
 
-    static <T> Action showConsume(StateKey<T> key, Cons<T> cons) {
+    static <V extends View, T> Action<V> showConsume(StateKey<T> key, Cons<T> cons) {
         return view -> {
             var value = view.state.get(key);
             cons.get(value);
@@ -54,26 +56,26 @@ public interface Action extends Cons<View> {
         };
     }
 
-    static <T> Action showGet(StateKey<T> key, Func<T, T> func) {
+    static <V extends View, T> Action<V> showGet(StateKey<T> key, Func<T, T> func) {
         return view -> view.parent().show(view.player, view.state.put(key, func.get(view.state.get(key))), view.previous);
     }
 
-    static Action uri(String uri) {
+    static <V extends View> Action<V> uri(String uri) {
         return view -> Call.openURI(view.player.con, uri);
     }
 
-    static Action connect(String ip, int port) {
+    static <V extends View> Action<V> connect(String ip, int port) {
         return view -> Call.connect(view.player.con, ip, port);
     }
 
-    static Action then(Action first, Action second) {
+    static Action<View> then(Action<? super View> first, Action<? super View> second) {
         return view -> {
             first.get(view);
             second.get(view);
         };
     }
 
-    static Action then(Action first, Action second, Action third) {
+    static Action<View> then(Action<? super View> first, Action<? super View> second, Action<? super View> third) {
         return view -> {
             first.get(view);
             second.get(view);
@@ -81,14 +83,14 @@ public interface Action extends Cons<View> {
         };
     }
 
-    default Action after(Action second) {
+    default Action<V> after(Action<? super View> second) {
         return view -> {
             get(view);
             second.get(view);
         };
     }
 
-    default Action after(Action second, Action third) {
+    default Action<V> after(Action<? super View> second, Action<? super View> third) {
         return view -> {
             get(view);
             second.get(view);
