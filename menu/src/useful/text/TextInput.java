@@ -1,9 +1,11 @@
 package useful.text;
 
 import arc.func.Cons;
+import arc.func.Cons2;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.ui.Menus;
+import useful.Action;
 import useful.Formatter;
 import useful.Interface;
 import useful.State;
@@ -18,8 +20,8 @@ public class TextInput extends Interface<TextInputView> {
             var view = views.remove(player);
             if (view == null) return;
 
-            if (text == null) view.closed.run();
-            else view.result.get(text);
+            if (text == null) view.closed.get(view);
+            else view.result.get(view, text);
         });
     }
 
@@ -42,8 +44,8 @@ public class TextInput extends Interface<TextInputView> {
         public String defaultText = "";
         public boolean numeric = false;
 
-        public Cons<String> result = text -> {};
-        public Runnable closed = () -> {};
+        public TextInputAction result = (input, text) -> {};
+        public TextInputAction closed = (input, text) -> {};
 
         public TextInputView(Player player, State state, Interface<TextInputView>.View previous) {
             super(player, state, previous);
@@ -64,13 +66,13 @@ public class TextInput extends Interface<TextInputView> {
             return this;
         }
 
-        public TextInputView textLength(int textLength) {
-            this.textLength = textLength;
+        public TextInputView defaultText(String defaultText, Object... values) {
+            this.defaultText = Formatter.format(defaultText, player, values);
             return this;
         }
 
-        public TextInputView defaultText(String defaultText) {
-            this.defaultText = defaultText;
+        public TextInputView textLength(int textLength) {
+            this.textLength = textLength;
             return this;
         }
 
@@ -79,14 +81,37 @@ public class TextInput extends Interface<TextInputView> {
             return this;
         }
 
-        public TextInputView result(Cons<String> result) {
+        public TextInputView result(TextInputAction result) {
             this.result = result;
             return this;
         }
 
-        public TextInputView closed(Runnable closed) {
+        public TextInputView result(Cons<String> result) {
+            return result((input, text) -> result.get(text));
+        }
+
+        public TextInputView closed(TextInputAction closed) {
             this.closed = closed;
             return this;
+        }
+
+        public TextInputView closed(Runnable runnable) {
+            return closed((input, text) -> runnable.run());
+        }
+
+        @FunctionalInterface
+        public interface TextInputAction extends Action<TextInputView> {
+
+            static TextInputAction of(TextInputAction action) {
+                return action;
+            }
+
+            void get(TextInputView input, String text);
+
+            @Override
+            default void get(TextInputView input) {
+                get(input, null);
+            }
         }
     }
 }

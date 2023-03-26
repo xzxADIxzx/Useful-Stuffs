@@ -26,7 +26,7 @@ public class Menu extends Interface<MenuView> {
 
             var option = view.option(choice);
 
-            if (option == null) view.closed.run();
+            if (option == null) view.closed.get(view);
             else option.action().get(view);
         });
     }
@@ -47,7 +47,7 @@ public class Menu extends Interface<MenuView> {
         public String content = "";
 
         public Seq<Seq<MenuOption>> options = new Seq<>();
-        public Runnable closed = () -> {};
+        public Action<MenuView> closed = view -> {};
 
         public MenuView(Player player, State state, View previous) {
             super(player, state, previous);
@@ -77,7 +77,7 @@ public class Menu extends Interface<MenuView> {
             return option(MenuOption.of(Formatter.format(button, player, values)));
         }
 
-        public MenuView option(String button, Action action, Object... values) {
+        public MenuView option(String button, Action<MenuView> action, Object... values) {
             return option(MenuOption.of(Formatter.format(button, player, values), action));
         }
 
@@ -135,7 +135,7 @@ public class Menu extends Interface<MenuView> {
             return null;
         }
 
-        public MenuView closed(Runnable closed) {
+        public MenuView closed(Action<MenuView> closed) {
             this.closed = closed;
             return this;
         }

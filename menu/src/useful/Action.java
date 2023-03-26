@@ -11,17 +11,16 @@ import useful.State.StateKey;
 public interface Action<V extends View> extends Cons<V> {
 
     static <V extends View> Action<V> none() {
-        return view -> {
-        };
+        return view -> {};
     }
 
     static <V extends View> Action<V> run(Runnable runnable) {
         return view -> runnable.run();
     }
 
-    static <V extends View> Action<V> open(Interface<?> menu) {
+    static <V extends View> Action<V> open(Interface<?> next) {
         return view -> {
-            var open = menu.show(view.player, view.state);
+            var open = next.show(view.player, view.state);
             open.previous = view;
         };
     }
@@ -68,14 +67,14 @@ public interface Action<V extends View> extends Cons<V> {
         return view -> Call.connect(view.player.con, ip, port);
     }
 
-    static Action<View> then(Action<? super View> first, Action<? super View> second) {
+    static <V extends View> Action<V> then(Action<? super View> first, Action<? super View> second) {
         return view -> {
             first.get(view);
             second.get(view);
         };
     }
 
-    static Action<View> then(Action<? super View> first, Action<? super View> second, Action<? super View> third) {
+    static <V extends View> Action<V> then(Action<? super View> first, Action<? super View> second, Action<? super View> third) {
         return view -> {
             first.get(view);
             second.get(view);
