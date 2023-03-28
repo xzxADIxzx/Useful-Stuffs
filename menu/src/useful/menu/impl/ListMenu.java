@@ -40,9 +40,9 @@ public class ListMenu extends Menu {
             menu.title((String) menu.state.get(TITLE).get(menu.state.get(PAGE)));
             menu.content((String) menu.state.get(CONTENT).get(menu.state.get(PAGE)));
 
-            menu.option(left, Action.showGet(PAGE, page -> Math.max(1, page - 1)));
+            menu.option(left, Action.showWith(PAGE, Math.max(1, menu.state.get(PAGE) - 1)));
             menu.option(page, Action.show(), menu.state.get(PAGE), menu.state.get(PAGES));
-            menu.option(right, Action.showGet(PAGE, page -> Math.min(page + 1, menu.state.get(PAGES))));
+            menu.option(right, Action.showWith(PAGE, Math.min(menu.state.get(PAGE) + 1, menu.state.get(PAGES))));
 
             menu.row();
 

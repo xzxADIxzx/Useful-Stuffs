@@ -69,19 +69,15 @@ public abstract class Interface<V extends View> {
     public abstract class View {
         public final Player player;
         public final State state;
+        public final View parent;
 
-        // Previous view. Might be null.
-        public View previous;
-
-        public View(Player player, State state, View previous) {
+        public View(Player player, State state, View parent) {
             this.player = player;
             this.state = state;
-            this.previous = previous;
+            this.parent = parent;
         }
 
-        public abstract void show();
-
-        public Interface<V> parent() {
+        public Interface<V> getInterface() {
             return Interface.this;
         }
     }

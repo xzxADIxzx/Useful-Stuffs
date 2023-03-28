@@ -37,7 +37,7 @@ public class Menu extends Interface<MenuView> {
             var view = new MenuView(player, state, previous);
             transformers.each(transformer -> transformer.get(view));
 
-            view.show();
+            Call.menu(player.con, id, view.title, view.content, view.options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
             return view;
         });
     }
@@ -51,11 +51,6 @@ public class Menu extends Interface<MenuView> {
 
         public MenuView(Player player, State state, View previous) {
             super(player, state, previous);
-        }
-
-        @Override
-        public void show() {
-            Call.menu(player.con, id, title, content, options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
         }
 
         public MenuView title(String title, Object... values) {

@@ -1,10 +1,11 @@
 package useful;
 
 import arc.func.Cons;
-import arc.func.Func;
 import mindustry.gen.Call;
 import useful.Interface.View;
 import useful.State.StateKey;
+
+import java.util.Optional;
 
 @FunctionalInterface
 @SuppressWarnings("unchecked")
@@ -19,44 +20,31 @@ public interface Action<V extends View> extends Cons<V> {
     }
 
     static <V extends View> Action<V> open(Interface<?> next) {
-        return view -> {
-            var open = next.show(view.player, view.state);
-            open.previous = view;
-        };
+        return view -> next.show(view.player, view.state, view);
+    }
+
+    static <V extends View, T> Action<V> openWith(Interface<?> next, StateKey<T> key, T value) {
+        return view -> next.show(view.player, view.state.put(key, value), view.parent);
+    }
+
+    static <V extends View, T> Action<V> openWithout(Interface<?> next, StateKey<T> key) {
+        return view -> next.show(view.player, view.state.remove(key), view.parent);
     }
 
     static <V extends View> Action<V> back() {
-        return view -> {
-            if (view.previous == null) return;
-
-            var open = view.previous.parent().show(view.player, view.state);
-            open.previous = view.previous.previous;
-        };
+        return view -> Optional.ofNullable(view.parent).ifPresent(parent -> parent.getInterface().show(view.player, view.state, parent.parent));
     }
 
     static <V extends View> Action<V> show() {
-        return view -> view.parent().show(view.player, view.state, view.previous);
+        return view -> view.getInterface().show(view.player, view.state, view.parent);
     }
 
     static <V extends View, T> Action<V> showWith(StateKey<T> key, T value) {
-        return view -> view.parent().show(view.player, view.state.put(key, value), view.previous);
+        return view -> view.getInterface().show(view.player, view.state.put(key, value), view.parent);
     }
 
     static <V extends View, T> Action<V> showWithout(StateKey<T> key) {
-        return view -> view.parent().show(view.player, view.state.remove(key), view.previous);
-    }
-
-    static <V extends View, T> Action<V> showConsume(StateKey<T> key, Cons<T> cons) {
-        return view -> {
-            var value = view.state.get(key);
-            cons.get(value);
-
-            view.parent().show(view.player, view.state.put(key, value), view.previous);
-        };
-    }
-
-    static <V extends View, T> Action<V> showGet(StateKey<T> key, Func<T, T> func) {
-        return view -> view.parent().show(view.player, view.state.put(key, func.get(view.state.get(key))), view.previous);
+        return view -> view.getInterface().show(view.player, view.state.remove(key), view.parent);
     }
 
     static <V extends View> Action<V> uri(String uri) {
