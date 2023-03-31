@@ -24,11 +24,11 @@ public interface Action<V extends View> extends Cons<V> {
     }
 
     static <V extends View, T> Action<V> openWith(Interface<?> next, StateKey<T> key, T value) {
-        return view -> next.show(view.player, view.state.put(key, value), view.parent);
+        return view -> next.show(view.player, view.state.put(key, value), view);
     }
 
     static <V extends View, T> Action<V> openWithout(Interface<?> next, StateKey<T> key) {
-        return view -> next.show(view.player, view.state.remove(key), view.parent);
+        return view -> next.show(view.player, view.state.remove(key), view);
     }
 
     static <V extends View> Action<V> back() {
