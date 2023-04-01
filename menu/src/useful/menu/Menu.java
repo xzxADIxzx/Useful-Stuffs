@@ -99,6 +99,14 @@ public class Menu extends Interface<MenuView> {
             return option(MenuOption.of(Formatter.format(button, player, values), action));
         }
 
+        public MenuView option(String button, Action<MenuView> action1, Action<MenuView> action2, Object... values) {
+            return option(MenuOption.of(Formatter.format(button, player, values), Action.then(action1, action2)));
+        }
+
+        public MenuView option(String button, Action<MenuView> action1, Action<MenuView> action2, Action<MenuView> action3, Object... values) {
+            return option(MenuOption.of(Formatter.format(button, player, values), Action.then(action1, action2, action3)));
+        }
+
         public MenuView option(OptionData provider) {
             provider.option(this);
             return this;

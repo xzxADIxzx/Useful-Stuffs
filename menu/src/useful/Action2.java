@@ -64,14 +64,14 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
         return (view, value) -> Call.connect(view.player.con, ip, port);
     }
 
-    static <V extends View, T> Action2<V, T> then(Action2<? super View, T> first, Action2<? super View, T> second) {
+    static <V extends View, T> Action2<V, T> then(Action2<V, T> first, Action2<V, T> second) {
         return (view, value) -> {
             first.get(view, value);
             second.get(view, value);
         };
     }
 
-    static <V extends View, T> Action2<V, T> then(Action2<? super View, T> first, Action2<? super View, T> second, Action2<? super View, T> third) {
+    static <V extends View, T> Action2<V, T> then(Action2<V, T> first, Action2<V, T> second, Action2<V, T> third) {
         return (view, value) -> {
             first.get(view, value);
             second.get(view, value);
@@ -79,14 +79,14 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
         };
     }
 
-    default Action2<V, T> after(Action2<? super View, T> second) {
+    default Action2<V, T> after(Action2<V, T> second) {
         return (view, value) -> {
             get(view, value);
             second.get(view, value);
         };
     }
 
-    default Action2<V, T> after(Action2<? super View, T> second, Action2<? super View, T> third) {
+    default Action2<V, T> after(Action2<V, T> second, Action2<V, T> third) {
         return (view, value) -> {
             get(view, value);
             second.get(view, value);

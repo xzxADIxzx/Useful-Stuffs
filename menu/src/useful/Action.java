@@ -59,14 +59,14 @@ public interface Action<V extends View> extends Cons<V> {
         return view -> Call.connect(view.player.con, ip, port);
     }
 
-    static <V extends View> Action<V> then(Action<? super View> first, Action<? super View> second) {
+    static <V extends View> Action<V> then(Action<V> first, Action<V> second) {
         return view -> {
             first.get(view);
             second.get(view);
         };
     }
 
-    static <V extends View> Action<V> then(Action<? super View> first, Action<? super View> second, Action<? super View> third) {
+    static <V extends View> Action<V> then(Action<V> first, Action<V> second, Action<V> third) {
         return view -> {
             first.get(view);
             second.get(view);
@@ -74,14 +74,14 @@ public interface Action<V extends View> extends Cons<V> {
         };
     }
 
-    default Action<V> after(Action<? super View> second) {
+    default Action<V> after(Action<V> second) {
         return view -> {
             get(view);
             second.get(view);
         };
     }
 
-    default Action<V> after(Action<? super View> second, Action<? super View> third) {
+    default Action<V> after(Action<V> second, Action<V> third) {
         return view -> {
             get(view);
             second.get(view);
