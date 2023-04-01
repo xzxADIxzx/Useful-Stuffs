@@ -52,7 +52,7 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
         return (view, value) -> view.getInterface().show(view.player, view.state.remove(key), view.parent);
     }
 
-    static <V extends View, T> Action2<V, T>  hideFollowUp() {
+    static <V extends View, T> Action2<V, T>  hide() {
         return (view, value) -> Call.hideFollowUpMenu(view.player.con, view.getInterface().id);
     }
 
