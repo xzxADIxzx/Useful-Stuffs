@@ -46,8 +46,8 @@ public class ListMenu extends Menu {
 
             menu.row();
 
-            menu.option(close);
-        });
+            menu.option(close, Action.hide());
+        }).followUp(true);
     }
 
     public MenuView show(Player player, int page, int pages, String title, Func<Integer, String> content) {
