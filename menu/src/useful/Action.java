@@ -47,6 +47,10 @@ public interface Action<V extends View> extends Cons<V> {
         return view -> view.getInterface().show(view.player, view.state.remove(key), view.parent);
     }
 
+    static <V extends View> Action<V> hideFollowUp() {
+        return view -> Call.hideFollowUpMenu(view.player.con, view.getInterface().id);
+    }
+
     static <V extends View> Action<V> uri(String uri) {
         return view -> Call.openURI(view.player.con, uri);
     }

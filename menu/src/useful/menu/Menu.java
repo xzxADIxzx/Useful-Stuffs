@@ -1,13 +1,9 @@
 package useful.menu;
 
 import arc.struct.Seq;
-import mindustry.gen.Call;
-import mindustry.gen.Player;
+import mindustry.gen.*;
 import mindustry.ui.Menus;
-import useful.Action;
-import useful.Formatter;
-import useful.Interface;
-import useful.State;
+import useful.*;
 import useful.menu.Menu.MenuView;
 
 /**
@@ -37,7 +33,9 @@ public class Menu extends Interface<MenuView> {
             var view = new MenuView(player, state, previous);
             transformers.each(transformer -> transformer.get(view));
 
-            Call.menu(player.con, id, view.title, view.content, view.options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
+            if (view.followUp) Call.followUpMenu(player.con, id, view.title, view.content, view.options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
+            else Call.menu(player.con, id, view.title, view.content, view.options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
+
             return view;
         });
     }
@@ -46,8 +44,11 @@ public class Menu extends Interface<MenuView> {
         public String title = "";
         public String content = "";
 
+        public boolean followUp;
+
         public Seq<Seq<MenuOption>> options = new Seq<>();
-        public Action<MenuView> closed = view -> {};
+        public Action<MenuView> closed = view -> {
+        };
 
         public MenuView(Player player, State state, View previous) {
             super(player, state, previous);
@@ -60,6 +61,11 @@ public class Menu extends Interface<MenuView> {
 
         public MenuView content(String content, Object... values) {
             this.content = Formatter.format(content, player, values);
+            return this;
+        }
+
+        public MenuView followUp(boolean followUp) {
+            this.followUp = followUp;
             return this;
         }
 

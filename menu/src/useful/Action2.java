@@ -29,11 +29,11 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
     }
 
     static <V extends View, T> Action2<V, T> openWith(Interface<?> next, StateKey<T> key) {
-        return (view, value) -> next.show(view.player, view.state.put(key, value), view.parent);
+        return (view, value) -> next.show(view.player, view.state.put(key, value), view);
     }
 
     static <V extends View, T> Action2<V, T> openWithout(Interface<?> next, StateKey<T> key) {
-        return (view, value) -> next.show(view.player, view.state.remove(key), view.parent);
+        return (view, value) -> next.show(view.player, view.state.remove(key), view);
     }
 
     static <V extends View, T> Action2<V, T> back() {
@@ -50,6 +50,10 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
 
     static <V extends View, T> Action2<V, T> showWithout(StateKey<T> key) {
         return (view, value) -> view.getInterface().show(view.player, view.state.remove(key), view.parent);
+    }
+
+    static <V extends View, T> Action2<V, T>  hideFollowUp() {
+        return (view, value) -> Call.hideFollowUpMenu(view.player.con, view.getInterface().id);
     }
 
     static <V extends View, T> Action2<V, T> uri(String uri) {
