@@ -1,10 +1,11 @@
 package useful.text;
 
-import arc.func.Cons;
+import arc.func.*;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.ui.Menus;
 import useful.*;
+import useful.State.StateKey;
 import useful.text.TextInput.TextInputView;
 
 
@@ -30,6 +31,22 @@ public class TextInput extends Interface<TextInputView> {
             Call.textInput(player.con, id, view.title, view.content, view.textLength, view.defaultText, view.numeric);
             return view;
         });
+    }
+
+    @Override
+    public TextInput transform(Cons<TextInputView> transformer) {
+        this.transformers.add(transformer);
+        return this;
+    }
+
+    @Override
+    public <T> TextInput transform(StateKey<T> key, Cons2<TextInputView, T> transformer) {
+        return transform(view -> transformer.get(view, view.state.get(key)));
+    }
+
+    @Override
+    public <T1, T2> TextInput transform(StateKey<T1> key1, StateKey<T2> key2, Cons3<TextInputView, T1, T2> transformer) {
+        return transform(view -> transformer.get(view, view.state.get(key1), view.state.get(key2)));
     }
 
     public class TextInputView extends View {
