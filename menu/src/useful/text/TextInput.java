@@ -40,8 +40,8 @@ public class TextInput extends Interface<TextInputView> {
         public String defaultText = "";
         public boolean numeric = false;
 
-        public Action2<TextInputView, String> result = (input, text) -> {};
-        public Action<TextInputView> closed = input -> {};
+        public Action2<TextInputView, String> result = Action2.none();
+        public Action<TextInputView> closed = Action.none();
 
         public TextInputView(Player player, State state, Interface<TextInputView>.View previous) {
             super(player, state, previous);

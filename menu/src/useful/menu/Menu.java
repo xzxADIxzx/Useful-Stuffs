@@ -14,6 +14,8 @@ import useful.menu.Menu.MenuView;
  */
 public class Menu extends Interface<MenuView> {
 
+    public boolean followUp;
+
     @Override
     public int register() {
         return Menus.registerMenu((player, choice) -> {
@@ -33,22 +35,24 @@ public class Menu extends Interface<MenuView> {
             var view = new MenuView(player, state, previous);
             transformers.each(transformer -> transformer.get(view));
 
-            if (view.followUp) Call.followUpMenu(player.con, id, view.title, view.content, view.options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
+            if (followUp) Call.followUpMenu(player.con, id, view.title, view.content, view.options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
             else Call.menu(player.con, id, view.title, view.content, view.options.map(options -> options.map(MenuOption::button).toArray(String.class)).toArray(String[].class));
 
             return view;
         });
     }
 
+    public Menu followUp(boolean followUp) {
+        this.followUp = followUp;
+        return this;
+    }
+
     public class MenuView extends View {
         public String title = "";
         public String content = "";
 
-        public boolean followUp;
-
         public Seq<Seq<MenuOption>> options = new Seq<>();
-        public Action<MenuView> closed = view -> {
-        };
+        public Action<MenuView> closed = Action.none();
 
         public MenuView(Player player, State state, View previous) {
             super(player, state, previous);
@@ -61,11 +65,6 @@ public class Menu extends Interface<MenuView> {
 
         public MenuView content(String content, Object... values) {
             this.content = Formatter.format(content, player, values);
-            return this;
-        }
-
-        public MenuView followUp(boolean followUp) {
-            this.followUp = followUp;
             return this;
         }
 
