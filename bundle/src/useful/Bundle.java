@@ -1,5 +1,6 @@
 package useful;
 
+import arc.files.Fi;
 import arc.func.Boolf;
 import arc.struct.ObjectMap;
 import arc.struct.Seq;
@@ -31,8 +32,16 @@ public class Bundle {
         load(main, "en");
     }
 
+    public static void load(Fi directory) {
+        load(directory, "en");
+    }
+
     public static void load(Class<? extends Mod> main, String defaultLocaleCode) {
-        mods.getMod(main).root.child("bundles").walk(fi -> {
+        load(mods.getMod(main).root.child("bundles"), defaultLocaleCode);
+    }
+
+    public static void load(Fi directory, String defaultLocaleCode) {
+        directory.walk(fi -> {
             if (!fi.extEquals("properties")) return;
 
             var codes = fi.nameWithoutExtension().split("_");
