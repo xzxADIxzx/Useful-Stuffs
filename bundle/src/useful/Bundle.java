@@ -182,6 +182,14 @@ public class Bundle {
         Call.label(player.con, format(key, player, values), duration, x, y);
     }
 
+    public static void popup(Player player, float duration, int align, int top, int left, int bottom, int right, String key) {
+        Call.infoPopup(player.con, get(key, player), duration, align, top, left, bottom, right);
+    }
+
+    public static void popup(Player player, float duration, int align, int top, int left, int bottom, int right, String key, Object... values) {
+        Call.infoPopup(player.con, format(key, player, values), duration, align, top, left, bottom, right);
+    }
+
     // endregion
     // region group
 
@@ -239,6 +247,14 @@ public class Bundle {
 
     public static void label(Boolf<Player> filter, float duration, float x, float y, String key, Object... values) {
         Groups.player.each(filter, player -> label(player, duration, x, y, key, values));
+    }
+
+    public static void popup(float duration, int align, int top, int left, int bottom, int right, String key, Object... values) {
+        Groups.player.each(player -> popup(player, duration, align, top, left, bottom, right, key, values));
+    }
+
+    public static void popup(Boolf<Player> filter, float duration, int align, int top, int left, int bottom, int right, String key, Object... values) {
+        Groups.player.each(filter, player -> popup(player, duration, align, top, left, bottom, right, key, values));
     }
 
     // endregion
