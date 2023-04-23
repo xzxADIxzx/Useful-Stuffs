@@ -10,7 +10,7 @@ import mindustry.gen.Groups;
 
 import static mindustry.Vars.*;
 
-/** Adds GitHub Actions IPs to blacklist. */
+/** Adds GitHub Actions IPs to black-list. */
 public class AntiDdos {
 
     public static final String actionsURL = "https://api.github.com/meta";

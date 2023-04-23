@@ -126,19 +126,19 @@ public class Bundle {
 
     // region single
 
-    public static void bundled(Player player, String key) {
+    public static void send(Player player, String key) {
         player.sendMessage(get(key, player));
     }
 
-    public static void bundled(Player player, String key, Object... values) {
+    public static void send(Player player, String key, Object... values) {
         player.sendMessage(format(key, player, values));
     }
 
-    public static void bundled(Player player, Player from, String text, String key) {
+    public static void send(Player player, Player from, String text, String key) {
         player.sendMessage(get(key, player), from, text);
     }
 
-    public static void bundled(Player player, Player from, String text, String key, Object... values) {
+    public static void send(Player player, Player from, String text, String key, Object... values) {
         player.sendMessage(format(key, player, values), from, text);
     }
 
@@ -193,20 +193,20 @@ public class Bundle {
     // endregion
     // region group
 
-    public static void sendToChat(String key, Object... values) {
-        Groups.player.each(player -> bundled(player, key, values));
+    public static void send(String key, Object... values) {
+        Groups.player.each(player -> send(player, key, values));
     }
 
-    public static void sendToChat(Boolf<Player> filter, String key, Object... values) {
-        Groups.player.each(filter, player -> bundled(player, key, values));
+    public static void send(Boolf<Player> filter, String key, Object... values) {
+        Groups.player.each(filter, player -> send(player, key, values));
     }
 
-    public static void sendToChat(Player from, String text, String key, Object... values) {
-        Groups.player.each(player -> bundled(player, from, text, key, values));
+    public static void send(Player from, String text, String key, Object... values) {
+        Groups.player.each(player -> send(player, from, text, key, values));
     }
 
-    public static void sendToChat(Boolf<Player> filter, Player from, String text, String key, Object... values) {
-        Groups.player.each(filter, player -> bundled(player, from, text, key, values));
+    public static void send(Boolf<Player> filter, Player from, String text, String key, Object... values) {
+        Groups.player.each(filter, player -> send(player, from, text, key, values));
     }
 
     public static void infoMessage(String key, Object... values) {
