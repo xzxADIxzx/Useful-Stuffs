@@ -202,11 +202,11 @@ public class Bundle {
     }
 
     public static void sendFrom(Player from, String text, String key, Object... values) {
-        Groups.player.each(player -> send(player, from, text, key, values));
+        Groups.player.each(player -> sendFrom(player, from, text, key, values));
     }
 
     public static void sendFrom(Boolf<Player> filter, Player from, String text, String key, Object... values) {
-        Groups.player.each(filter, player -> send(player, from, text, key, values));
+        Groups.player.each(filter, player -> sendFrom(player, from, text, key, values));
     }
 
     public static void infoMessage(String key, Object... values) {
