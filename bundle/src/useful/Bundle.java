@@ -134,11 +134,11 @@ public class Bundle {
         player.sendMessage(format(key, player, values));
     }
 
-    public static void send(Player player, Player from, String text, String key) {
+    public static void sendFrom(Player player, Player from, String text, String key) {
         player.sendMessage(get(key, player), from, text);
     }
 
-    public static void send(Player player, Player from, String text, String key, Object... values) {
+    public static void sendFrom(Player player, Player from, String text, String key, Object... values) {
         player.sendMessage(format(key, player, values), from, text);
     }
 
@@ -201,11 +201,11 @@ public class Bundle {
         Groups.player.each(filter, player -> send(player, key, values));
     }
 
-    public static void send(Player from, String text, String key, Object... values) {
+    public static void sendFrom(Player from, String text, String key, Object... values) {
         Groups.player.each(player -> send(player, from, text, key, values));
     }
 
-    public static void send(Boolf<Player> filter, Player from, String text, String key, Object... values) {
+    public static void sendFrom(Boolf<Player> filter, Player from, String text, String key, Object... values) {
         Groups.player.each(filter, player -> send(player, from, text, key, values));
     }
 
