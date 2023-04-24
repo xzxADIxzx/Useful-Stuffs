@@ -11,7 +11,7 @@ import static mindustry.Vars.*;
 
 /**
  * This exists for more compact storage of schematics than via base64,
- * therefore does not support any block configuration.
+ * therefore, does not support any block configuration.
  * Best suited for storing terrain schematics for plugins or game modes.
  * 
  * @author xzxADIxzx
@@ -92,7 +92,7 @@ public class ShortSchematics {
         return st;
     }
 
-    /** Yes it is an iterator, but it is very necessary. */
+    /** Yes, it is an iterator, but it is very necessary. */
     public static class Strinter {
         private final String base;
         private int index;

@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+sourceSets.main.java.srcDirs = ['src']
+
+dependencies {
+    compileOnly "com.github.Anuken.Arc:arc-core:$arcVersion"
+    compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
+
+    implementation "org.mongodb:mongodb-driver-sync:4.9.0"
+}
