@@ -194,19 +194,15 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // region index
 
     public void ascendingIndex(String field) {
-        ascendingIndex(field, new IndexOptions());
+        ascendingIndex(field, new IndexOptions().name(field));
     }
 
-    public void ascendingIndex(String field, String name) {
-        ascendingIndex(field, new IndexOptions().name(name));
+    public void ascendingIndex(String field, long expireAfter) {
+        ascendingIndex(field, new IndexOptions().name(field).expireAfter(expireAfter, TimeUnit.SECONDS));
     }
 
-    public void ascendingIndex(String field, String name, long expireAfter) {
-        ascendingIndex(field, new IndexOptions().name(name).expireAfter(expireAfter, TimeUnit.SECONDS));
-    }
-
-    public void ascendingIndex(String field, String name, long expireAfter, TimeUnit unit) {
-        ascendingIndex(field, new IndexOptions().name(name).expireAfter(expireAfter, unit));
+    public void ascendingIndex(String field, long expireAfter, TimeUnit unit) {
+        ascendingIndex(field, new IndexOptions().name(field).expireAfter(expireAfter, unit));
     }
 
     public void ascendingIndex(String field, IndexOptions options) {
@@ -214,19 +210,15 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     }
 
     public void descendingIndex(String field) {
-        descendingIndex(field, new IndexOptions());
+        descendingIndex(field, new IndexOptions().name(field));
     }
 
-    public void descendingIndex(String field, String name) {
-        descendingIndex(field, new IndexOptions().name(name));
+    public void descendingIndex(String field, long expireAfter) {
+        descendingIndex(field, new IndexOptions().name(field).expireAfter(expireAfter, TimeUnit.SECONDS));
     }
 
-    public void descendingIndex(String field, String name, long expireAfter) {
-        descendingIndex(field, new IndexOptions().name(name).expireAfter(expireAfter, TimeUnit.SECONDS));
-    }
-
-    public void descendingIndex(String field, String name, long expireAfter, TimeUnit unit) {
-        descendingIndex(field, new IndexOptions().name(name).expireAfter(expireAfter, unit));
+    public void descendingIndex(String field, long expireAfter, TimeUnit unit) {
+        descendingIndex(field, new IndexOptions().name(field).expireAfter(expireAfter, unit));
     }
 
     public void descendingIndex(String field, IndexOptions options) {
