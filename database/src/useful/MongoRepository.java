@@ -9,6 +9,7 @@ import org.bson.codecs.configuration.*;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.*;
 
 public record MongoRepository<T>(MongoCollection<T> collection) {
@@ -191,6 +192,46 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
 
     // endregion
     // region index
+
+    public void ascendingIndex(String field) {
+        ascendingIndex(field, new IndexOptions());
+    }
+
+    public void ascendingIndex(String field, String name) {
+        ascendingIndex(field, new IndexOptions().name(name));
+    }
+
+    public void ascendingIndex(String field, String name, long expireAfter) {
+        ascendingIndex(field, new IndexOptions().name(name).expireAfter(expireAfter, TimeUnit.SECONDS));
+    }
+
+    public void ascendingIndex(String field, String name, long expireAfter, TimeUnit unit) {
+        ascendingIndex(field, new IndexOptions().name(name).expireAfter(expireAfter, unit));
+    }
+
+    public void ascendingIndex(String field, IndexOptions options) {
+        index(Indexes.ascending(field), options);
+    }
+
+    public void descendingIndex(String field) {
+        descendingIndex(field, new IndexOptions());
+    }
+
+    public void descendingIndex(String field, String name) {
+        descendingIndex(field, new IndexOptions().name(name));
+    }
+
+    public void descendingIndex(String field, String name, long expireAfter) {
+        descendingIndex(field, new IndexOptions().name(name).expireAfter(expireAfter, TimeUnit.SECONDS));
+    }
+
+    public void descendingIndex(String field, String name, long expireAfter, TimeUnit unit) {
+        descendingIndex(field, new IndexOptions().name(name).expireAfter(expireAfter, unit));
+    }
+
+    public void descendingIndex(String field, IndexOptions options) {
+        index(Indexes.descending(field), options);
+    }
 
     public void index(Bson keys) {
         collection.createIndex(keys);
