@@ -127,6 +127,33 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     }
 
     // endregion
+    // region remove
+
+    public void delete(String field, Object value) {
+        delete(Filters.eq(field, value));
+    }
+
+    public void deleteAnd(String field1, Object value1, String field2, Object value2) {
+        delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)));
+    }
+
+    public void deleteAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
+        delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
+    }
+
+    public void deleteOr(String field1, Object value1, String field2, Object value2) {
+        delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)));
+    }
+
+    public void deleteOr(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
+        delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
+    }
+
+    public void delete(Bson filter) {
+        collection.deleteOne(filter);
+    }
+
+    // endregion
     // region watch
 
     public void watchBeforeChange(Consumer<T> cons) {

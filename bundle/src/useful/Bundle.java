@@ -10,6 +10,7 @@ import mindustry.gen.Call;
 import mindustry.gen.Groups;
 import mindustry.gen.Player;
 import mindustry.mod.Mod;
+import mindustry.net.NetConnection;
 
 import static mindustry.Vars.*;
 
@@ -188,6 +189,14 @@ public class Bundle {
 
     public static void popup(Player player, float duration, int align, int top, int left, int bottom, int right, String key, Object... values) {
         Call.infoPopup(player.con, format(key, player, values), duration, align, top, left, bottom, right);
+    }
+
+    public static KickBuilder kick(Player player) {
+        return new KickBuilder(player.con, player.locale);
+    }
+
+    public static KickBuilder kick(NetConnection connection, String locale) {
+        return new KickBuilder(connection, locale);
     }
 
     // endregion
