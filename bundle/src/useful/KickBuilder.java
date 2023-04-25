@@ -7,8 +7,7 @@ public class KickBuilder {
     public final NetConnection connection;
     public final String locale;
 
-    public StringBuilder reason = new StringBuilder();
-    public long duration;
+    public final StringBuilder reason = new StringBuilder();
 
     public KickBuilder(NetConnection connection, String locale) {
         this.connection = connection;
@@ -37,12 +36,11 @@ public class KickBuilder {
         return this;
     }
 
-    public KickBuilder duration(long duration) {
-        this.duration = duration;
-        return this;
+    public void kick() {
+        connection.kick(reason.toString(), 0L);
     }
 
-    public void kick() {
+    public void kick(long duration) {
         connection.kick(reason.toString(), duration);
     }
 }

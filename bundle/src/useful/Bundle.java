@@ -191,12 +191,20 @@ public class Bundle {
         Call.infoPopup(player.con, format(key, player, values), duration, align, top, left, bottom, right);
     }
 
-    public static KickBuilder kick(Player player) {
-        return new KickBuilder(player.con, player.locale);
+    public static KickBuilder kick(Player player, String key) {
+        return new KickBuilder(player.con, player.locale).add(key);
     }
 
-    public static KickBuilder kick(NetConnection connection, String locale) {
-        return new KickBuilder(connection, locale);
+    public static KickBuilder kick(Player player, String key, Object... values) {
+        return new KickBuilder(player.con, player.locale).add(key, values);
+    }
+
+    public static KickBuilder kick(NetConnection connection, String locale, String key) {
+        return new KickBuilder(connection, locale).add(key);
+    }
+
+    public static KickBuilder kick(NetConnection connection, String locale, String key, Object... values) {
+        return new KickBuilder(connection, locale).add(key, values);
     }
 
     // endregion
