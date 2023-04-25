@@ -207,6 +207,22 @@ public class Bundle {
         return new KickBuilder(connection, locale).add(key, values);
     }
 
+    public static void kick(Player player, long duration, String key) {
+        new KickBuilder(player.con, player.locale).add(key).kick(duration);
+    }
+
+    public static void kick(Player player, long duration, String key, Object... values) {
+        new KickBuilder(player.con, player.locale).add(key, values).kick(duration);
+    }
+
+    public static void kick(NetConnection connection, String locale, long duration, String key) {
+        new KickBuilder(connection, locale).add(key).kick(duration);;
+    }
+
+    public static void kick(NetConnection connection, String locale, long duration, String key, Object... values) {
+        new KickBuilder(connection, locale).add(key, values).kick(duration);
+    }
+
     // endregion
     // region group
 
