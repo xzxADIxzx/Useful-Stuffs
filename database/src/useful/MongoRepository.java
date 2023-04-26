@@ -74,9 +74,8 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // endregion
     // region insert & replace
 
-    public boolean insert(T document) {
+    public void insert(T document) {
         collection.insertOne(document);
-        return true; // Insert is always successful
     }
 
     public boolean replace(String field, Object value, T document) {
