@@ -4,13 +4,13 @@ import mindustry.net.NetConnection;
 
 public class KickBuilder {
 
-    public final NetConnection connection;
+    public final NetConnection con;
     public final String locale;
 
     public final StringBuilder reason = new StringBuilder();
 
-    public KickBuilder(NetConnection connection, String locale) {
-        this.connection = connection;
+    public KickBuilder(NetConnection con, String locale) {
+        this.con = con;
         this.locale = locale;
     }
 
@@ -37,10 +37,10 @@ public class KickBuilder {
     }
 
     public void kick() {
-        connection.kick(reason.toString(), 0L);
+        con.kick(reason.toString(), 0L);
     }
 
     public void kick(long duration) {
-        connection.kick(reason.toString(), duration);
+        con.kick(reason.toString(), duration);
     }
 }

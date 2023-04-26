@@ -74,83 +74,84 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // endregion
     // region insert & replace
 
-    public void insert(T document) {
+    public boolean insert(T document) {
         collection.insertOne(document);
+        return true; // Insert is always successful
     }
 
-    public void replace(String field, Object value, T document) {
-        replace(Filters.eq(field, value), document);
+    public boolean replace(String field, Object value, T document) {
+        return replace(Filters.eq(field, value), document);
     }
 
-    public void replace(String field, Object value, T document, boolean upsert) {
-        replace(Filters.eq(field, value), document, upsert);
+    public boolean replace(String field, Object value, T document, boolean upsert) {
+        return replace(Filters.eq(field, value), document, upsert);
     }
 
-    public void replaceAnd(String field1, Object value1, String field2, Object value2, T document) {
-        replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), document);
+    public boolean replaceAnd(String field1, Object value1, String field2, Object value2, T document) {
+        return replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), document);
     }
 
-    public void replaceAnd(String field1, Object value1, String field2, Object value2, T document, boolean upsert) {
-        replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), document, upsert);
+    public boolean replaceAnd(String field1, Object value1, String field2, Object value2, T document, boolean upsert) {
+        return replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), document, upsert);
     }
 
-    public void replaceAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document) {
-        replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document);
+    public boolean replaceAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document) {
+        return replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document);
     }
 
-    public void replaceAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document, boolean upsert) {
-        replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document, upsert);
+    public boolean replaceAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document, boolean upsert) {
+        return replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document, upsert);
     }
 
-    public void replaceOr(String field1, Object value1, String field2, Object value2, T document) {
-        replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), document);
+    public boolean replaceOr(String field1, Object value1, String field2, Object value2, T document) {
+        return replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), document);
     }
 
-    public void replaceOr(String field1, Object value1, String field2, Object value2, T document, boolean upsert) {
-        replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), document, upsert);
+    public boolean replaceOr(String field1, Object value1, String field2, Object value2, T document, boolean upsert) {
+        return replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), document, upsert);
     }
 
-    public void replaceOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document) {
-        replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document);
+    public boolean replaceOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document) {
+        return replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document);
     }
 
-    public void replaceOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document, boolean upsert) {
-        replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document, upsert);
+    public boolean replaceOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document, boolean upsert) {
+        return replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document, upsert);
     }
 
-    public void replace(Bson filter, T value) {
-        replace(filter, value, true);
+    public boolean replace(Bson filter, T value) {
+        return replace(filter, value, true);
     }
 
-    public void replace(Bson filter, T value, boolean upsert) {
-        collection.replaceOne(filter, value, new ReplaceOptions().upsert(upsert));
+    public boolean replace(Bson filter, T value, boolean upsert) {
+        return collection.replaceOne(filter, value, new ReplaceOptions().upsert(upsert)).getModifiedCount() > 0;
     }
 
     // endregion
     // region remove
 
-    public void delete(String field, Object value) {
-        delete(Filters.eq(field, value));
+    public boolean delete(String field, Object value) {
+        return delete(Filters.eq(field, value));
     }
 
-    public void deleteAnd(String field1, Object value1, String field2, Object value2) {
-        delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)));
+    public boolean deleteAnd(String field1, Object value1, String field2, Object value2) {
+        return delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)));
     }
 
-    public void deleteAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
-        delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
+    public boolean deleteAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
+        return delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
     }
 
-    public void deleteOr(String field1, Object value1, String field2, Object value2) {
-        delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)));
+    public boolean deleteOr(String field1, Object value1, String field2, Object value2) {
+        return delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)));
     }
 
-    public void deleteOr(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
-        delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
+    public boolean deleteOr(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
+        return delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
     }
 
-    public void delete(Bson filter) {
-        collection.deleteOne(filter);
+    public boolean delete(Bson filter) {
+        return collection.deleteOne(filter).getDeletedCount() > 0;
     }
 
     // endregion
