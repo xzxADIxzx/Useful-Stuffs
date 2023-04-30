@@ -2,8 +2,7 @@ package useful;
 
 import arc.files.Fi;
 import arc.func.Boolf;
-import arc.struct.ObjectMap;
-import arc.struct.Seq;
+import arc.struct.*;
 import arc.util.Log;
 import arc.util.TextFormatter;
 import mindustry.gen.Call;
@@ -14,8 +13,9 @@ import mindustry.net.NetConnection;
 
 import static mindustry.Vars.*;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Simple L10N bundle for Mindustry plugins.
@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class Bundle {
 
     public static final Seq<Locale> supported = new Seq<>();
-    public static final ObjectMap<Locale, ObjectMap<String, String>> bundles = new ObjectMap<>();
+    public static final ObjectMap<Locale, StringMap> bundles = new ObjectMap<>();
 
     public static Locale defaultLocale;
 
@@ -51,7 +51,7 @@ public class Bundle {
 
         supported.each(locale -> {
             var bundle = ResourceBundle.getBundle("bundles.bundle", locale);
-            bundles.put(locale, Seq.with(bundle.keySet()).asMap(key -> key, bundle::getString));
+            bundle.keySet().forEach(key -> bundles.get(locale, StringMap::new).put(key, bundle.getString(key)));
         });
 
         supported.add(new Locale("router")); // :3
