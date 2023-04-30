@@ -34,6 +34,9 @@ public class TextInput extends Interface<TextInputView> {
     }
 
     @Override
+    public void hide(Player player) {}
+
+    @Override
     public TextInput transform(Cons<TextInputView> transformer) {
         this.transformers.add(transformer);
         return this;

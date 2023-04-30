@@ -45,6 +45,12 @@ public class Menu extends Interface<MenuView> {
     }
 
     @Override
+    public void hide(Player player) {
+        if (followUp)
+            Call.hideFollowUpMenu(player.con, id);
+    }
+
+    @Override
     public Menu transform(Cons<MenuView> transformer) {
         this.transformers.add(transformer);
         return this;
@@ -100,11 +106,11 @@ public class Menu extends Interface<MenuView> {
         }
 
         public MenuView option(String button, Action<MenuView> action1, Action<MenuView> action2, Object... values) {
-            return option(MenuOption.of(Formatter.format(button, player, values), Action.then(action1, action2)));
+            return option(MenuOption.of(Formatter.format(button, player, values), Action.both(action1, action2)));
         }
 
         public MenuView option(String button, Action<MenuView> action1, Action<MenuView> action2, Action<MenuView> action3, Object... values) {
-            return option(MenuOption.of(Formatter.format(button, player, values), Action.then(action1, action2, action3)));
+            return option(MenuOption.of(Formatter.format(button, player, values), Action.both(action1, action2, action3)));
         }
 
         public MenuView option(OptionData provider) {

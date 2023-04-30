@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface Action<V extends View> extends Cons<V> {
 
     static <V extends View> Action<V> none() {
-        return view -> {};
+        return hide();
     }
 
     static <V extends View> Action<V> run(Runnable runnable) {
@@ -20,19 +20,19 @@ public interface Action<V extends View> extends Cons<V> {
     }
 
     static <V extends View> Action<V> open(Interface<?> next) {
-        return view -> next.show(view.player, view.state, view);
+        return both(hide(), view -> next.show(view.player, view.state, view));
     }
 
     static <V extends View, T> Action<V> openWith(Interface<?> next, StateKey<T> key, T value) {
-        return view -> next.show(view.player, view.state.put(key, value), view);
+        return both(hide(), view -> next.show(view.player, view.state.put(key, value), view));
     }
 
     static <V extends View, T> Action<V> openWithout(Interface<?> next, StateKey<T> key) {
-        return view -> next.show(view.player, view.state.remove(key), view);
+        return both(hide(), view -> next.show(view.player, view.state.remove(key), view));
     }
 
     static <V extends View> Action<V> back() {
-        return view -> Optional.ofNullable(view.parent).ifPresent(parent -> parent.getInterface().show(view.player, view.state, parent.parent));
+        return both(hide(), view -> Optional.ofNullable(view.parent).ifPresent(parent -> parent.getInterface().show(view.player, view.state, parent.parent)));
     }
 
     static <V extends View> Action<V> show() {
@@ -48,7 +48,7 @@ public interface Action<V extends View> extends Cons<V> {
     }
 
     static <V extends View> Action<V> hide() {
-        return view -> Call.hideFollowUpMenu(view.player.con, view.getInterface().id);
+        return view -> view.getInterface().hide(view.player);
     }
 
     static <V extends View> Action<V> uri(String uri) {
@@ -59,14 +59,14 @@ public interface Action<V extends View> extends Cons<V> {
         return view -> Call.connect(view.player.con, ip, port);
     }
 
-    static <V extends View> Action<V> then(Action<V> first, Action<V> second) {
+    static <V extends View> Action<V> both(Action<V> first, Action<V> second) {
         return view -> {
             first.get(view);
             second.get(view);
         };
     }
 
-    static <V extends View> Action<V> then(Action<V> first, Action<V> second, Action<V> third) {
+    static <V extends View> Action<V> both(Action<V> first, Action<V> second, Action<V> third) {
         return view -> {
             first.get(view);
             second.get(view);
@@ -74,14 +74,14 @@ public interface Action<V extends View> extends Cons<V> {
         };
     }
 
-    default Action<V> after(Action<V> second) {
+    default Action<V> then(Action<V> second) {
         return view -> {
             get(view);
             second.get(view);
         };
     }
 
-    default Action<V> after(Action<V> second, Action<V> third) {
+    default Action<V> then(Action<V> second, Action<V> third) {
         return view -> {
             get(view);
             second.get(view);

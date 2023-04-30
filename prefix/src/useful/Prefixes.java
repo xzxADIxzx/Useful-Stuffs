@@ -26,7 +26,7 @@ public class Prefixes {
 
             if (datas == null) datas = new Seq<>(); // datas are not loaded, this instance will be singleton
         } catch (Throwable ignored) {
-            datas = new Seq<>(); // singleton not found
+            datas = new Seq<>(); // singleton wasn't found
         }
     }
 

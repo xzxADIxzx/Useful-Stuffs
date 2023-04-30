@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface Action2<V extends View, T> extends Cons2<V, T> {
 
     static <V extends View, T> Action2<V, T> none() {
-        return (view, value) -> {};
+        return hide();
     }
 
     static <V extends View, T> Action2<V, T> run(Runnable runnable) {
@@ -25,19 +25,19 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
     }
 
     static <V extends View, T> Action2<V, T> open(Interface<?> next) {
-        return (view, value) -> next.show(view.player, view.state, view);
+        return both(hide(), (view, value) -> next.show(view.player, view.state, view));
     }
 
     static <V extends View, T> Action2<V, T> openWith(Interface<?> next, StateKey<T> key) {
-        return (view, value) -> next.show(view.player, view.state.put(key, value), view);
+        return both(hide(), (view, value) -> next.show(view.player, view.state.put(key, value), view));
     }
 
     static <V extends View, T> Action2<V, T> openWithout(Interface<?> next, StateKey<T> key) {
-        return (view, value) -> next.show(view.player, view.state.remove(key), view);
+        return both(hide(), (view, value) -> next.show(view.player, view.state.remove(key), view));
     }
 
     static <V extends View, T> Action2<V, T> back() {
-        return (view, value) -> Optional.ofNullable(view.parent).ifPresent(parent -> parent.getInterface().show(view.player, view.state, parent.parent));
+        return both(hide(), (view, value) -> Optional.ofNullable(view.parent).ifPresent(parent -> parent.getInterface().show(view.player, view.state, parent.parent)));
     }
 
     static <V extends View, T> Action2<V, T> show() {
@@ -53,7 +53,7 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
     }
 
     static <V extends View, T> Action2<V, T>  hide() {
-        return (view, value) -> Call.hideFollowUpMenu(view.player.con, view.getInterface().id);
+        return (view, value) -> view.getInterface().hide(view.player);
     }
 
     static <V extends View, T> Action2<V, T> uri(String uri) {
@@ -64,14 +64,14 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
         return (view, value) -> Call.connect(view.player.con, ip, port);
     }
 
-    static <V extends View, T> Action2<V, T> then(Action2<V, T> first, Action2<V, T> second) {
+    static <V extends View, T> Action2<V, T> both(Action2<V, T> first, Action2<V, T> second) {
         return (view, value) -> {
             first.get(view, value);
             second.get(view, value);
         };
     }
 
-    static <V extends View, T> Action2<V, T> then(Action2<V, T> first, Action2<V, T> second, Action2<V, T> third) {
+    static <V extends View, T> Action2<V, T> both(Action2<V, T> first, Action2<V, T> second, Action2<V, T> third) {
         return (view, value) -> {
             first.get(view, value);
             second.get(view, value);
@@ -79,14 +79,14 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
         };
     }
 
-    default Action2<V, T> after(Action2<V, T> second) {
+    default Action2<V, T> then(Action2<V, T> second) {
         return (view, value) -> {
             get(view, value);
             second.get(view, value);
         };
     }
 
-    default Action2<V, T> after(Action2<V, T> second, Action2<V, T> third) {
+    default Action2<V, T> then(Action2<V, T> second, Action2<V, T> third) {
         return (view, value) -> {
             get(view, value);
             second.get(view, value);

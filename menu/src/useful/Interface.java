@@ -24,7 +24,9 @@ public abstract class Interface<V extends View> {
     // region abstract
 
     public abstract int register();
+
     public abstract V show(Player player, State state, View previous);
+    public abstract void hide(Player player);
 
     // endregion
     // region show

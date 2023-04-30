@@ -25,7 +25,7 @@ import java.util.ResourceBundle;
 public class Bundle {
 
     public static final Seq<Locale> supported = new Seq<>();
-    public static final ObjectMap<Locale, ResourceBundle> bundles = new ObjectMap<>();
+    public static final ObjectMap<Locale, ObjectMap<String, String>> bundles = new ObjectMap<>();
 
     public static Locale defaultLocale;
 
@@ -49,9 +49,12 @@ public class Bundle {
             supported.add(codes.length == 2 ? new Locale(codes[1]) : new Locale(codes[1], codes[2]));
         });
 
-        supported.each(locale -> bundles.put(locale, ResourceBundle.getBundle("bundles.bundle", locale)));
-        supported.add(new Locale("router")); // :3
+        supported.each(locale -> {
+            var bundle = ResourceBundle.getBundle("bundles.bundle", locale);
+            bundles.put(locale, Seq.with(bundle.keySet()).asMap(key -> key, bundle::getString));
+        });
 
+        supported.add(new Locale("router")); // :3
         defaultLocale = supported.find(locale -> locale.toString().equals(defaultLocaleCode));
 
         Log.info("Loaded @ locales, default is @.", supported.size, defaultLocale);
@@ -88,9 +91,10 @@ public class Bundle {
 
     public static String get(String key, String defaultValue, Locale locale) {
         if (locale.toString().equals("router")) return "router";
+
         try {
             var bundle = bundles.get(locale, bundles.get(defaultLocale));
-            return bundle.containsKey(key) ? bundle.getString(key) : defaultValue;
+            return bundle.get(key, defaultValue);
         } catch (Throwable ignored) {
             return defaultValue; // null pointer from containsKey
         }
