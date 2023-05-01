@@ -1,5 +1,6 @@
 package useful;
 
+import arc.struct.Seq;
 import arc.util.Threads;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
@@ -151,6 +152,28 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
 
     public boolean delete(Bson filter) {
         return collection.deleteOne(filter).getDeletedCount() > 0;
+    }
+
+    // endregion
+    // region each
+
+    public void each(Consumer<T> cons) {
+        collection.find().forEach(cons);
+    }
+
+    public void each(Bson filter, Consumer<T> cons) {
+        collection.find(filter).forEach(cons);
+    }
+
+    // endregion
+    // region all
+
+    public Seq<T> all() {
+        return Seq.with(collection.find());
+    }
+
+    public Seq<T> all(Bson filter) {
+        return Seq.with(collection.find(filter));
     }
 
     // endregion

@@ -92,13 +92,19 @@ public class TextInput extends Interface<TextInputView> {
             return this;
         }
 
+        public TextInputView result(Cons<String> result) {
+            this.result = Action2.get(result);
+            return this;
+        }
+
         public TextInputView result(Action2<TextInputView, String> result) {
             this.result = result;
             return this;
         }
 
-        public TextInputView result(Cons<String> result) {
-            return result((input, text) -> result.get(text));
+        public TextInputView closed(Runnable closed) {
+            this.closed = Action.run(closed);
+            return this;
         }
 
         public TextInputView closed(Action<TextInputView> closed) {

@@ -46,7 +46,7 @@ public class ListMenu extends Menu {
 
             menu.row();
 
-            menu.option(close, Action.hide());
+            menu.option(close);
         }).followUp(true);
     }
 

@@ -167,6 +167,11 @@ public class Menu extends Interface<MenuView> {
             return null;
         }
 
+        public MenuView closed(Runnable closed) {
+            this.closed = Action.run(closed);
+            return this;
+        }
+
         public MenuView closed(Action<MenuView> closed) {
             this.closed = closed;
             return this;
