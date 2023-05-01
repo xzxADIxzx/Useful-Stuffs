@@ -15,10 +15,10 @@ import java.util.function.*;
 
 public record MongoRepository<T>(MongoCollection<T> collection) {
 
-    public static final CodecRegistry registry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+    public static final CodecRegistry defaultRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
 
     public MongoRepository(MongoDatabase database, String name, Class<T> type) {
-        this(database.getCollection(name, type));
+        this(database.withCodecRegistry(defaultRegistry).getCollection(name, type));
     }
 
     // region get
