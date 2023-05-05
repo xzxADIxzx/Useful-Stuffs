@@ -3,6 +3,6 @@ apply plugin: 'java'
 sourceSets.main.java.srcDirs = ['src']
 
 dependencies {
-    compileOnly "com.github.Anuken.Arc:arc-core:$arcVersion"
-    compileOnly "com.github.Anuken.MindustryJitpack:core:$mindustryVersion"
+    compileOnly "com.github.anuken.arc:arc-core:$arcVersion"
+    compileOnly "com.github.anuken.mindustryjitpack:core:$mindustryVersion"
 }
