@@ -4,7 +4,7 @@ allprojects {
 
 	ext {
 		arcVersion = 'v143'
-		mindustryVersion = 'v143'
+		mindustryVersion = 'v143.1'
 	}
 }
 
