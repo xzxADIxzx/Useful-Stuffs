@@ -128,30 +128,30 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     }
 
     // endregion
-    // region remove
+    // region delete
 
-    public boolean delete(String field, Object value) {
+    public T delete(String field, Object value) {
         return delete(Filters.eq(field, value));
     }
 
-    public boolean deleteAnd(String field1, Object value1, String field2, Object value2) {
+    public T deleteAnd(String field1, Object value1, String field2, Object value2) {
         return delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)));
     }
 
-    public boolean deleteAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
+    public T deleteAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
         return delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
     }
 
-    public boolean deleteOr(String field1, Object value1, String field2, Object value2) {
+    public T deleteOr(String field1, Object value1, String field2, Object value2) {
         return delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)));
     }
 
-    public boolean deleteOr(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
+    public T deleteOr(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
         return delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
     }
 
-    public boolean delete(Bson filter) {
-        return collection.deleteOne(filter).getDeletedCount() > 0;
+    public T delete(Bson filter) {
+        return collection.findOneAndDelete(filter);
     }
 
     // endregion
