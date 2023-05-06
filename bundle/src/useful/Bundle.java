@@ -69,6 +69,14 @@ public class Bundle {
         return locale == null ? defaultLocale : locale;
     }
 
+    public static String getDefault(String key) {
+        return get(key, defaultLocale);
+    }
+
+    public static String getDefault(String key, String defaultValue) {
+        return get(key, defaultValue, defaultLocale);
+    }
+
     public static String get(String key, Player player) {
         return get(key, key, locale(player));
     }
