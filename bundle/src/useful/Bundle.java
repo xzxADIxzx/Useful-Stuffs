@@ -46,7 +46,7 @@ public class Bundle {
             if (!fi.extEquals("properties")) return;
 
             var codes = fi.nameWithoutExtension().split("_");
-            supported.add(codes.length == 2 ? new Locale(codes[1]) : new Locale(codes[1], codes[2]));
+            supported.addUnique(codes.length == 2 ? new Locale(codes[1]) : new Locale(codes[1], codes[2]));
         });
 
         supported.each(locale -> {
@@ -54,7 +54,7 @@ public class Bundle {
             bundle.keySet().forEach(key -> bundles.get(locale, StringMap::new).put(key, bundle.getString(key)));
         });
 
-        supported.add(new Locale("router")); // :3
+        supported.addUnique(new Locale("router")); // :3
         defaultLocale = supported.find(locale -> locale.toString().equals(defaultLocaleCode));
 
         Log.info("Loaded @ locales, default is @.", supported.size, defaultLocale);
