@@ -1,6 +1,7 @@
 package useful;
 
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.Threads;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
@@ -237,7 +238,13 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     }
 
     public void watch(FullDocument fullDocument, Consumer<ChangeStreamDocument<T>> cons) {
-        Threads.daemon(() -> collection.watch(collection.getDocumentClass()).fullDocument(fullDocument).forEach(cons));
+        Threads.daemon(() -> {
+            try {
+                collection.watch(collection.getDocumentClass()).fullDocument(fullDocument).forEach(cons);
+            } catch (Exception e) {
+                Log.debug(e);
+            }
+        });
     }
 
     // endregion
