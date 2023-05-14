@@ -69,6 +69,29 @@ public class Bundle {
         return locale == null ? defaultLocale : locale;
     }
 
+    public static boolean has(String key) {
+        return has(key, defaultLocale);
+    }
+
+    public static boolean has(String key, Player player) {
+        return has(key, locale(player));
+    }
+
+    public static boolean has(String key, LocaleProvider provider) {
+        return has(key, provider.locale());
+    }
+
+    public static boolean has(String key, String locale) {
+        return has(key, locale(locale));
+    }
+
+    public static boolean has(String key, Locale locale) {
+        if (locale.toString().equals("router")) return true;
+
+        var bundle = bundles.get(locale, bundles.get(defaultLocale));
+        return bundle.containsKey(key);
+    }
+
     public static String getDefault(String key) {
         return get(key, defaultLocale);
     }
