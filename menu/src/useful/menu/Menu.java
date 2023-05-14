@@ -83,12 +83,12 @@ public class Menu extends Interface<MenuView> {
         }
 
         public MenuView title(String title, Object... values) {
-            this.title = Formatter.format(title, player, values);
+            this.title = Bundle.format(title, player, values);
             return this;
         }
 
         public MenuView content(String content, Object... values) {
-            this.content = Formatter.format(content, player, values);
+            this.content = Bundle.format(content, player, values);
             return this;
         }
 
@@ -98,19 +98,19 @@ public class Menu extends Interface<MenuView> {
         }
 
         public MenuView option(String button, Object... values) {
-            return option(MenuOption.of(Formatter.format(button, player, values)));
+            return option(MenuOption.of(Bundle.format(button, player, values)));
         }
 
         public MenuView option(String button, Action<MenuView> action, Object... values) {
-            return option(MenuOption.of(Formatter.format(button, player, values), action));
+            return option(MenuOption.of(Bundle.format(button, player, values), action));
         }
 
         public MenuView option(String button, Action<MenuView> action1, Action<MenuView> action2, Object... values) {
-            return option(MenuOption.of(Formatter.format(button, player, values), Action.both(action1, action2)));
+            return option(MenuOption.of(Bundle.format(button, player, values), Action.both(action1, action2)));
         }
 
         public MenuView option(String button, Action<MenuView> action1, Action<MenuView> action2, Action<MenuView> action3, Object... values) {
-            return option(MenuOption.of(Formatter.format(button, player, values), Action.both(action1, action2, action3)));
+            return option(MenuOption.of(Bundle.format(button, player, values), Action.both(action1, action2, action3)));
         }
 
         public MenuView option(OptionData provider) {

@@ -19,20 +19,24 @@ public class ListMenu extends Menu {
 
     public String left, right, page, close;
 
-    public void left(String left) {
+    public ListMenu left(String left) {
         this.left = left;
+        return this;
     }
 
-    public void right(String right) {
+    public ListMenu right(String right) {
         this.right = right;
+        return this;
     }
 
-    public void page(String page) {
+    public ListMenu page(String page) {
         this.page = page;
+        return this;
     }
 
-    public void close(String close) {
+    public ListMenu close(String close) {
         this.close = close;
+        return this;
     }
 
     {

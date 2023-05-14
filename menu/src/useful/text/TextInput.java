@@ -68,17 +68,17 @@ public class TextInput extends Interface<TextInputView> {
         }
 
         public TextInputView title(String title, Object... values) {
-            this.title = Formatter.format(title, player, values);
+            this.title = Bundle.format(title, player, values);
             return this;
         }
 
         public TextInputView content(String content, Object... values) {
-            this.content = Formatter.format(content, player, values);
+            this.content = Bundle.format(content, player, values);
             return this;
         }
 
         public TextInputView defaultText(String defaultText, Object... values) {
-            this.defaultText = Formatter.format(defaultText, player, values);
+            this.defaultText = Bundle.format(defaultText, player, values);
             return this;
         }
 

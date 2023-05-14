@@ -20,12 +20,14 @@ public class ConfirmMenu extends Menu {
 
     public String confirm, deny;
 
-    public void confirm(String confirm) {
+    public ConfirmMenu confirm(String confirm) {
         this.confirm = confirm;
+        return this;
     }
 
-    public void deny(String deny) {
+    public ConfirmMenu deny(String deny) {
         this.deny = deny;
+        return this;
     }
 
     {

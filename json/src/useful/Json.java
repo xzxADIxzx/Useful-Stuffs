@@ -242,10 +242,10 @@ public class Json {
         }
 
         public String write(JsonStyle style) {
-            int lenght = Array.getLength(array);
+            int length = Array.getLength(array);
             StringBuilder builder = style.createArray();
 
-            for (int i = 0; i < lenght; i++) {
+            for (int i = 0; i < length; i++) {
                 builder.append(style.add(Json.write(Array.get(array, i), style)));
             }
 
