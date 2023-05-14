@@ -8,13 +8,17 @@ import useful.menu.Menu;
 import useful.menu.MenuOption;
 
 public class SelectMenu<T> extends Menu {
-    public Prov<Seq<T>> content;
+    public Func<MenuView, Iterable<T>> content;
     public int options;
 
     public Func<T, String> button;
     public Action2<MenuView, T> action;
 
-    public SelectMenu<T> content(Prov<Seq<T>> content) {
+    public SelectMenu<T> content(Prov<Iterable<T>> content) {
+        return content(menu -> content.get());
+    }
+
+    public SelectMenu<T> content(Func<MenuView, Iterable<T>> content) {
         this.content = content;
         return this;
     }
@@ -35,6 +39,6 @@ public class SelectMenu<T> extends Menu {
     }
 
     {
-        transform(menu -> menu.options(options, content.get().map(value -> new MenuOption(button.get(value), view -> action.get(view, value))).<MenuOption>toArray(MenuOption.class)));
+        transform(menu -> menu.options(options, Seq.with(content.get(menu)).map(value -> new MenuOption(button.get(value), view -> action.get(view, value))).<MenuOption>toArray(MenuOption.class)));
     }
 }
