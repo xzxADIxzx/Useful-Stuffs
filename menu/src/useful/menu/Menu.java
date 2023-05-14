@@ -126,6 +126,10 @@ public class Menu extends Interface<MenuView> {
             return this;
         }
 
+        public <T> MenuView options(Iterable<T> values, Func<T, String> button, Action2<MenuView, T> action) {
+            return options(1, values, button, action);
+        }
+
         public <T> MenuView options(int maxPerRow, Iterable<T> values, Func<T, String> button, Action2<MenuView, T> action) {
             if (this.options.isEmpty() || this.options.peek().any())
                 this.row();
