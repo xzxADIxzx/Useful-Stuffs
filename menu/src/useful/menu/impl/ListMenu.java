@@ -17,30 +17,12 @@ public class ListMenu extends Menu {
             TITLE = new StateKey<>("title", Func.class),
             CONTENT = new StateKey<>("content", Func.class);
 
-    public String left, right, page, close;
-
-    public ListMenu left(String left) {
-        this.left = left;
-        return this;
+    public ListMenu() {
+        this("ui.button.left", "ui.button.right", "ui.button.page", "ui.button.close");
     }
 
-    public ListMenu right(String right) {
-        this.right = right;
-        return this;
-    }
-
-    public ListMenu page(String page) {
-        this.page = page;
-        return this;
-    }
-
-    public ListMenu close(String close) {
-        this.close = close;
-        return this;
-    }
-
-    {
-        transform(menu -> {
+    public ListMenu(String left, String right, String page, String close) {
+        this.transform(menu -> {
             menu.title((String) menu.state.get(TITLE).get(menu.state.get(PAGE)));
             menu.content((String) menu.state.get(CONTENT).get(menu.state.get(PAGE)));
 

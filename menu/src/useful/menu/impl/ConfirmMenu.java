@@ -18,25 +18,17 @@ public class ConfirmMenu extends Menu {
             CONFIRMED = new StateKey<>("confirmed", Runnable.class),
             DENIED = new StateKey<>("denied", Runnable.class);
 
-    public String confirm, deny;
-
-    public ConfirmMenu confirm(String confirm) {
-        this.confirm = confirm;
-        return this;
+    public ConfirmMenu() {
+        this("ui.button.yes", "ui.button.no");
     }
 
-    public ConfirmMenu deny(String deny) {
-        this.deny = deny;
-        return this;
-    }
-
-    {
-        transform(menu -> {
+    public ConfirmMenu(String yes, String no) {
+        this.transform(menu -> {
             menu.title(menu.state.get(TITLE));
             menu.content(menu.state.get(CONTENT), menu.state.get(VALUES));
 
-            menu.option(confirm, Action.run(menu.state.get(CONFIRMED)));
-            menu.option(deny, Action.run(menu.state.get(DENIED)));
+            menu.option(yes, Action.run(menu.state.get(CONFIRMED)));
+            menu.option(no, Action.run(menu.state.get(DENIED)));
         });
     }
 
