@@ -35,5 +35,5 @@ public record State(ObjectMap<StateKey<?>, Object> map) {
         return map.containsKey(key);
     }
 
-    public record StateKey<T>(Class<T> type) {}
+    public record StateKey<T>() {}
 }

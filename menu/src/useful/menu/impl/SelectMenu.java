@@ -11,8 +11,8 @@ import useful.menu.Menu;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class SelectMenu extends Menu {
 
-    public static final StateKey<Func> BUTTON = new StateKey<>(Func.class);
-    public static final StateKey<Action2> ACTION = new StateKey<>(Action2.class);
+    public static final StateKey<Func> BUTTON = new StateKey<>();
+    public static final StateKey<Action2> ACTION = new StateKey<>();
 
     // region button and action provided via a key
 
