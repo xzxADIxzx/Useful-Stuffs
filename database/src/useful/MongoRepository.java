@@ -1,5 +1,8 @@
 package useful;
 
+import arc.func.Boolf;
+import arc.func.Cons;
+import arc.func.Cons2;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Threads;
@@ -158,12 +161,12 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // endregion
     // region each
 
-    public void each(Consumer<T> cons) {
-        collection.find().forEach(cons);
+    public void each(Cons<T> cons) {
+        collection.find().forEach(cons::get);
     }
 
-    public void each(Bson filter, Consumer<T> cons) {
-        collection.find(filter).forEach(cons);
+    public void each(Bson filter, Cons<T> cons) {
+        collection.find(filter).forEach(cons::get);
     }
 
     // endregion
@@ -180,67 +183,84 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // endregion
     // region watch
 
-    public void watchBeforeChange(Consumer<T> cons) {
-        watchBeforeChange(FullDocument.UPDATE_LOOKUP, cons);
-    }
-
-    public void watchBeforeChange(FullDocument fullDocument, Consumer<T> cons) {
-        watch(fullDocument, stream -> {
+    public void watchBeforeChange(Cons<T> result) {
+        watch(iterable -> iterable.fullDocumentBeforeChange(FullDocumentBeforeChange.WHEN_AVAILABLE), stream -> {
             var before = stream.getFullDocumentBeforeChange();
             if (before == null) return;
 
-            cons.accept(before);
+            result.get(before);
         });
     }
 
-    public void watchAfterChange(Consumer<T> cons) {
-        watchAfterChange(FullDocument.UPDATE_LOOKUP, cons);
+    public void watchBeforeChange(OperationType type, Cons<T> result) {
+        watch(iterable -> iterable.fullDocumentBeforeChange(FullDocumentBeforeChange.WHEN_AVAILABLE), type, stream -> {
+            var before = stream.getFullDocumentBeforeChange();
+            if (before == null) return;
+
+            result.get(before);
+        });
     }
 
-    public void watchAfterChange(FullDocument fullDocument, Consumer<T> cons) {
-        watch(fullDocument, stream -> {
+    public void watchAfterChange(Cons<T> result) {
+        watch(iterable -> iterable.fullDocument(FullDocument.WHEN_AVAILABLE), stream -> {
             var after = stream.getFullDocument();
             if (after == null) return;
 
-            cons.accept(after);
+            result.get(after);
         });
     }
 
-    public void watchBeforeAfterChange(BiConsumer<T, T> cons) {
-        watchBeforeAfterChange(FullDocument.UPDATE_LOOKUP, cons);
+    public void watchAfterChange(OperationType type, Cons<T> result) {
+        watch(iterable -> iterable.fullDocument(FullDocument.WHEN_AVAILABLE), type, stream -> {
+            var after = stream.getFullDocument();
+            if (after == null) return;
+
+            result.get(after);
+        });
     }
 
-    public void watchBeforeAfterChange(FullDocument fullDocument, BiConsumer<T, T> cons) {
-        watch(fullDocument, stream -> {
+    public void watchBeforeAfterChange(Cons2<T, T> result) {
+        watch(iterable -> iterable.fullDocument(FullDocument.WHEN_AVAILABLE).fullDocumentBeforeChange(FullDocumentBeforeChange.WHEN_AVAILABLE), stream -> {
             var before = stream.getFullDocumentBeforeChange();
             if (before == null) return;
 
             var after = stream.getFullDocument();
             if (after == null) return;
 
-            cons.accept(before, after);
+            result.get(before, after);
         });
     }
 
-    public void watch(OperationType type, Consumer<ChangeStreamDocument<T>> cons) {
-        watch(FullDocument.UPDATE_LOOKUP, type, cons);
-    }
+    public void watchBeforeAfterChange(OperationType type, Cons2<T, T> result) {
+        watch(iterable -> iterable.fullDocument(FullDocument.WHEN_AVAILABLE).fullDocumentBeforeChange(FullDocumentBeforeChange.WHEN_AVAILABLE), type, stream -> {
+            var before = stream.getFullDocumentBeforeChange();
+            if (before == null) return;
 
-    public void watch(FullDocument fullDocument, OperationType type, Consumer<ChangeStreamDocument<T>> cons) {
-        watch(fullDocument, stream -> {
-            if (stream.getOperationType() == type)
-                cons.accept(stream);
+            var after = stream.getFullDocument();
+            if (after == null) return;
+
+            result.get(before, after);
         });
     }
 
-    public void watch(Consumer<ChangeStreamDocument<T>> cons) {
-        watch(FullDocument.UPDATE_LOOKUP, cons);
+    public void watch(Cons<ChangeStreamIterable<?>> setter, Cons<ChangeStreamDocument<T>> result) {
+        watch(setter, stream -> true, result);
     }
 
-    public void watch(FullDocument fullDocument, Consumer<ChangeStreamDocument<T>> cons) {
+    public void watch(Cons<ChangeStreamIterable<?>> setter, OperationType type, Cons<ChangeStreamDocument<T>> result) {
+        watch(setter, stream -> stream.getOperationType() == type, result);
+    }
+
+    public void watch(Cons<ChangeStreamIterable<?>> setter, Boolf<ChangeStreamDocument<?>> filter, Cons<ChangeStreamDocument<T>> result) {
         Threads.daemon(() -> {
             try {
-                collection.watch(collection.getDocumentClass()).fullDocument(fullDocument).forEach(cons);
+                var iterable = collection.watch(collection.getDocumentClass());
+                setter.get(iterable);
+
+                iterable.forEach(stream -> {
+                    if (filter.get(stream))
+                        result.get(stream);
+                });
             } catch (Exception e) {
                 Log.debug(e);
             }

@@ -43,4 +43,12 @@ public class ListMenu extends Menu {
     public MenuView show(Player player, int page, int pages, Func<Integer, String> title, Func<Integer, String> content) {
         return show(player, State.create().put(PAGE, page).put(PAGES, pages).put(TITLE, title).put(CONTENT, content));
     }
+
+    public MenuView show(Player player, MenuView parent, int page, int pages, String title, Func<Integer, String> content) {
+        return show(player, parent, page, pages, newPage -> title, content);
+    }
+
+    public MenuView show(Player player, MenuView parent, int page, int pages, Func<Integer, String> title, Func<Integer, String> content) {
+        return show(player, State.create().put(PAGE, page).put(PAGES, pages).put(TITLE, title).put(CONTENT, content), parent);
+    }
 }
