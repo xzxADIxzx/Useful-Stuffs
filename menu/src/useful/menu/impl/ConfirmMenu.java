@@ -8,15 +8,15 @@ import useful.menu.Menu;
 
 public class ConfirmMenu extends Menu {
     public static final StateKey<String>
-            TITLE = new StateKey<>("title", String.class),
-            CONTENT = new StateKey<>("content", String.class);
+            TITLE = new StateKey<>(String.class),
+            CONTENT = new StateKey<>(String.class);
 
     public static final StateKey<Object[]>
-            VALUES = new StateKey<>("values", Object[].class);
+            VALUES = new StateKey<>(Object[].class);
 
     public static final StateKey<Runnable>
-            CONFIRMED = new StateKey<>("confirmed", Runnable.class),
-            DENIED = new StateKey<>("denied", Runnable.class);
+            CONFIRMED = new StateKey<>(Runnable.class),
+            DENIED = new StateKey<>(Runnable.class);
 
     public ConfirmMenu() {
         this("ui.button.yes", "ui.button.no");

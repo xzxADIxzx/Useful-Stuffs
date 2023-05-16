@@ -7,15 +7,15 @@ import useful.State;
 import useful.State.StateKey;
 import useful.menu.Menu;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class ListMenu extends Menu {
     public static final StateKey<Integer>
-            PAGE = new StateKey<>("page", Integer.class),
-            PAGES = new StateKey<>("pages", Integer.class);
+            PAGE = new StateKey<>(int.class),
+            PAGES = new StateKey<>(int.class);
 
     public static final StateKey<Func>
-            TITLE = new StateKey<>("title", Func.class),
-            CONTENT = new StateKey<>("content", Func.class);
+            TITLE = new StateKey<>(Func.class),
+            CONTENT = new StateKey<>(Func.class);
 
     public ListMenu() {
         this("ui.button.left", "ui.button.right", "ui.button.page", "ui.button.close");
