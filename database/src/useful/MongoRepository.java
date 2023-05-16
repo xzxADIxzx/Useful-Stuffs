@@ -202,7 +202,7 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     }
 
     public void watchAfterChange(Cons<T> result) {
-        watch(iterable -> iterable.fullDocument(FullDocument.WHEN_AVAILABLE), stream -> {
+        watch(iterable -> iterable.fullDocument(FullDocument.UPDATE_LOOKUP), stream -> {
             var after = stream.getFullDocument();
             if (after == null) return;
 
@@ -211,7 +211,7 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     }
 
     public void watchAfterChange(OperationType type, Cons<T> result) {
-        watch(iterable -> iterable.fullDocument(FullDocument.WHEN_AVAILABLE), type, stream -> {
+        watch(iterable -> iterable.fullDocument(FullDocument.UPDATE_LOOKUP), type, stream -> {
             var after = stream.getFullDocument();
             if (after == null) return;
 
