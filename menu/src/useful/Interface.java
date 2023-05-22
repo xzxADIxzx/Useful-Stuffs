@@ -58,7 +58,7 @@ public abstract class Interface<V extends View> {
         return this;
     }
 
-    public <T> Interface<V> transform(StateKey<T> key, Cons2<V, T> transformer) {
+    public <T1> Interface<V> transform(StateKey<T1> key, Cons2<V, T1> transformer) {
         return transform(view -> transformer.get(view, view.state.get(key)));
     }
 

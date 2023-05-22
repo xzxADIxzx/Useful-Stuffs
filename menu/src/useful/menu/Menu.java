@@ -6,6 +6,7 @@ import mindustry.gen.*;
 import mindustry.ui.Menus;
 import useful.*;
 import useful.State.StateKey;
+
 import useful.menu.Menu.MenuView;
 
 /**
@@ -52,18 +53,17 @@ public class Menu extends Interface<MenuView> {
 
     @Override
     public Menu transform(Cons<MenuView> transformer) {
-        this.transformers.add(transformer);
-        return this;
+        return (Menu) super.transform(transformer);
     }
 
     @Override
-    public <T> Menu transform(StateKey<T> key, Cons2<MenuView, T> transformer) {
-        return transform(view -> transformer.get(view, view.state.get(key)));
+    public <T1> Menu transform(StateKey<T1> key, Cons2<MenuView, T1> transformer) {
+        return (Menu) super.transform(view -> transformer.get(view, view.state.get(key)));
     }
 
     @Override
     public <T1, T2> Menu transform(StateKey<T1> key1, StateKey<T2> key2, Cons3<MenuView, T1, T2> transformer) {
-        return transform(view -> transformer.get(view, view.state.get(key1), view.state.get(key2)));
+        return (Menu) super.transform(view -> transformer.get(view, view.state.get(key1), view.state.get(key2)));
     }
 
     public Menu followUp(boolean followUp) {
