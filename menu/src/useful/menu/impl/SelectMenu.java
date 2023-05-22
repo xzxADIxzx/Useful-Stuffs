@@ -4,104 +4,52 @@ import arc.func.Func;
 import arc.func.Prov;
 import mindustry.gen.Player;
 import useful.Action2;
-import useful.State;
-import useful.State.StateKey;
 import useful.menu.Menu;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
-public class SelectMenu extends Menu {
+public class SelectMenu<T> extends Menu {
 
-    public static final StateKey<Func> BUTTON = new StateKey<>();
-    public static final StateKey<Action2> ACTION = new StateKey<>();
+    public Func<Player, Iterable<T>> content;
+    public int optionsPerRow = 1;
 
-    // region button and action provided via a key
+    public Func<T, String> button;
+    public Action2<MenuView, T> action;
 
-    public <T> SelectMenu(Prov<Iterable<T>> content) {
-        this(1, content);
+    public SelectMenu<T> content(Iterable<T> content) {
+        return content(player -> content);
     }
 
-    public <T> SelectMenu(Func<Player, Iterable<T>> content) {
-        this(1, content);
+    public SelectMenu<T> content(Prov<Iterable<T>> content) {
+        return content(player -> content.get());
     }
 
-    public <T> SelectMenu(String close, Prov<Iterable<T>> content) {
-        this(close, 1, content);
+    public SelectMenu<T> content(Func<Player, Iterable<T>> content) {
+        this.content = content;
+        return this;
     }
 
-    public <T> SelectMenu(String close, Func<Player, Iterable<T>> content) {
-        this(close, 1, content);
+    public SelectMenu<T> options(int optionsPerRow) {
+        this.optionsPerRow = optionsPerRow;
+        return this;
     }
 
-    public <T> SelectMenu(int optionsPerRow, Prov<Iterable<T>> content) {
-        this("ui.button.close", optionsPerRow, content);
+    public SelectMenu<T> button(Func<T, String> button) {
+        this.button = button;
+        return this;
     }
 
-    public <T> SelectMenu(int optionsPerRow, Func<Player, Iterable<T>> content) {
-        this("ui.button.close", optionsPerRow, content);
+    public SelectMenu<T> action(Action2<MenuView, T> action) {
+        this.action = action;
+        return this;
     }
 
-    public <T> SelectMenu(String close, int optionsPerRow, Prov<Iterable<T>> content) {
-        this.transform(menu -> {
-            menu.options(optionsPerRow, content.get(), menu.state.get(BUTTON), menu.state.get(ACTION)).row();
-            menu.option(close);
-        });
+    public SelectMenu() {
+        this("ui.button.close");
     }
 
-    public <T> SelectMenu(String close, int optionsPerRow, Func<Player, Iterable<T>> content) {
-        this.transform(menu -> {
-            menu.options(optionsPerRow, content.get(menu.player), menu.state.get(BUTTON), menu.state.get(ACTION)).row();
-            menu.option(close);
-        });
-    }
-
-    // endregion
-    // region button and action provided via a constructor
-
-    public <T> SelectMenu(Prov<Iterable<T>> content, Func<T, String> button, Action2<MenuView, T> action) {
-        this(1, content, button, action);
-    }
-
-    public <T> SelectMenu(Func<Player, Iterable<T>> content, Func<T, String> button, Action2<MenuView, T> action) {
-        this(1, content, button, action);
-    }
-
-    public <T> SelectMenu(String close, Prov<Iterable<T>> content, Func<T, String> button, Action2<MenuView, T> action) {
-        this(close, 1, content, button, action);
-    }
-
-    public <T> SelectMenu(String close, Func<Player, Iterable<T>> content, Func<T, String> button, Action2<MenuView, T> action) {
-        this(close, 1, content, button, action);
-    }
-
-    public <T> SelectMenu(int optionsPerRow, Prov<Iterable<T>> content, Func<T, String> button, Action2<MenuView, T> action) {
-        this("ui.button.close", optionsPerRow, content, button, action);
-    }
-
-    public <T> SelectMenu(int optionsPerRow, Func<Player, Iterable<T>> content, Func<T, String> button, Action2<MenuView, T> action) {
-        this("ui.button.close", optionsPerRow, content, button, action);
-    }
-
-    public <T> SelectMenu(String close, int optionsPerRow, Prov<Iterable<T>> content, Func<T, String> button, Action2<MenuView, T> action) {
-        this.transform(menu -> {
-            menu.options(optionsPerRow, content.get(), button, action).row();
-            menu.option(close);
-        });
-    }
-
-    public <T> SelectMenu(String close, int optionsPerRow, Func<Player, Iterable<T>> content, Func<T, String> button, Action2<MenuView, T> action) {
+    public SelectMenu(String close) {
         this.transform(menu -> {
             menu.options(optionsPerRow, content.get(menu.player), button, action).row();
             menu.option(close);
         });
-    }
-
-    // endregion
-
-    public <T> void show(Player player, Func<T, String> button, Action2<MenuView, T> action) {
-        show(player, State.create(BUTTON, button).put(ACTION, action));
-    }
-
-    public <T> void show(Player player, Func<T, String> button, Action2<MenuView, T> action, MenuView parent) {
-        show(player, State.create(BUTTON, button).put(ACTION, action), parent);
     }
 }
