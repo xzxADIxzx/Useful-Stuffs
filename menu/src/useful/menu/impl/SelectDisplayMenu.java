@@ -20,7 +20,7 @@ public class SelectDisplayMenu<T> extends SelectMenu<T> {
 
         this.action(Action2.openWith(display, CONTENT));
         this.display(menu -> {
-            menu.option(back, Action.back()).row();
+            menu.option(back, Action.back());
             menu.option(close);
         });
     }
