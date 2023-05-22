@@ -9,9 +9,8 @@ import useful.menu.Menu;
 public class SelectMenu<T> extends Menu {
 
     public Func<Player, Iterable<T>> content;
-    public int optionsPerRow = 1;
-
     public Func<T, String> button;
+
     public Action2<MenuView, T> action;
 
     public SelectMenu<T> content(Iterable<T> content) {
@@ -24,11 +23,6 @@ public class SelectMenu<T> extends Menu {
 
     public SelectMenu<T> content(Func<Player, Iterable<T>> content) {
         this.content = content;
-        return this;
-    }
-
-    public SelectMenu<T> options(int optionsPerRow) {
-        this.optionsPerRow = optionsPerRow;
         return this;
     }
 
@@ -48,7 +42,7 @@ public class SelectMenu<T> extends Menu {
 
     public SelectMenu(String close) {
         this.transform(menu -> {
-            menu.options(optionsPerRow, content.get(menu.player), button, action).row();
+            menu.options(1, content.get(menu.player), button, action).row();
             menu.option(close);
         });
     }
