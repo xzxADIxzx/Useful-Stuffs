@@ -2,7 +2,7 @@ package useful.menu.impl;
 
 import arc.func.*;
 import mindustry.gen.Player;
-import useful.Action2;
+import useful.*;
 import useful.menu.Menu;
 import useful.State.StateKey;
 
@@ -12,15 +12,17 @@ public class SelectDisplayMenu<T> extends SelectMenu<T> {
     public final Menu display = new Menu();
 
     public SelectDisplayMenu() {
-        super();
+        this("ui.button.back", "ui.button.close");
     }
 
-    public SelectDisplayMenu(String close) {
+    public SelectDisplayMenu(String back, String close) {
         super(close);
-    }
 
-    {
         this.action(Action2.openWith(display, CONTENT));
+        this.display(menu -> {
+            menu.option(back, Action.back()).row();
+            menu.option(close);
+        });
     }
 
     @Override
