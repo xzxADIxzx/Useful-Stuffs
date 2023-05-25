@@ -4,6 +4,7 @@ import arc.files.Fi;
 import arc.func.Boolf;
 import arc.struct.*;
 import arc.util.Log;
+import arc.util.Structs;
 import arc.util.TextFormatter;
 import mindustry.gen.Call;
 import mindustry.gen.Groups;
@@ -50,6 +51,8 @@ public class Bundle {
         });
 
         supported.each(locale -> {
+            if (locale.toString().equals("router")) return;
+
             var bundle = ResourceBundle.getBundle("bundles.bundle", locale);
             bundle.keySet().forEach(key -> bundles.get(locale, StringMap::new).put(key, bundle.getString(key)));
         });
@@ -123,12 +126,8 @@ public class Bundle {
     public static String get(String key, String defaultValue, Locale locale) {
         if (locale.toString().equals("router")) return "router";
 
-        try {
-            var bundle = bundles.get(locale, bundles.get(defaultLocale));
-            return bundle.get(key, defaultValue);
-        } catch (Throwable ignored) {
-            return defaultValue; // null pointer from containsKey
-        }
+        var bundle = bundles.get(locale, bundles.get(defaultLocale));
+        return bundle.get(key, defaultValue);
     }
 
     public static String format(String key, Player player, Object... values) {
@@ -171,11 +170,11 @@ public class Bundle {
     }
 
     public static void sendFrom(Player player, Player from, String text, String key) {
-        player.sendMessage(get(key, player), from, text);
+        player.sendMessage(format(key, player, text), from, text);
     }
 
     public static void sendFrom(Player player, Player from, String text, String key, Object... values) {
-        player.sendMessage(format(key, player, values), from, text);
+        player.sendMessage(format(key, player, Structs.add(values, text)), from, text);
     }
 
     public static void infoMessage(Player player, String key) {
