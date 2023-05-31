@@ -11,18 +11,19 @@ public class SelectDisplayMenu<T> extends SelectMenu<T> {
     public final StateKey<T> CONTENT = new StateKey<>();
     public final Menu display = new Menu();
 
+    public final String back;
+    public final String close;
+
     public SelectDisplayMenu() {
         this("ui.button.back", "ui.button.close");
     }
 
     public SelectDisplayMenu(String back, String close) {
         super(close);
-
         this.action(Action2.openWith(display, CONTENT));
-        this.display(menu -> {
-            menu.option(back, Action.back());
-            menu.option(close);
-        });
+
+        this.back = back;
+        this.close = close;
     }
 
     @Override
@@ -66,12 +67,24 @@ public class SelectDisplayMenu<T> extends SelectMenu<T> {
     }
 
     public SelectDisplayMenu<T> display(Cons<MenuView> transformer) {
-        this.display.transform(transformer);
+        this.display.transform(menu -> {
+            transformer.get(menu);
+
+            menu.option(back, Action.back());
+            menu.option(close);
+        });
+
         return this;
     }
 
     public SelectDisplayMenu<T> display(Cons2<MenuView, T> transformer) {
-        this.display.transform(CONTENT, transformer);
+        this.display.transform(CONTENT, (menu, value) -> {
+            transformer.get(menu, value);
+
+            menu.option(back, Action.back());
+            menu.option(close);
+        });
+
         return this;
     }
 }

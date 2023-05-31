@@ -1,7 +1,6 @@
 include 'antiddos'
 include 'bundle'
 include 'collections'
-include 'commands'
 include 'cooldowns'
 include 'database'
 include 'effect'
