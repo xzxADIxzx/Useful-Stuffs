@@ -4,6 +4,7 @@ import arc.func.Cons2;
 import arc.func.Cons3;
 import arc.func.Func;
 import arc.struct.Seq;
+import arc.util.Log;
 import mindustry.gen.Player;
 import useful.Action;
 import useful.State;
@@ -26,6 +27,8 @@ public class ListMenu extends Menu {
 
     public ListMenu(String left, String right, String page, String close) {
         this.transform(menu -> {
+            Log.info(menu.state.get(PAGE));
+
             menu.title((String) menu.state.get(TITLE).get(menu.state.get(PAGE)));
             menu.content((String) menu.state.get(CONTENT).get(menu.state.get(PAGE)));
 
