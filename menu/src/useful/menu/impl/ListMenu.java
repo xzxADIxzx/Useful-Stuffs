@@ -1,6 +1,9 @@
 package useful.menu.impl;
 
+import arc.func.Cons2;
+import arc.func.Cons3;
 import arc.func.Func;
+import arc.struct.Seq;
 import mindustry.gen.Player;
 import useful.Action;
 import useful.State;
@@ -36,6 +39,43 @@ public class ListMenu extends Menu {
         }).followUp(true);
     }
 
+    // region content values
+
+    public <T> MenuView show(Player player, int page, int pages, String title, Seq<T> values, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+        return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, int page, int pages, Func<Integer, String> title, Seq<T> values, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+        return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, String title, Seq<T> values, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+        return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, Func<Integer, String> title, Seq<T> values, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+        return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, int page, int pages, String title, Seq<T> values, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, int page, int pages, Func<Integer, String> title, Seq<T> values, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, String title, Seq<T> values, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, Func<Integer, String> title, Seq<T> values, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    }
+
+    // endregion
+    // region content function
+
     public MenuView show(Player player, int page, int pages, String title, Func<Integer, String> content) {
         return show(player, page, pages, newPage -> title, content);
     }
@@ -51,4 +91,31 @@ public class ListMenu extends Menu {
     public MenuView show(Player player, MenuView parent, int page, int pages, Func<Integer, String> title, Func<Integer, String> content) {
         return show(player, State.create().put(PAGE, page).put(PAGES, pages).put(TITLE, title).put(CONTENT, content), parent);
     }
+
+    // endregion
+    // region utils
+
+    private <T> String format(Seq<T> values, int page, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+        var builder = new StringBuilder();
+
+        for (int i = valuesPerPage * (page - 1); i < Math.min(valuesPerPage * page, values.size); i++) {
+            if (!builder.isEmpty()) builder.append("\n\n");
+            cons.get(builder, values.get(i));
+        }
+
+        return builder.toString();
+    }
+
+    private <T> String format(Seq<T> values, int page, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+        var builder = new StringBuilder();
+
+        for (int i = valuesPerPage * (page - 1); i < Math.min(valuesPerPage * page, values.size); i++) {
+            if (!builder.isEmpty()) builder.append("\n\n");
+            cons.get(builder, i, values.get(i));
+        }
+
+        return builder.toString();
+    }
+
+    // endregion
 }
