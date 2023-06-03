@@ -27,8 +27,6 @@ public class ListMenu extends Menu {
 
     public ListMenu(String left, String right, String page, String close) {
         this.transform(menu -> {
-            Log.info(menu.state.get(PAGE).getClass().getSuperclass());
-
             Log.info(Seq.with(menu.state.map().entries()).map(entry -> {
                 return entry.key + " -> " + entry.value.getClass().getSuperclass();
             }));
@@ -47,22 +45,6 @@ public class ListMenu extends Menu {
     }
 
     // region content values
-
-    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons2<StringBuilder, T> cons) {
-        return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
-    }
-
-    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, Func<Integer, String> title, Seq<T> values, Cons2<StringBuilder, T> cons) {
-        return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
-    }
-
-    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons2<StringBuilder, T> cons) {
-        return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
-    }
-
-    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, Func<Integer, String> title, Seq<T> values, Cons2<StringBuilder, T> cons) {
-        return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
-    }
 
     public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
         return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
@@ -101,17 +83,6 @@ public class ListMenu extends Menu {
 
     // endregion
     // region utils
-
-    private <T> String format(Seq<T> values, int page, int valuesPerPage, Cons2<StringBuilder, T> cons) {
-        var builder = new StringBuilder();
-
-        for (int i = valuesPerPage * (page - 1); i < Math.min(valuesPerPage * page, values.size); i++) {
-            if (!builder.isEmpty()) builder.append("\n\n");
-            cons.get(builder, values.get(i));
-        }
-
-        return builder.toString();
-    }
 
     private <T> String format(Seq<T> values, int page, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
         var builder = new StringBuilder();
