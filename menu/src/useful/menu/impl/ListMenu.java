@@ -29,6 +29,10 @@ public class ListMenu extends Menu {
         this.transform(menu -> {
             Log.info(menu.state.get(PAGE).getClass().getSuperclass());
 
+            Log.info(Seq.with(menu.state.map().entries()).map(entry -> {
+                return entry.key + " -> " + entry.value.getClass().getSuperclass();
+            }));
+
             menu.title((String) menu.state.get(TITLE).get(menu.state.get(PAGE)));
             menu.content((String) menu.state.get(CONTENT).get(menu.state.get(PAGE)));
 
