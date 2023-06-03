@@ -111,7 +111,7 @@ public class ListMenu extends Menu {
 
         for (int i = valuesPerPage * (page - 1); i < Math.min(valuesPerPage * page, values.size); i++) {
             if (!builder.isEmpty()) builder.append("\n\n");
-            cons.get(builder, i, values.get(i));
+            cons.get(builder, i + 1, values.get(i));
         }
 
         return builder.toString();
