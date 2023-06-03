@@ -14,12 +14,12 @@ import useful.menu.Menu;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class ListMenu extends Menu {
     public static final StateKey<Integer>
-            PAGE = new StateKey<>(),
-            PAGES = new StateKey<>();
+            PAGE = new StateKey<>("page"),
+            PAGES = new StateKey<>("pages");
 
     public static final StateKey<Func>
-            TITLE = new StateKey<>(),
-            CONTENT = new StateKey<>();
+            TITLE = new StateKey<>("title"),
+            CONTENT = new StateKey<>("content");
 
     public ListMenu() {
         this("ui.button.left", "ui.button.right", "ui.button.page", "ui.button.close");

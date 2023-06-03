@@ -8,7 +8,7 @@ import useful.State.StateKey;
 
 public class SelectDisplayMenu<T> extends SelectMenu<T> {
 
-    public final StateKey<T> CONTENT = new StateKey<>();
+    public final StateKey<T> CONTENT = new StateKey<>("content");
     public final Menu display = new Menu();
 
     public final String back;
