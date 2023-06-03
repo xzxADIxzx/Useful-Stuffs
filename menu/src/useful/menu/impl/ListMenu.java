@@ -41,35 +41,35 @@ public class ListMenu extends Menu {
 
     // region content values
 
-    public <T> MenuView show(Player player, int page, int pages, String title, Seq<T> values, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons2<StringBuilder, T> cons) {
         return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, int page, int pages, Func<Integer, String> title, Seq<T> values, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, Func<Integer, String> title, Seq<T> values, Cons2<StringBuilder, T> cons) {
         return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, MenuView parent, int page, int pages, String title, Seq<T> values, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons2<StringBuilder, T> cons) {
         return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, MenuView parent, int page, int pages, Func<Integer, String> title, Seq<T> values, int valuesPerPage, Cons2<StringBuilder, T> cons) {
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, Func<Integer, String> title, Seq<T> values, Cons2<StringBuilder, T> cons) {
         return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, int page, int pages, String title, Seq<T> values, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
         return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, int page, int pages, Func<Integer, String> title, Seq<T> values, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, Func<Integer, String> title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
         return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, MenuView parent, int page, int pages, String title, Seq<T> values, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
         return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, MenuView parent, int page, int pages, Func<Integer, String> title, Seq<T> values, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, Func<Integer, String> title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
         return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
     }
 
