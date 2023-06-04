@@ -3,24 +3,18 @@ package useful;
 import arc.files.Fi;
 import arc.func.Boolf;
 import arc.struct.*;
-import arc.util.Log;
-import arc.util.Structs;
-import arc.util.TextFormatter;
-import mindustry.gen.Call;
-import mindustry.gen.Groups;
-import mindustry.gen.Player;
+import arc.util.*;
+import mindustry.gen.*;
 import mindustry.mod.Mod;
 import mindustry.net.NetConnection;
 
-import static mindustry.Vars.*;
-
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+
+import static mindustry.Vars.*;
 
 /**
  * Simple L10N bundle for Mindustry plugins.
- * 
+ *
  * @author xzxADIxzx
  */
 public class Bundle {
@@ -29,6 +23,7 @@ public class Bundle {
     public static final ObjectMap<Locale, StringMap> bundles = new ObjectMap<>();
 
     public static Locale defaultLocale;
+    public static StringMap defaultBundle;
 
     public static void load(Class<? extends Mod> main) {
         load(main, "en");
@@ -58,7 +53,9 @@ public class Bundle {
         });
 
         supported.addUnique(new Locale("router")); // :3
+
         defaultLocale = supported.find(locale -> locale.toString().equals(defaultLocaleCode));
+        defaultBundle = bundles.get(defaultLocale);
 
         Log.info("Loaded @ locales, default is @.", supported.size, defaultLocale);
     }
@@ -90,9 +87,7 @@ public class Bundle {
 
     public static boolean has(String key, Locale locale) {
         if (locale.toString().equals("router")) return true;
-
-        var bundle = bundles.get(locale, bundles.get(defaultLocale));
-        return bundle.containsKey(key);
+        return bundles.containsKey(locale) && bundles.get(locale).containsKey(key);
     }
 
     public static String getDefault(String key) {
@@ -126,8 +121,8 @@ public class Bundle {
     public static String get(String key, String defaultValue, Locale locale) {
         if (locale.toString().equals("router")) return "router";
 
-        var bundle = bundles.get(locale, bundles.get(defaultLocale));
-        return bundle.get(key, defaultValue);
+        var bundle = bundles.get(locale, defaultBundle);
+        return bundle.get(key, defaultBundle.get(key, defaultValue));
     }
 
     public static String format(String key, Player player, Object... values) {
@@ -250,7 +245,8 @@ public class Bundle {
     }
 
     public static void kick(NetConnection connection, String locale, long duration, String key) {
-        new KickBuilder(connection, locale).add(key).kick(duration);;
+        new KickBuilder(connection, locale).add(key).kick(duration);
+        ;
     }
 
     public static void kick(NetConnection connection, String locale, long duration, String key, Object... values) {
@@ -326,7 +322,9 @@ public class Bundle {
 
     // endregion
 
-    /** Used in some player data classes to shorten code. */
+    /**
+     * Used in some player data classes to shorten code.
+     */
     public interface LocaleProvider {
         Locale locale();
     }
