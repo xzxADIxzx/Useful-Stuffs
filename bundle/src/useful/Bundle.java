@@ -151,7 +151,15 @@ public class Bundle {
         var pattern = get(key, defaultValue, locale);
         if (values.length == 0) return pattern;
 
-        return new TextFormatter(locale, true).format(pattern, values);
+        return new TextFormatter(locale, false).format(pattern, values);
+    }
+
+    public static String formatDefault(String key, Object... values) {
+        return format(key, key, defaultLocale, values);
+    }
+
+    public static String formatDefault(String key, String defaultValue, Object... values) {
+        return format(key, defaultValue, defaultLocale, values);
     }
 
     // region single
@@ -246,7 +254,6 @@ public class Bundle {
 
     public static void kick(NetConnection connection, String locale, long duration, String key) {
         new KickBuilder(connection, locale).add(key).kick(duration);
-        ;
     }
 
     public static void kick(NetConnection connection, String locale, long duration, String key, Object... values) {

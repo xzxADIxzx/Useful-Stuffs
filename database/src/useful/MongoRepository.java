@@ -10,6 +10,7 @@ import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
 import com.mongodb.client.model.changestream.*;
+import org.bson.Document;
 import org.bson.codecs.configuration.*;
 import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
@@ -308,6 +309,19 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
 
     public void index(Bson keys, IndexOptions options) {
         collection.createIndex(keys, options);
+    }
+
+    // endregion
+    // region ID
+
+    // returns the next ID for a document
+    public int generateNextID(String field) {
+        var document = collection.find(Document.class)
+                .sort(Sorts.descending(field))
+                .limit(1)
+                .first();
+
+        return document == null ? 0 : document.getInteger(field) + 1;
     }
 
     // endregion

@@ -24,18 +24,6 @@ public class KickBuilder {
         return this;
     }
 
-    public KickBuilder add(boolean value, String key) {
-        if (value)
-            this.reason.append(Bundle.get(key, locale));
-        return this;
-    }
-
-    public KickBuilder add(boolean value, String key, Object... values) {
-        if (value)
-            this.reason.append(Bundle.format(key, locale, values));
-        return this;
-    }
-
     public void kick() {
         con.kick(reason.toString(), 0L);
     }
