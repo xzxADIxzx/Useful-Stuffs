@@ -315,6 +315,11 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // region ID
 
     // returns the next ID for a document
+    public int generateNextID() {
+        return generateNextID("id");
+    }
+
+    // returns the next ID for a document
     public int generateNextID(String field) {
         var document = collection.find(Document.class)
                 .sort(Sorts.descending(field))
