@@ -1,8 +1,6 @@
 package useful;
 
-import arc.func.Boolf;
-import arc.func.Cons;
-import arc.func.Cons2;
+import arc.func.*;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Threads;
@@ -36,11 +34,19 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
         return get(Filters.eq(field, value), defaultDocument);
     }
 
+    public T get(String field, Object value, Prov<T> defaultDocument) {
+        return get(Filters.eq(field, value), defaultDocument);
+    }
+
     public T getAnd(String field1, Object value1, String field2, Object value2) {
         return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)));
     }
 
     public T getAnd(String field1, Object value1, String field2, Object value2, T defaultDocument) {
+        return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), defaultDocument);
+    }
+
+    public T getAnd(String field1, Object value1, String field2, Object value2, Prov<T> defaultDocument) {
         return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), defaultDocument);
     }
 
@@ -52,11 +58,19 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
         return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), defaultDocument);
     }
 
+    public T getAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, Prov<T> defaultDocument) {
+        return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), defaultDocument);
+    }
+
     public T getOr(String field1, Object value1, String field2, Object value2) {
         return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)));
     }
 
     public T getOr(String field1, Object value1, String field2, Object value2, T defaultDocument) {
+        return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), defaultDocument);
+    }
+
+    public T getOr(String field1, Object value1, String field2, Object value2, Prov<T> defaultDocument) {
         return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), defaultDocument);
     }
 
@@ -68,13 +82,22 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
         return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), defaultDocument);
     }
 
+    public T getOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, Prov<T> defaultDocument) {
+        return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), defaultDocument);
+    }
+
     public T get(Bson filter) {
-        return get(filter, null);
+        return collection.find(filter).first();
     }
 
     public T get(Bson filter, T defaultDocument) {
         var document = collection.find(filter).first();
         return document != null ? document : defaultDocument;
+    }
+
+    public T get(Bson filter, Prov<T> defaultDocument) {
+        var document = collection.find(filter).first();
+        return document != null ? document : defaultDocument.get();
     }
 
     // endregion
