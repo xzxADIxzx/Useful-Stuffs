@@ -14,7 +14,6 @@ import org.bson.conversions.Bson;
 
 import java.util.concurrent.TimeUnit;
 
-@SuppressWarnings("unchecked")
 public record MongoRepository<T>(MongoCollection<T> collection) {
 
     public static final CodecRegistry defaultRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
@@ -24,66 +23,6 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     }
 
     // region get
-
-    public T get(String field, Object value) {
-        return get(Filters.eq(field, value));
-    }
-
-    public T get(String field, Object value, T defaultDocument) {
-        return get(Filters.eq(field, value), defaultDocument);
-    }
-
-    public T get(String field, Object value, Prov<T> defaultDocument) {
-        return get(Filters.eq(field, value), defaultDocument);
-    }
-
-    public T getAnd(String field1, Object value1, String field2, Object value2) {
-        return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)));
-    }
-
-    public T getAnd(String field1, Object value1, String field2, Object value2, T defaultDocument) {
-        return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), defaultDocument);
-    }
-
-    public T getAnd(String field1, Object value1, String field2, Object value2, Prov<T> defaultDocument) {
-        return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), defaultDocument);
-    }
-
-    public T getAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
-        return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
-    }
-
-    public T getAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, T defaultDocument) {
-        return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), defaultDocument);
-    }
-
-    public T getAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, Prov<T> defaultDocument) {
-        return get(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), defaultDocument);
-    }
-
-    public T getOr(String field1, Object value1, String field2, Object value2) {
-        return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)));
-    }
-
-    public T getOr(String field1, Object value1, String field2, Object value2, T defaultDocument) {
-        return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), defaultDocument);
-    }
-
-    public T getOr(String field1, Object value1, String field2, Object value2, Prov<T> defaultDocument) {
-        return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), defaultDocument);
-    }
-
-    public T getOr(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
-        return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
-    }
-
-    public T getOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, T defaultDocument) {
-        return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), defaultDocument);
-    }
-
-    public T getOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, Prov<T> defaultDocument) {
-        return get(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), defaultDocument);
-    }
 
     public T get(Bson filter) {
         return collection.find(filter).first();
@@ -106,46 +45,6 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
         collection.insertOne(document);
     }
 
-    public boolean replace(String field, Object value, T document) {
-        return replace(Filters.eq(field, value), document);
-    }
-
-    public boolean replace(String field, Object value, T document, boolean upsert) {
-        return replace(Filters.eq(field, value), document, upsert);
-    }
-
-    public boolean replaceAnd(String field1, Object value1, String field2, Object value2, T document) {
-        return replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), document);
-    }
-
-    public boolean replaceAnd(String field1, Object value1, String field2, Object value2, T document, boolean upsert) {
-        return replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)), document, upsert);
-    }
-
-    public boolean replaceAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document) {
-        return replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document);
-    }
-
-    public boolean replaceAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document, boolean upsert) {
-        return replace(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document, upsert);
-    }
-
-    public boolean replaceOr(String field1, Object value1, String field2, Object value2, T document) {
-        return replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), document);
-    }
-
-    public boolean replaceOr(String field1, Object value1, String field2, Object value2, T document, boolean upsert) {
-        return replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)), document, upsert);
-    }
-
-    public boolean replaceOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document) {
-        return replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document);
-    }
-
-    public boolean replaceOr(String field1, Object value1, String field2, Object value2, String field3, Object value3, T document, boolean upsert) {
-        return replace(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)), document, upsert);
-    }
-
     public boolean replace(Bson filter, T value) {
         return replace(filter, value, true);
     }
@@ -156,26 +55,6 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
 
     // endregion
     // region delete
-
-    public T delete(String field, Object value) {
-        return delete(Filters.eq(field, value));
-    }
-
-    public T deleteAnd(String field1, Object value1, String field2, Object value2) {
-        return delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2)));
-    }
-
-    public T deleteAnd(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
-        return delete(Filters.and(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
-    }
-
-    public T deleteOr(String field1, Object value1, String field2, Object value2) {
-        return delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2)));
-    }
-
-    public T deleteOr(String field1, Object value1, String field2, Object value2, String field3, Object value3) {
-        return delete(Filters.or(Filters.eq(field1, value1), Filters.eq(field2, value2), Filters.eq(field3, value3)));
-    }
 
     public T delete(Bson filter) {
         return collection.findOneAndDelete(filter);
@@ -354,9 +233,13 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // endregion
     // region get field
 
-    public <T> T getField(String field, String value, String key, T defaultValue) {
-        var document = collection.find(Filters.eq(field, value), Document.class).first();
-        return document != null && document.containsKey(key) ? (T) document.get(key) : defaultValue;
+    public String getField(Bson filter, String key) {
+        return getField(filter, key, null);
+    }
+
+    public String getField(Bson filter, String key, Object defaultValue) {
+        var document = collection.find(filter, Document.class).first();
+        return document != null && document.containsKey(key) ? String.valueOf(document.get(key)) : String.valueOf(defaultValue);
     }
 
     // endregion
