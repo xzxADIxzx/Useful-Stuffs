@@ -2,8 +2,7 @@ package useful;
 
 import arc.func.*;
 import arc.struct.Seq;
-import arc.util.Log;
-import arc.util.Threads;
+import arc.util.*;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.*;
 import com.mongodb.client.model.*;
@@ -14,8 +13,8 @@ import org.bson.codecs.pojo.PojoCodecProvider;
 import org.bson.conversions.Bson;
 
 import java.util.concurrent.TimeUnit;
-import java.util.function.*;
 
+@SuppressWarnings("unchecked")
 public record MongoRepository<T>(MongoCollection<T> collection) {
 
     public static final CodecRegistry defaultRegistry = CodecRegistries.fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), CodecRegistries.fromProviders(PojoCodecProvider.builder().automatic(true).build()));
@@ -352,13 +351,12 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
         return document == null ? defaultValue : document.getInteger(key, defaultValue) + 1;
     }
 
-    public <T> T getID(String field, String value, String key) {
-        return getID(field, value, key, null);
-    }
+    // endregion
+    // region get field
 
-    public <T> T getID(String field, String value, String key, T defaultValue) {
+    public <T> T getField(String field, String value, String key, T defaultValue) {
         var document = collection.find(Filters.eq(field, value), Document.class).first();
-        return document == null ? defaultValue : document.get(key, defaultValue);
+        return document != null && document.containsKey(key) ? (T) document.get(key) : defaultValue;
     }
 
     // endregion
