@@ -352,13 +352,13 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
         return document == null ? defaultValue : document.getInteger(key, defaultValue) + 1;
     }
 
-    public int getID(String field, String value, String key) {
-        return getID(field, value, key, -1);
+    public <T> T getID(String field, String value, String key) {
+        return getID(field, value, key, null);
     }
 
-    public int getID(String field, String value, String key, int defaultValue) {
+    public <T> T getID(String field, String value, String key, T defaultValue) {
         var document = collection.find(Filters.eq(field, value), Document.class).first();
-        return document == null ? defaultValue : document.getInteger(key, defaultValue);
+        return document == null ? defaultValue : document.get(key, defaultValue);
     }
 
     // endregion
