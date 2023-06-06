@@ -338,18 +338,27 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // region ID
 
     // returns the next ID for a document
-    public int generateNextID() {
-        return generateNextID("id");
+    public int generateNextID(String key) {
+        return generateNextID(key, 0);
     }
 
     // returns the next ID for a document
-    public int generateNextID(String field) {
+    public int generateNextID(String key, int defaultValue) {
         var document = collection.find(Document.class)
-                .sort(Sorts.descending(field))
+                .sort(Sorts.descending(key))
                 .limit(1)
                 .first();
 
-        return document == null ? 0 : document.getInteger(field, 0) + 1;
+        return document == null ? defaultValue : document.getInteger(key, defaultValue) + 1;
+    }
+
+    public int getID(String field, String value, String key) {
+        return getID(field, value, key, -1);
+    }
+
+    public int getID(String field, String value, String key, int defaultValue) {
+        var document = collection.find(Filters.eq(field, value), Document.class).first();
+        return document == null ? defaultValue : document.getInteger(key, defaultValue);
     }
 
     // endregion
