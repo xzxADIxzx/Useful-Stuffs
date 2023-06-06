@@ -349,7 +349,7 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
                 .limit(1)
                 .first();
 
-        return document == null ? 0 : document.getInteger(field) + 1;
+        return document == null ? 0 : document.getInteger(field, 0) + 1;
     }
 
     // endregion
