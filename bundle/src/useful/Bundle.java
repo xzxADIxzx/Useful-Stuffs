@@ -151,7 +151,7 @@ public class Bundle {
         var pattern = get(key, defaultValue, locale);
         if (values.length == 0) return pattern;
 
-        return new TextFormatter(locale, false).format(pattern, values);
+        return new TextFormatter(locale, true).format(pattern, values);
     }
 
     public static String formatDefault(String key, Object... values) {
