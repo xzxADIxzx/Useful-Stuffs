@@ -216,30 +216,31 @@ public record MongoRepository<T>(MongoCollection<T> collection) {
     // region ID
 
     // returns the next ID for a document
-    public int generateNextID(String key) {
-        return generateNextID(key, 0);
+    public int generateNextID(String field) {
+        return generateNextID(field, 0);
     }
 
     // returns the next ID for a document
-    public int generateNextID(String key, int defaultValue) {
+    public int generateNextID(String field, int defaultValue) {
         var document = collection.find(Document.class)
-                .sort(Sorts.descending(key))
+                .sort(Sorts.descending(field))
                 .limit(1)
                 .first();
 
-        return document == null ? defaultValue : document.getInteger(key, defaultValue) + 1;
+        return document == null ? defaultValue : document.getInteger(field, defaultValue) + 1;
     }
 
     // endregion
     // region get field
 
-    public String getField(Bson filter, String key) {
-        return getField(filter, key, null);
+    public <T> T getField(Bson filter, String field) {
+        return getField(filter, field, null);
     }
 
-    public String getField(Bson filter, String key, Object defaultValue) {
+    @SuppressWarnings("unchecked")
+    public <T> T getField(Bson filter, String field, T defaultValue) {
         var document = collection.find(filter, Document.class).first();
-        return document != null && document.containsKey(key) ? String.valueOf(document.get(key)) : String.valueOf(defaultValue);
+        return document != null && document.containsKey(field) ? (T) document.get(field) : defaultValue;
     }
 
     // endregion
