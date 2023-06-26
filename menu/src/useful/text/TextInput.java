@@ -4,11 +4,9 @@ import arc.func.*;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.ui.Menus;
-import org.w3c.dom.Text;
 import useful.*;
 import useful.State.StateKey;
 import useful.text.TextInput.TextInputView;
-
 
 public class TextInput extends Interface<TextInputView> {
 
