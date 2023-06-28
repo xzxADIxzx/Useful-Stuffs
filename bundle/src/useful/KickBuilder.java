@@ -3,7 +3,6 @@ package useful;
 import mindustry.net.NetConnection;
 
 public class KickBuilder {
-
     public final NetConnection con;
     public final String locale;
 

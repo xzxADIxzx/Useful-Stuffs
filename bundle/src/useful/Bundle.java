@@ -7,8 +7,14 @@ import arc.util.*;
 import mindustry.gen.*;
 import mindustry.mod.Mod;
 import mindustry.net.NetConnection;
+import net.time4j.PrettyTime;
+import net.time4j.format.TextWidth;
 
+import java.time.Duration;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalAmount;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static mindustry.Vars.*;
 
@@ -162,6 +168,92 @@ public class Bundle {
         return format(key, defaultValue, defaultLocale, values);
     }
 
+    // region duration
+
+    public static String formatDuration(long duration) {
+        return formatDuration(duration, TimeUnit.SECONDS);
+    }
+
+    public static String formatDuration(Player player, long duration) {
+        return formatDuration(player, duration, TimeUnit.SECONDS);
+    }
+
+    public static String formatDuration(LocaleProvider provider, long duration) {
+        return formatDuration(provider, duration, TimeUnit.SECONDS);
+    }
+
+    public static String formatDuration(String locale, long duration) {
+        return formatDuration(locale, duration, TimeUnit.SECONDS);
+    }
+
+    public static String formatDuration(Locale locale, long duration) {
+        return formatDuration(locale, duration, TimeUnit.SECONDS);
+    }
+
+
+    public static String formatDuration(long duration, TimeUnit minUnit) {
+        return formatDuration(Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    }
+
+    public static String formatDuration(Player player, long duration, TimeUnit minUnit) {
+        return formatDuration(player, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    }
+
+    public static String formatDuration(LocaleProvider provider, long duration, TimeUnit minUnit) {
+        return formatDuration(provider, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    }
+
+    public static String formatDuration(String locale, long duration, TimeUnit minUnit) {
+        return formatDuration(locale, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    }
+
+    public static String formatDuration(Locale locale, long duration, TimeUnit minUnit) {
+        return formatDuration(locale, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    }
+
+
+    public static String formatDuration(TemporalAmount duration) {
+        return formatDuration(defaultLocale, duration);
+    }
+
+    public static String formatDuration(Player player, TemporalAmount duration) {
+        return formatDuration(locale(player), duration);
+    }
+
+    public static String formatDuration(LocaleProvider provider, TemporalAmount duration) {
+        return formatDuration(provider.locale(), duration);
+    }
+
+    public static String formatDuration(String locale, TemporalAmount duration) {
+        return formatDuration(locale(locale), duration);
+    }
+
+    public static String formatDuration(Locale locale, TemporalAmount duration) {
+        return PrettyTime.of(locale).print(duration);
+    }
+
+
+    public static String formatDuration(TemporalAmount duration, TextWidth width) {
+        return formatDuration(defaultLocale, duration, width);
+    }
+
+    public static String formatDuration(Player player, TemporalAmount duration, TextWidth width) {
+        return formatDuration(locale(player), duration, width);
+    }
+
+    public static String formatDuration(LocaleProvider provider, TemporalAmount duration, TextWidth width) {
+        return formatDuration(provider.locale(), duration, width);
+    }
+
+    public static String formatDuration(String locale, TemporalAmount duration, TextWidth width) {
+        return formatDuration(locale(locale), duration, width);
+    }
+
+    public static String formatDuration(Locale locale, TemporalAmount duration, TextWidth width) {
+        return PrettyTime.of(locale).print(duration, width);
+    }
+
+    // endregion
     // region single
 
     public static void send(Player player, String key) {

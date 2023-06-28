@@ -7,7 +7,6 @@ import lombok.SneakyThrows;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
 
 public class AntiVpn {
     public static final Seq<Subnet> subnets = new Seq<>();
