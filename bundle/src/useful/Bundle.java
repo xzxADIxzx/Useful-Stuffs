@@ -11,9 +11,8 @@ import net.time4j.PrettyTime;
 import net.time4j.format.TextWidth;
 
 import java.text.*;
-import java.time.Duration;
-import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalAmount;
+import java.time.*;
+import java.time.temporal.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -89,10 +88,6 @@ public class Bundle {
         return has(key, locale(player));
     }
 
-    public static boolean has(String key, LocaleProvider provider) {
-        return has(key, provider.locale());
-    }
-
     public static boolean has(String key, String locale) {
         return has(key, locale(locale));
     }
@@ -115,10 +110,6 @@ public class Bundle {
 
     public static String get(String key, Player player) {
         return get(key, key, locale(player));
-    }
-
-    public static String get(String key, LocaleProvider provider) {
-        return get(key, key, provider.locale());
     }
 
     public static String get(String key, String locale) {
@@ -155,10 +146,6 @@ public class Bundle {
         return format(key, key, locale(player), values);
     }
 
-    public static String format(String key, LocaleProvider provider, Object... values) {
-        return format(key, key, provider.locale(), values);
-    }
-
     public static String format(String key, String locale, Object... values) {
         return format(key, key, locale(locale), values);
     }
@@ -191,10 +178,6 @@ public class Bundle {
         return formatDate(locale(player), date);
     }
 
-    public static String formatDate(LocaleProvider provider, Object date) {
-        return formatDate(provider.locale(), date);
-    }
-
     public static String formatDate(String locale, Object date) {
         return formatDate(locale(locale), date);
     }
@@ -209,10 +192,6 @@ public class Bundle {
 
     public static String formatDate(Player player, int dateStyle, Object date) {
         return formatDate(locale(player), dateStyle, date);
-    }
-
-    public static String formatDate(LocaleProvider provider, int dateStyle, Object date) {
-        return formatDate(provider.locale(), dateStyle, date);
     }
 
     public static String formatDate(String locale, int dateStyle, Object date) {
@@ -231,10 +210,6 @@ public class Bundle {
         return formatTime(locale(player), date);
     }
 
-    public static String formatTime(LocaleProvider provider, Object date) {
-        return formatTime(provider.locale(), date);
-    }
-
     public static String formatTime(String locale, Object date) {
         return formatTime(locale(locale), date);
     }
@@ -249,10 +224,6 @@ public class Bundle {
 
     public static String formatTime(Player player, int timeStyle, Object date) {
         return formatTime(locale(player), timeStyle, date);
-    }
-
-    public static String formatTime(LocaleProvider provider, int timeStyle, Object date) {
-        return formatTime(provider.locale(), timeStyle, date);
     }
 
     public static String formatTime(String locale, int timeStyle, Object date) {
@@ -271,10 +242,6 @@ public class Bundle {
         return formatDateTime(locale(player), date);
     }
 
-    public static String formatDateTime(LocaleProvider provider, Object date) {
-        return formatDateTime(provider.locale(), date);
-    }
-
     public static String formatDateTime(String locale, Object date) {
         return formatDateTime(locale(locale), date);
     }
@@ -289,10 +256,6 @@ public class Bundle {
 
     public static String formatDateTime(Player player, int dateStyle, int timeStyle, Object date) {
         return formatDateTime(locale(player), dateStyle, timeStyle, date);
-    }
-
-    public static String formatDateTime(LocaleProvider provider, int dateStyle, int timeStyle, Object date) {
-        return formatDateTime(provider.locale(), dateStyle, timeStyle, date);
     }
 
     public static String formatDateTime(String locale, int dateStyle, int timeStyle, Object date) {
@@ -314,10 +277,6 @@ public class Bundle {
         return formatDuration(player, duration, TimeUnit.SECONDS);
     }
 
-    public static String formatDuration(LocaleProvider provider, long duration) {
-        return formatDuration(provider, duration, TimeUnit.SECONDS);
-    }
-
     public static String formatDuration(String locale, long duration) {
         return formatDuration(locale, duration, TimeUnit.SECONDS);
     }
@@ -326,24 +285,20 @@ public class Bundle {
         return formatDuration(locale, duration, TimeUnit.SECONDS);
     }
 
-    public static String formatDuration(long duration, TimeUnit minUnit) {
-        return formatDuration(Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    public static String formatDuration(long duration, TimeUnit precision) {
+        return formatDuration(Duration.ofMillis(duration).truncatedTo(precision.toChronoUnit()));
     }
 
-    public static String formatDuration(Player player, long duration, TimeUnit minUnit) {
-        return formatDuration(player, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    public static String formatDuration(Player player, long duration, TimeUnit precision) {
+        return formatDuration(player, Duration.ofMillis(duration).truncatedTo(precision.toChronoUnit()));
     }
 
-    public static String formatDuration(LocaleProvider provider, long duration, TimeUnit minUnit) {
-        return formatDuration(provider, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    public static String formatDuration(String locale, long duration, TimeUnit precision) {
+        return formatDuration(locale, Duration.ofMillis(duration).truncatedTo(precision.toChronoUnit()));
     }
 
-    public static String formatDuration(String locale, long duration, TimeUnit minUnit) {
-        return formatDuration(locale, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
-    }
-
-    public static String formatDuration(Locale locale, long duration, TimeUnit minUnit) {
-        return formatDuration(locale, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
+    public static String formatDuration(Locale locale, long duration, TimeUnit precision) {
+        return formatDuration(locale, Duration.ofMillis(duration).truncatedTo(precision.toChronoUnit()));
     }
 
     public static String formatDuration(TemporalAmount duration) {
@@ -352,10 +307,6 @@ public class Bundle {
 
     public static String formatDuration(Player player, TemporalAmount duration) {
         return formatDuration(locale(player), duration);
-    }
-
-    public static String formatDuration(LocaleProvider provider, TemporalAmount duration) {
-        return formatDuration(provider.locale(), duration);
     }
 
     public static String formatDuration(String locale, TemporalAmount duration) {
@@ -374,16 +325,47 @@ public class Bundle {
         return formatDuration(locale(player), duration, width);
     }
 
-    public static String formatDuration(LocaleProvider provider, TemporalAmount duration, TextWidth width) {
-        return formatDuration(provider.locale(), duration, width);
-    }
-
     public static String formatDuration(String locale, TemporalAmount duration, TextWidth width) {
         return formatDuration(locale(locale), duration, width);
     }
 
     public static String formatDuration(Locale locale, TemporalAmount duration, TextWidth width) {
         return PrettyTime.of(locale).print(duration, width);
+    }
+
+    // endregion
+    // region relative
+
+    public static String formatRelative(long timestamp) {
+        return formatRelative(defaultLocale, timestamp);
+    }
+
+    public static String formatRelative(Player player, long timestamp) {
+        return formatRelative(locale(player), timestamp);
+    }
+
+    public static String formatRelative(String locale, long timestamp) {
+        return formatRelative(locale(locale), timestamp);
+    }
+
+    public static String formatRelative(Locale locale, long timestamp) {
+        return formatRelative(locale, timestamp, TimeUnit.MINUTES);
+    }
+
+    public static String formatRelative(long timestamp, TimeUnit precision) {
+        return formatRelative(defaultLocale, timestamp, precision);
+    }
+
+    public static String formatRelative(Player player, long timestamp, TimeUnit precision) {
+        return formatRelative(locale(player), timestamp, precision);
+    }
+
+    public static String formatRelative(String locale, long timestamp, TimeUnit precision) {
+        return formatRelative(locale(locale), timestamp, precision);
+    }
+
+    public static String formatRelative(Locale locale, long timestamp, TimeUnit precision) {
+        return PrettyTime.of(locale).printRelative(Instant.ofEpochMilli(timestamp).truncatedTo(precision.toChronoUnit()), ZoneId.systemDefault());
     }
 
     // endregion
@@ -553,11 +535,4 @@ public class Bundle {
     }
 
     // endregion
-
-    /**
-     * Used in some player data classes to shorten code.
-     */
-    public interface LocaleProvider {
-        Locale locale();
-    }
 }
