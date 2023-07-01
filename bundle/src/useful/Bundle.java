@@ -10,6 +10,7 @@ import mindustry.net.NetConnection;
 import net.time4j.PrettyTime;
 import net.time4j.format.TextWidth;
 
+import java.text.*;
 import java.time.Duration;
 import java.time.temporal.TemporalAccessor;
 import java.time.temporal.TemporalAmount;
@@ -66,14 +67,19 @@ public class Bundle {
         Log.info("Loaded @ locales, default is @.", supported.size, defaultLocale);
     }
 
+    // region locale
+
     public static Locale locale(Player player) {
         return locale(player.locale);
     }
 
     public static Locale locale(String code) {
-        var locale = supported.find(loc -> code.startsWith(loc.toString())); // toString because Mindustry uses _
+        var locale = supported.find(loc -> code.startsWith(loc.toString()));
         return locale == null ? defaultLocale : locale;
     }
+
+    // endregion
+    // region has
 
     public static boolean has(String key) {
         return has(key, defaultLocale);
@@ -95,6 +101,9 @@ public class Bundle {
         if (locale.toString().equals("router")) return true;
         return bundles.containsKey(locale) && bundles.get(locale).containsKey(key);
     }
+
+    // endregion
+    // region get
 
     public static String getDefault(String key) {
         return get(key, defaultLocale);
@@ -131,6 +140,17 @@ public class Bundle {
         return bundle.get(key, defaultBundle.get(key, defaultValue));
     }
 
+    // endregion
+    // region format
+
+    public static String formatDefault(String key, Object... values) {
+        return format(key, key, defaultLocale, values);
+    }
+
+    public static String formatDefault(String key, String defaultValue, Object... values) {
+        return format(key, defaultValue, defaultLocale, values);
+    }
+
     public static String format(String key, Player player, Object... values) {
         return format(key, key, locale(player), values);
     }
@@ -160,14 +180,130 @@ public class Bundle {
         return new TextFormatter(locale, true).format(pattern, values);
     }
 
-    public static String formatDefault(String key, Object... values) {
-        return format(key, key, defaultLocale, values);
+    // endregion
+    // region date/time
+
+    public static String formatDate(Object date) {
+        return formatDate(defaultLocale, date);
     }
 
-    public static String formatDefault(String key, String defaultValue, Object... values) {
-        return format(key, defaultValue, defaultLocale, values);
+    public static String formatDate(Player player, Object date) {
+        return formatDate(locale(player), date);
     }
 
+    public static String formatDate(LocaleProvider provider, Object date) {
+        return formatDate(provider.locale(), date);
+    }
+
+    public static String formatDate(String locale, Object date) {
+        return formatDate(locale(locale), date);
+    }
+
+    public static String formatDate(Locale locale, Object date) {
+        return formatDate(locale, DateFormat.DEFAULT, date);
+    }
+
+    public static String formatDate(int dateStyle, Object date) {
+        return formatDate(defaultLocale, dateStyle, date);
+    }
+
+    public static String formatDate(Player player, int dateStyle, Object date) {
+        return formatDate(locale(player), dateStyle, date);
+    }
+
+    public static String formatDate(LocaleProvider provider, int dateStyle, Object date) {
+        return formatDate(provider.locale(), dateStyle, date);
+    }
+
+    public static String formatDate(String locale, int dateStyle, Object date) {
+        return formatDate(locale(locale), dateStyle, date);
+    }
+
+    public static String formatDate(Locale locale, int dateStyle, Object date) {
+        return SimpleDateFormat.getDateInstance(dateStyle, locale).format(date);
+    }
+
+    public static String formatTime(Object date) {
+        return formatTime(defaultLocale, date);
+    }
+
+    public static String formatTime(Player player, Object date) {
+        return formatTime(locale(player), date);
+    }
+
+    public static String formatTime(LocaleProvider provider, Object date) {
+        return formatTime(provider.locale(), date);
+    }
+
+    public static String formatTime(String locale, Object date) {
+        return formatTime(locale(locale), date);
+    }
+
+    public static String formatTime(Locale locale, Object date) {
+        return formatTime(locale, DateFormat.DEFAULT, date);
+    }
+
+    public static String formatTime(int timeStyle, Object date) {
+        return formatTime(defaultLocale, timeStyle, date);
+    }
+
+    public static String formatTime(Player player, int timeStyle, Object date) {
+        return formatTime(locale(player), timeStyle, date);
+    }
+
+    public static String formatTime(LocaleProvider provider, int timeStyle, Object date) {
+        return formatTime(provider.locale(), timeStyle, date);
+    }
+
+    public static String formatTime(String locale, int timeStyle, Object date) {
+        return formatTime(locale(locale), timeStyle, date);
+    }
+
+    public static String formatTime(Locale locale, int timeStyle, Object date) {
+        return SimpleDateFormat.getTimeInstance(timeStyle, locale).format(date);
+    }
+
+    public static String formatDateTime(Object date) {
+        return formatDateTime(defaultLocale, date);
+    }
+
+    public static String formatDateTime(Player player, Object date) {
+        return formatDateTime(locale(player), date);
+    }
+
+    public static String formatDateTime(LocaleProvider provider, Object date) {
+        return formatDateTime(provider.locale(), date);
+    }
+
+    public static String formatDateTime(String locale, Object date) {
+        return formatDateTime(locale(locale), date);
+    }
+
+    public static String formatDateTime(Locale locale, Object date) {
+        return formatDateTime(locale, DateFormat.DEFAULT, DateFormat.DEFAULT, date);
+    }
+
+    public static String formatDateTime(int dateStyle, int timeStyle, Object date) {
+        return formatDateTime(defaultLocale, dateStyle, timeStyle, date);
+    }
+
+    public static String formatDateTime(Player player, int dateStyle, int timeStyle, Object date) {
+        return formatDateTime(locale(player), dateStyle, timeStyle, date);
+    }
+
+    public static String formatDateTime(LocaleProvider provider, int dateStyle, int timeStyle, Object date) {
+        return formatDateTime(provider.locale(), dateStyle, timeStyle, date);
+    }
+
+    public static String formatDateTime(String locale, int dateStyle, int timeStyle, Object date) {
+        return formatDateTime(locale(locale), dateStyle, timeStyle, date);
+    }
+
+    public static String formatDateTime(Locale locale, int dateStyle, int timeStyle, Object date) {
+        return SimpleDateFormat.getDateTimeInstance(dateStyle, timeStyle, locale).format(date);
+    }
+
+    // endregion
     // region duration
 
     public static String formatDuration(long duration) {
@@ -190,7 +326,6 @@ public class Bundle {
         return formatDuration(locale, duration, TimeUnit.SECONDS);
     }
 
-
     public static String formatDuration(long duration, TimeUnit minUnit) {
         return formatDuration(Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
     }
@@ -211,7 +346,6 @@ public class Bundle {
         return formatDuration(locale, Duration.ofMillis(duration).truncatedTo(minUnit.toChronoUnit()));
     }
 
-
     public static String formatDuration(TemporalAmount duration) {
         return formatDuration(defaultLocale, duration);
     }
@@ -231,7 +365,6 @@ public class Bundle {
     public static String formatDuration(Locale locale, TemporalAmount duration) {
         return PrettyTime.of(locale).print(duration);
     }
-
 
     public static String formatDuration(TemporalAmount duration, TextWidth width) {
         return formatDuration(defaultLocale, duration, width);
