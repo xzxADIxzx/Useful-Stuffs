@@ -200,7 +200,7 @@ public class Bundle {
     }
 
     public static String formatDate(Locale locale, Object date) {
-        return formatDate(locale, DateFormat.DEFAULT, date);
+        return formatDate(locale, DateFormat.LONG, date);
     }
 
     public static String formatDate(int dateStyle, Object date) {
@@ -240,7 +240,7 @@ public class Bundle {
     }
 
     public static String formatTime(Locale locale, Object date) {
-        return formatTime(locale, DateFormat.DEFAULT, date);
+        return formatTime(locale, DateFormat.SHORT, date);
     }
 
     public static String formatTime(int timeStyle, Object date) {
@@ -280,7 +280,7 @@ public class Bundle {
     }
 
     public static String formatDateTime(Locale locale, Object date) {
-        return formatDateTime(locale, DateFormat.DEFAULT, DateFormat.DEFAULT, date);
+        return formatDateTime(locale, DateFormat.LONG, DateFormat.SHORT, date);
     }
 
     public static String formatDateTime(int dateStyle, int timeStyle, Object date) {
