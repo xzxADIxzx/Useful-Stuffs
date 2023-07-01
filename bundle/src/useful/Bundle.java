@@ -352,7 +352,7 @@ public class Bundle {
     }
 
     public static String formatRelative(Locale locale, long timestamp) {
-        return formatRelative(locale, timestamp, TimeUnit.MINUTES);
+        return formatRelative(locale, timestamp, TimeUnit.SECONDS);
     }
 
     public static String formatRelative(long timestamp, TimeUnit precision) {
