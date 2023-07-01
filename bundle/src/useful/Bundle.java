@@ -7,11 +7,14 @@ import arc.util.*;
 import mindustry.gen.*;
 import mindustry.mod.Mod;
 import mindustry.net.NetConnection;
-import net.time4j.PrettyTime;
+import net.time4j.*;
 import net.time4j.format.TextWidth;
+import net.time4j.scale.TimeScale;
+import net.time4j.tz.Timezone;
 
 import java.text.*;
 import java.time.*;
+import java.time.Duration;
 import java.time.temporal.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -365,7 +368,7 @@ public class Bundle {
     }
 
     public static String formatRelative(Locale locale, long timestamp, TimeUnit precision) {
-        return PrettyTime.of(locale).printRelative(Instant.ofEpochMilli(timestamp).truncatedTo(precision.toChronoUnit()), ZoneId.systemDefault());
+        return PrettyTime.of(locale).printRelative(Moment.of(Math.floorDiv(timestamp, 1000L), TimeScale.POSIX), Timezone.ofSystem(), precision);
     }
 
     // endregion
