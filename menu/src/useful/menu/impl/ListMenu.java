@@ -95,7 +95,7 @@ public class ListMenu extends Menu {
     }
 
     public <T> MenuView show(Player player, int page, Func<Integer, String> title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
-        return show(player, State.create(PAGE, page).put(TITLE, title).put(CONTENT, content).put(FORMATTER, formatter), parent);
+        return show(player, State.create(PAGE, page).put(TITLE, title).put(CONTENT, content).put(FORMATTER, formatter));
     }
 
 
