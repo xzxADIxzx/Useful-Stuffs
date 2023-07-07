@@ -7,4 +7,5 @@ dependencies {
     compileOnly "com.github.anuken.mindustryjitpack:core:$mindustryVersion"
 
     implementation "net.time4j:time4j-base:5.9.1"
+    implementation "org.ocpsoft.prettytime:prettytime:5.0.7.Final"
 }

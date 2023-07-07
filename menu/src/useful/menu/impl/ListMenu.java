@@ -1,11 +1,10 @@
 package useful.menu.impl;
 
-import arc.func.Cons3;
-import arc.func.Func;
+import arc.func.*;
 import arc.struct.Seq;
+import mindustry.entities.EntityGroup;
 import mindustry.gen.Player;
-import useful.Action;
-import useful.State;
+import useful.*;
 import useful.State.StateKey;
 import useful.menu.Menu;
 
@@ -40,20 +39,36 @@ public class ListMenu extends Menu {
 
     // region content values
 
-    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
-        return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, String title, Iterable<T> values, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, page, pages, title, newPage -> format(wrap(values), newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, Func<Integer, String> title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
-        return show(player, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, Func<Integer, String> title, Iterable<T> values, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, page, pages, title, newPage -> format(wrap(values), newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, String title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
-        return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, String title, Iterable<T> values, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, parent, page, pages, title, newPage -> format(wrap(values), newPage, valuesPerPage, cons));
     }
 
-    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, Func<Integer, String> title, Seq<T> values, Cons3<StringBuilder, Integer, T> cons) {
-        return show(player, parent, page, pages, title, newPage -> format(values, newPage, valuesPerPage, cons));
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, Func<Integer, String> title, Iterable<T> values, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, parent, page, pages, title, newPage -> format(wrap(values), newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, String title, Prov<Iterable<T>> values, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, page, pages, title, newPage -> format(wrap(values.get()), newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, int page, int pages, int valuesPerPage, Func<Integer, String> title, Prov<Iterable<T>> values, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, page, pages, title, newPage -> format(wrap(values.get()), newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, String title, Prov<Iterable<T>> values, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, parent, page, pages, title, newPage -> format(wrap(values.get()), newPage, valuesPerPage, cons));
+    }
+
+    public <T> MenuView show(Player player, MenuView parent, int page, int pages, int valuesPerPage, Func<Integer, String> title, Prov<Iterable<T>> values, Cons3<StringBuilder, Integer, T> cons) {
+        return show(player, parent, page, pages, title, newPage -> format(wrap(values.get()), newPage, valuesPerPage, cons));
     }
 
     // endregion
@@ -78,7 +93,14 @@ public class ListMenu extends Menu {
     // endregion
     // region utils
 
-    private <T> String format(Seq<T> values, int page, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
+    private static <T> Seq<T> wrap(Iterable<T> values) {
+        if (values instanceof Seq<T> seq)
+            return seq;
+
+        return Seq.with(values);
+    }
+
+    private static <T> String format(Seq<T> values, int page, int valuesPerPage, Cons3<StringBuilder, Integer, T> cons) {
         var builder = new StringBuilder();
 
         for (int i = valuesPerPage * (page - 1); i < Math.min(valuesPerPage * page, values.size); i++) {

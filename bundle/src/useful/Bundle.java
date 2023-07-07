@@ -13,9 +13,8 @@ import net.time4j.scale.TimeScale;
 import net.time4j.tz.Timezone;
 
 import java.text.*;
-import java.time.*;
 import java.time.Duration;
-import java.time.temporal.*;
+import java.time.temporal.TemporalAmount;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
