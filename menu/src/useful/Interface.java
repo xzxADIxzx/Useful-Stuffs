@@ -31,12 +31,16 @@ public abstract class Interface<V extends View> {
     // endregion
     // region show
 
+    public V show(Player player) {
+        return show(player, State.create());
+    }
+
     public V show(Player player, State state) {
         return show(player, state, null);
     }
 
-    public V show(Player player) {
-        return show(player, State.create());
+    public V show(View view) {
+        return show(view.player, view.state, view.parent);
     }
 
     public <T> V show(Player player, StateKey<T> key, T value) {
@@ -49,6 +53,22 @@ public abstract class Interface<V extends View> {
 
     public <T1, T2, T3> V show(Player player, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2, StateKey<T3> key3, T3 value3) {
         return show(player, State.create(key1, value1).put(key2, value2).put(key3, value3));
+    }
+
+    public V open(View parent) {
+        return show(parent.player, parent.state, parent);
+    }
+
+    public <T> V open(View parent, StateKey<T> key, T value) {
+        return show(parent.player, parent.state.put(key, value), parent);
+    }
+
+    public <T1, T2> V open(View parent, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2) {
+        return show(parent.player, parent.state.put(key1, value1).put(key2, value2), parent);
+    }
+
+    public <T1, T2, T3> V open(View parent, StateKey<T1> key1, T1 value1, StateKey<T2> key2, T2 value2, StateKey<T3> key3, T3 value3) {
+        return show(parent.player, parent.state.put(key1, value1).put(key2, value2).put(key3, value3), parent);
     }
 
     // region transform

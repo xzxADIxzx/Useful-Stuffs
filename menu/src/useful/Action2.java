@@ -25,7 +25,7 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
     }
 
     static <V extends View, T> Action2<V, T> open(Interface<?> next) {
-        return both(hide(), (view, value) -> next.show(view.player, view.state, view));
+        return both(hide(), (view, value) -> next.open(view));
     }
 
     static <V extends View, T> Action2<V, T> openWith(Interface<?> next, StateKey<T> key) {
@@ -37,11 +37,14 @@ public interface Action2<V extends View, T> extends Cons2<V, T> {
     }
 
     static <V extends View, T> Action2<V, T> back() {
-        return both(hide(), (view, value) -> Optional.ofNullable(view.parent).ifPresent(parent -> parent.getInterface().show(view.player, view.state, parent.parent)));
+        return both(hide(), (view, value) -> {
+            if (view.parent == null) return;
+            view.parent.getInterface().show(view.player, view.state, view.parent.parent);
+        });
     }
 
     static <V extends View, T> Action2<V, T> show() {
-        return (view, value) -> view.getInterface().show(view.player, view.state, view.parent);
+        return (view, value) -> view.getInterface().show(view);
     }
 
     static <V extends View, T> Action2<V, T> showWith(StateKey<T> key) {

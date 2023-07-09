@@ -29,7 +29,7 @@ public class ListMenu extends Menu {
     public ListMenu(int maxPerPage, String leftButton, String rightButton, String pageButton, String closeButton) {
         this.maxPerPage = maxPerPage;
         this.transform(menu -> {
-            var content = (Seq<Object>) menu.state.get(CONTENT).get(menu.player);
+            var content = (Seq<Object>) menu.state.get(CONTENT).get(menu);
             var formatter = (Cons3<StringBuilder, Integer, Object>) menu.state.get(FORMATTER);
 
             int pages = Math.max(1, Mathf.ceil((float) content.size / maxPerPage));
@@ -66,11 +66,11 @@ public class ListMenu extends Menu {
         return show(player, 1, title, menu -> content.get(), formatter);
     }
 
-    public <T> MenuView show(Player player, String title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
+    public <T> MenuView show(Player player, String title, Func<MenuView, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
         return show(player, 1, newPage -> title, content, formatter);
     }
 
-    public <T> MenuView show(Player player, Func<Integer, String> title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
+    public <T> MenuView show(Player player, Func<Integer, String> title, Func<MenuView, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
         return show(player, 1, title, content, formatter);
     }
 
@@ -90,11 +90,11 @@ public class ListMenu extends Menu {
         return show(player, page, title, menu -> content.get(), formatter);
     }
 
-    public <T> MenuView show(Player player, int page, String title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
+    public <T> MenuView show(Player player, int page, String title, Func<MenuView, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
         return show(player, page, newPage -> title, content, formatter);
     }
 
-    public <T> MenuView show(Player player, int page, Func<Integer, String> title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
+    public <T> MenuView show(Player player, int page, Func<Integer, String> title, Func<MenuView, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
         return show(player, State.create(PAGE, page).put(TITLE, title).put(CONTENT, content).put(FORMATTER, formatter));
     }
 
@@ -115,11 +115,11 @@ public class ListMenu extends Menu {
         return show(player, parent, 1, title, menu -> content.get(), formatter);
     }
 
-    public <T> MenuView show(Player player, MenuView parent, String title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
+    public <T> MenuView show(Player player, MenuView parent, String title, Func<MenuView, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
         return show(player, parent, 1, newPage -> title, content, formatter);
     }
 
-    public <T> MenuView show(Player player, MenuView parent, Func<Integer, String> title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
+    public <T> MenuView show(Player player, MenuView parent, Func<Integer, String> title, Func<MenuView, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
         return show(player, parent, 1, title, content, formatter);
     }
 
@@ -139,11 +139,11 @@ public class ListMenu extends Menu {
         return show(player, parent, page, title, menu -> content.get(), formatter);
     }
 
-    public <T> MenuView show(Player player, MenuView parent, int page, String title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
+    public <T> MenuView show(Player player, MenuView parent, int page, String title, Func<MenuView, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
         return show(player, parent, page, newPage -> title, content, formatter);
     }
 
-    public <T> MenuView show(Player player, MenuView parent, int page, Func<Integer, String> title, Func<Player, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
+    public <T> MenuView show(Player player, MenuView parent, int page, Func<Integer, String> title, Func<MenuView, Seq<T>> content, Cons3<StringBuilder, Integer, T> formatter) {
         return show(player, State.create(PAGE, page).put(TITLE, title).put(CONTENT, content).put(FORMATTER, formatter), parent);
     }
 

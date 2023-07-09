@@ -20,7 +20,7 @@ public interface Action<V extends View> extends Cons<V> {
     }
 
     static <V extends View> Action<V> open(Interface<?> next) {
-        return both(hide(), view -> next.show(view.player, view.state, view));
+        return both(hide(), next::open);
     }
 
     static <V extends View, T> Action<V> openWith(Interface<?> next, StateKey<T> key, T value) {
@@ -32,11 +32,14 @@ public interface Action<V extends View> extends Cons<V> {
     }
 
     static <V extends View> Action<V> back() {
-        return both(hide(), view -> Optional.ofNullable(view.parent).ifPresent(parent -> parent.getInterface().show(view.player, view.state, parent.parent)));
+        return both(hide(), view -> {
+            if (view.parent == null) return;
+            view.parent.getInterface().show(view.player, view.state, view.parent.parent);
+        });
     }
 
     static <V extends View> Action<V> show() {
-        return view -> view.getInterface().show(view.player, view.state, view.parent);
+        return view -> view.getInterface().show(view);
     }
 
     static <V extends View, T> Action<V> showWith(StateKey<T> key, T value) {
