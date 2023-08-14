@@ -17,7 +17,8 @@ subprojects {
 
 	repositories {
 		mavenCentral()
-		maven { url 'https://www.jitpack.io' }
+		maven { url "https://www.jitpack.io" }
+		maven { url "https://raw.githubusercontent.com/Zelaux/MindustryRepo/master/repository" }
 	}
 
 	java {
