@@ -1,5 +1,6 @@
 include 'bundle'
 include 'collections'
+include 'config'
 include 'cooldowns'
 include 'database'
 include 'effect'
