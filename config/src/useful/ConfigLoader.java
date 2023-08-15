@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class ConfigLoader {
 
@@ -14,9 +14,12 @@ public class ConfigLoader {
             .disableHtmlEscaping()
             .create();
 
-    public static <T> T load(Class<T> type, String file) {
+    public static <T> T load(Class<T> type, String path) {
+        return load(type, Path.of(path));
+    }
+
+    public static <T> T load(Class<T> type, Path path) {
         try {
-            var path = Paths.get(file);
             if (Files.exists(path))
                 return gson.fromJson(Files.readString(path), type);
 
@@ -28,4 +31,6 @@ public class ConfigLoader {
             throw new RuntimeException(e);
         }
     }
+
+
 }
