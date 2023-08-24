@@ -1,36 +1,40 @@
 package useful;
 
+import arc.files.Fi;
+import arc.util.serialization.Json;
+import arc.util.serialization.JsonWriter;
+import arc.util.serialization.JsonWriter.OutputType;
+import arc.util.serialization.Jval;
+import arc.util.serialization.Jval.Jformat;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static mindustry.Vars.dataDirectory;
+
 public class ConfigLoader {
 
-    public static final Gson gson = new GsonBuilder()
-            .setPrettyPrinting()
-            .serializeNulls()
-            .disableHtmlEscaping()
-            .create();
+    public static final Json json = new Json(OutputType.json) {{
+        setUsePrototypes(false);
+    }};
 
-    public static <T> T load(Class<T> type, String path) {
-        return load(type, Path.of(path));
+    public static <T> T load(Class<T> type, String name) {
+        return load(type, dataDirectory.child(name));
     }
 
-    public static <T> T load(Class<T> type, Path path) {
+    public static <T> T load(Class<T> type, Fi file) {
         try {
-            if (Files.exists(path))
-                return gson.fromJson(Files.readString(path), type);
+            if (file.exists())
+                return json.fromJson(type, file);
 
             var config = type.getDeclaredConstructor().newInstance();
-            Files.writeString(path, gson.toJson(config));
+            file.writeString(Jval.read(json.toJson(config)).toString(Jformat.formatted));
 
             return config;
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
-
-
 }

@@ -12,13 +12,16 @@ public class AntiVpn {
     public static final Seq<Subnet> subnets = new Seq<>();
 
     public static void load() {
-        Http.get("https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/datacenter/ipv4.txt", response -> {
-            var result = response.getResultAsString().split("\n");
-            for (var address : result)
-                subnets.add(parseSubnet(address));
+        Http.get("https://raw.githubusercontent.com/X4BNet/lists_vpn/main/output/datacenter/ipv4.txt")
+                .timeout(0)
+                .error(error -> Log.err("Failed to fetch datacenter subnets", error))
+                .submit(response -> {
+                    var result = response.getResultAsString().split("\n");
+                    for (var address : result)
+                        subnets.add(parseSubnet(address));
 
-            Log.info("Fetched @ datacenter subnets.", subnets.size);
-        }, error -> Log.err("Failed to fetch datacenter subnets.", error));
+                    Log.info("Fetched @ datacenter subnets.", subnets.size);
+                });
     }
 
     /**
@@ -57,5 +60,6 @@ public class AntiVpn {
         return new Subnet(ip, mask);
     }
 
-    private record Subnet(int ip, int mask) {}
+    private record Subnet(int ip, int mask) {
+    }
 }
