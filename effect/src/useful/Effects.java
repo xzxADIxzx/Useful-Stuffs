@@ -325,38 +325,20 @@ public class Effects {
         }, delay, interval, repeat);
     }
 
-    public static void schedule(Player player, float interval, int repeat, Cons2<Player, Float> cons) {
-        schedule(player, 0f, interval, repeat, cons);
-    }
-
-    public static void schedule(Player player, float delay, float interval, int repeat, Cons2<Player, Float> cons) {
-        Timer.schedule(new Task() {
-            @Override
-            public void run() {
-                if (player == null || !player.con.isConnected()) {
-                    cancel();
-                    return;
-                }
-
-                cons.get(player, Time.time);
-            }
-        }, delay, interval, repeat);
-    }
-
     // endregion
     // region sequence
 
     public static void sequence(float delay, Runnable... values) {
         for (int i = 0; i < values.length; i++) {
-            var runnable = values[i];
-            Time.run(delay * i, runnable);
+            final int index = i;
+            Time.run(delay * i, () -> values[index].run());
         }
     }
 
-    public static void sequence(float delay, Floatc... values) {
+    public static void sequence(float delay, Intc... values) {
         for (int i = 0; i < values.length; i++) {
-            var cons = values[i];
-            Time.run(delay * i, () -> cons.get(Time.time));
+            final int index = i;
+            Time.run(delay * i, () -> values[index].get(index));
         }
     }
 
@@ -364,7 +346,7 @@ public class Effects {
     // region stack
 
     public static void stack(float x, float y, Effect... values) {
-        stack(x, y, Tmp.c1.randHue(), values);
+        stack(x, y, Tmp.c1.rand(), values);
     }
 
     public static void stack(float x, float y, Color color, Effect... values) {
@@ -373,7 +355,7 @@ public class Effects {
     }
 
     public static void stack(float x, float y, float rotation, Effect... values) {
-        stack(x, y, rotation, Tmp.c1.randHue(), values);
+        stack(x, y, rotation, Tmp.c1.rand(), values);
     }
 
     public static void stack(float x, float y, float rotation, Color color, Effect... values) {
@@ -382,7 +364,7 @@ public class Effects {
     }
 
     public static void stack(Position position, Effect... values) {
-        stack(position, Tmp.c1.randHue(), values);
+        stack(position, Tmp.c1.rand(), values);
     }
 
     public static void stack(Position position, Color color, Effect... values) {
@@ -391,7 +373,7 @@ public class Effects {
     }
 
     public static void stack(Position position, float rotation, Effect... values) {
-        stack(position, rotation, Tmp.c1.randHue(), values);
+        stack(position, rotation, Tmp.c1.rand(), values);
     }
 
     public static void stack(Position position, float rotation, Color color, Effect... values) {
