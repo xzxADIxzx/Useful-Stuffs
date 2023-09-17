@@ -343,6 +343,21 @@ public class Effects {
     }
 
     // endregion
+    // region repeat
+
+    public static void repeat(int repeat, float delay, Runnable runnable) {
+        for (int i = 0; i < repeat; i++)
+            Time.run(delay * i, runnable);
+    }
+
+    public static void repeat(int repeat, float delay, Intc cons) {
+        for (int i = 0; i < repeat; i++) {
+            final int index = i;
+            Time.run(delay * i, () -> cons.get(index));
+        }
+    }
+
+    // endregion
     // region stack
 
     public static void stack(float x, float y, Effect... values) {
