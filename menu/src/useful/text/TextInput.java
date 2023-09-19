@@ -1,6 +1,7 @@
 package useful.text;
 
 import arc.func.*;
+import arc.util.Strings;
 import mindustry.gen.Call;
 import mindustry.gen.Player;
 import mindustry.ui.Menus;
@@ -26,6 +27,11 @@ public class TextInput extends Interface<TextInputView> {
         return views.get(player, () -> {
             var view = new TextInputView(player, state, previous);
             transformers.each(transformer -> transformer.get(view));
+
+            if (player.con.mobile) {
+                Strings.stripColors(view.title);
+                Strings.stripColors(view.content);
+            }
 
             Call.textInput(player.con, id, view.title, view.content, view.textLength, view.defaultText, view.numeric);
             return view;
