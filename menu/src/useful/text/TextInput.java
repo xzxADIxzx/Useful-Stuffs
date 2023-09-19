@@ -29,8 +29,8 @@ public class TextInput extends Interface<TextInputView> {
             transformers.each(transformer -> transformer.get(view));
 
             if (player.con.mobile) {
-                Strings.stripColors(view.title);
-                Strings.stripColors(view.content);
+                view.title = Strings.stripColors(Strings.stripGlyphs(view.title));
+                view.content = Strings.stripColors(Strings.stripGlyphs(view.content));
             }
 
             Call.textInput(player.con, id, view.title, view.content, view.textLength, view.defaultText, view.numeric);
