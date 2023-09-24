@@ -16,7 +16,7 @@ public class Effects {
     // region at
 
     public static void at(Effect effect, float x, float y) {
-        Call.effect(effect, x, y, Mathf.random(360f), Tmp.c1.rand());
+        Call.effect(effect, x, y, Mathf.random(360f), Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f));
     }
 
     public static void at(Effect effect, float x, float y, Color color) {
@@ -24,7 +24,7 @@ public class Effects {
     }
 
     public static void at(Effect effect, float x, float y, float rotation) {
-        Call.effect(effect, x, y, rotation, Tmp.c1.rand());
+        Call.effect(effect, x, y, rotation, Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f));
     }
 
     public static void at(Effect effect, float x, float y, float rotation, Color color) {
@@ -32,7 +32,7 @@ public class Effects {
     }
 
     public static void at(Effect effect, Position position) {
-        Call.effect(effect, position.getX(), position.getY(), Mathf.random(360f), Tmp.c1.rand());
+        Call.effect(effect, position.getX(), position.getY(), Mathf.random(360f), Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f));
     }
 
     public static void at(Effect effect, Position position, Color color) {
@@ -40,7 +40,7 @@ public class Effects {
     }
 
     public static void at(Effect effect, Position position, float rotation) {
-        Call.effect(effect, position.getX(), position.getY(), rotation, Tmp.c1.rand());
+        Call.effect(effect, position.getX(), position.getY(), rotation, Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f));
     }
 
     public static void at(Effect effect, Position position, float rotation, Color color) {
@@ -51,7 +51,7 @@ public class Effects {
     // region at (with data)
 
     public static void at(Effect effect, float x, float y, Object data) {
-        Call.effect(effect, x, y, Mathf.random(360f), Tmp.c1.rand(), data);
+        Call.effect(effect, x, y, Mathf.random(360f), Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f), data);
     }
 
     public static void at(Effect effect, float x, float y, Color color, Object data) {
@@ -59,7 +59,7 @@ public class Effects {
     }
 
     public static void at(Effect effect, float x, float y, float rotation, Object data) {
-        Call.effect(effect, x, y, rotation, Tmp.c1.rand(), data);
+        Call.effect(effect, x, y, rotation, Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f), data);
     }
 
     public static void at(Effect effect, float x, float y, float rotation, Color color, Object data) {
@@ -67,7 +67,7 @@ public class Effects {
     }
 
     public static void at(Effect effect, Position position, Object data) {
-        Call.effect(effect, position.getX(), position.getY(), Mathf.random(360f), Tmp.c1.rand(), data);
+        Call.effect(effect, position.getX(), position.getY(), Mathf.random(360f), Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f), data);
     }
 
     public static void at(Effect effect, Position position, Color color, Object data) {
@@ -75,7 +75,7 @@ public class Effects {
     }
 
     public static void at(Effect effect, Position position, float rotation, Object data) {
-        Call.effect(effect, position.getX(), position.getY(), rotation, Tmp.c1.rand(), data);
+        Call.effect(effect, position.getX(), position.getY(), rotation, Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f), data);
     }
 
     public static void at(Effect effect, Position position, float rotation, Color color, Object data) {
@@ -361,7 +361,7 @@ public class Effects {
     // region stack
 
     public static void stack(float x, float y, Effect... values) {
-        stack(x, y, Tmp.c1.rand(), values);
+        stack(x, y, Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f), values);
     }
 
     public static void stack(float x, float y, Color color, Effect... values) {
@@ -370,7 +370,7 @@ public class Effects {
     }
 
     public static void stack(float x, float y, float rotation, Effect... values) {
-        stack(x, y, rotation, Tmp.c1.rand(), values);
+        stack(x, y, rotation, Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f), values);
     }
 
     public static void stack(float x, float y, float rotation, Color color, Effect... values) {
@@ -379,7 +379,7 @@ public class Effects {
     }
 
     public static void stack(Position position, Effect... values) {
-        stack(position, Tmp.c1.rand(), values);
+        stack(position, Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f), values);
     }
 
     public static void stack(Position position, Color color, Effect... values) {
@@ -388,7 +388,7 @@ public class Effects {
     }
 
     public static void stack(Position position, float rotation, Effect... values) {
-        stack(position, rotation, Tmp.c1.rand(), values);
+        stack(position, rotation, Tmp.c1.fromHsv(Time.time % 360f, 1f, 1f).a(1f), values);
     }
 
     public static void stack(Position position, float rotation, Color color, Effect... values) {
