@@ -1,21 +1,14 @@
 package useful;
 
-import arc.util.Time;
-import arc.util.Timer;
+import arc.util.*;
 import mindustry.gen.Player;
 
 public class Cooldowns {
 
     public static final ExtendedMap<String, ExtendedMap<String, Long>> cooldowns = new ExtendedMap<>();
-    public static final ExtendedMap<String, Long> defaults = new ExtendedMap<>();
 
     public static long defaultCooldown = 1000L;   // 1 second
     public static boolean restrictAdmins = false; // By default, admins are not restricted
-
-    public static void defaults(Object... values) {
-        defaults.putAll(values);
-        defaultCooldown = defaults.get("default", defaultCooldown);
-    }
 
     public static void defaultCooldown(long cooldown) {
         defaultCooldown = cooldown;
@@ -32,15 +25,6 @@ public class Cooldowns {
         }, 60f, 60f);
     }
 
-    public static void put(String command, long cooldown) {
-        if (cooldown > 0)
-            defaults.put(command, cooldown);
-    }
-
-    public static long get(String command) {
-        return defaults.get(command, defaultCooldown);
-    }
-
     public static boolean canRun(Player player, String command) {
         if (player.admin && !restrictAdmins)
             return true;
@@ -48,10 +32,10 @@ public class Cooldowns {
         return Time.timeSinceMillis(cooldowns.get(player.uuid(), ExtendedMap::new).get(command, 0L)) > 0;
     }
 
-    public static void run(Player player, String command) {
+    public static void run(Player player, String command, long cooldown) {
         if (player.admin && !restrictAdmins)
             return;
 
-        cooldowns.get(player.uuid(), ExtendedMap::new).put(command, Time.millis() + get(command));
+        cooldowns.get(player.uuid(), ExtendedMap::new).put(command, Time.millis() + cooldown);
     }
 }

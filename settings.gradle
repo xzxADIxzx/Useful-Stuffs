@@ -1,7 +1,7 @@
 include 'bundle'
 include 'collections'
+include 'commands'
 include 'config'
-include 'cooldowns'
 include 'effect'
 include 'json'
 include 'menu'
