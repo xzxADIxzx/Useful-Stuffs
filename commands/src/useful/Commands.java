@@ -26,22 +26,6 @@ public class Commands {
 
             Cooldowns.defaultCooldown(commandsData.getLong("defaultCooldown", 1000L));
             Cooldowns.restrictAdmins(commandsData.getBool("restrictAdmins", false));
-        } else {
-            commandsData = Jval.newObject();
-            commandsData.add("defaultCooldown", "1000");
-            commandsData.add("restrictAdmins", "false");
-
-            var testCommandData = Jval.newObject();
-            testCommandData.add("enabled", "true");
-            testCommandData.add("params", "[params...]");
-            testCommandData.add("description", "Test Description!");
-            testCommandData.add("cooldown", "3000");
-            testCommandData.add("admin", "false");
-            testCommandData.add("hidden", "false");
-            testCommandData.add("welcomeMessage", "false");
-
-            commandsData.add("test", testCommandData);
-            file.writeString(commandsData.toString(Jformat.formatted));
         }
     }
 
