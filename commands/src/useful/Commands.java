@@ -23,6 +23,7 @@ public class Commands {
         var file = dataDirectory.child("commands.json");
         if (file.exists()) {
             commandsData = Jval.read(file.readString());
+
             Cooldowns.defaultCooldown(commandsData.getLong("defaultCooldown", 1000L));
             Cooldowns.restrictAdmins(commandsData.getBool("restrictAdmins", false));
         } else {
@@ -60,25 +61,19 @@ public class Commands {
         public final String name;
         public boolean enabled;
 
-        public String params = "";
-        public String description = "No description provided";
+        public String params;
+        public String description;
 
         public long cooldown;
         public boolean admin, hidden, welcomeMessage;
 
         public Command(String name) {
             this.name = name;
+        }
 
-            var data = commandsData.get(name);
-            if (data == null) return;
-
-            this.enabled = data.getBool("enabled", true);
-            this.params = data.getString("params");
-            this.description = data.getString("description");
-            this.cooldown = data.getLong("cooldown", 0L);
-            this.admin = data.getBool("admin", false);
-            this.hidden = data.getBool("hidden", false);
-            this.welcomeMessage = data.getBool("welcomeMessage", false);
+        public Command enabled(boolean enabled) {
+            this.enabled = enabled;
+            return this;
         }
 
         public Command params(String params) {
@@ -98,25 +93,38 @@ public class Commands {
         }
 
         // Makes this command admin-only
-        public Command admin() {
-            this.admin = true;
+        public Command admin(boolean admin) {
+            this.admin = admin;
             return this;
         }
 
         // Makes this command hidden
-        public Command hidden() {
-            this.hidden = true;
+        public Command hidden(boolean hidden) {
+            this.hidden = hidden;
             return this;
         }
 
         // Makes this command appear in the welcome message
-        public Command welcomeMessage() {
-            this.welcomeMessage = true;
+        public Command welcomeMessage(boolean welcomeMessage) {
+            this.welcomeMessage = welcomeMessage;
             return this;
         }
 
         // Registers this command
         public void register(CommandRunner<Player> runner) {
+            // Load data from JSON
+            if (commandsData.has(name)) {
+                var data = commandsData.get(name);
+
+                enabled = data.getBool("enabled", enabled);
+                params = data.getString("params", params);
+                description = data.getString("description", description);
+                cooldown = data.getLong("cooldown", cooldown);
+                admin = data.getBool("admin", admin);
+                hidden = data.getBool("hidden", hidden);
+                welcomeMessage = data.getBool("welcomeMessage", welcomeMessage);
+            }
+
             // Find default params if not set
             if (params == null)
                 params = Bundle.getDefault("commands." + name + ".params", DEFAULT_PARAMS);
