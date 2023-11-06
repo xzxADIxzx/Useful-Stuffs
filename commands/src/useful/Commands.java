@@ -24,13 +24,25 @@ public class Commands {
         if (file.exists()) {
             commandsData = Jval.read(file.readString());
 
-            Cooldowns.defaultCooldown(commandsData.getLong("defaultCooldown", 1000L));
-            Cooldowns.restrictAdmins(commandsData.getBool("restrictAdmins", false));
+            Cooldowns.defaultCooldown(commandsData.getLong("defaultCooldown", Cooldowns.defaultCooldown));
+            Cooldowns.restrictAdmins(commandsData.getBool("restrictAdmins", Cooldowns.restrictAdmins));
         }
     }
 
     public static Command create(String name) {
         return new Command(name);
+    }
+
+    public static Command admin(String name) {
+        return new Command(name).admin(true);
+    }
+
+    public static Command hidden(String name) {
+        return new Command(name).hidden(true);
+    }
+
+    public static Command getCommand(String name) {
+        return clientCommands.get(name);
     }
 
     public static Seq<Command> getCommands(boolean admin) {
@@ -50,6 +62,8 @@ public class Commands {
 
         public long cooldown;
         public boolean admin, hidden, welcomeMessage;
+
+        public CommandRunner<Player> runner;
 
         public Command(String name) {
             this.name = name;
@@ -96,6 +110,8 @@ public class Commands {
 
         // Registers this command
         public void register(CommandRunner<Player> runner) {
+            this.runner = runner;
+
             // Load data from JSON
             if (commandsData.has(name)) {
                 var data = commandsData.get(name);
@@ -145,6 +161,10 @@ public class Commands {
         // Returns the localised description (Or the default one, if localised cannot be found)
         public String description(Player player) {
             return Bundle.get("commands." + name + ".description", description, player);
+        }
+
+        public void run(String[] args, Player player) {
+            runner.accept(args, player);
         }
     }
 }
