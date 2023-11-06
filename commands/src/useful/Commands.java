@@ -49,7 +49,7 @@ public class Commands {
         return clientHandler.getCommandList().map(command -> clientCommands.get(command.text, new Command(command.text)
                         .params(command.paramText)
                         .description(command.description)))
-                .retainAll(command -> command.admin || admin)
+                .retainAll(command -> !command.admin || admin)
                 .removeAll(command -> command.hidden);
     }
 
