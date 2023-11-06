@@ -14,7 +14,7 @@ public class Commands {
     public static final CommandHandler clientHandler = netServer.clientCommands;
     public static final ObjectMap<String, Command> clientCommands = new ObjectMap<>();
 
-    private static Jval commandsData;
+    private static Jval commandsData = Jval.newObject();
 
     private static final String DEFAULT_PARAMS = "";
     private static final String DEFAULT_DESCRIPTION = "No description provided";
