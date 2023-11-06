@@ -55,7 +55,7 @@ public class Commands {
 
     public static class Command {
         public final String name;
-        public boolean enabled;
+        public boolean enabled = true;
 
         public String params;
         public String description;
@@ -125,6 +125,8 @@ public class Commands {
                 welcomeMessage = data.getBool("welcomeMessage", welcomeMessage);
             }
 
+            if (!enabled) return;
+
             // Find default params if not set
             if (params == null)
                 params = Bundle.getDefault("commands." + name + ".params", DEFAULT_PARAMS);
@@ -134,8 +136,6 @@ public class Commands {
                 description = Bundle.getDefault("commands." + name + ".description", DEFAULT_DESCRIPTION);
 
             clientHandler.<Player>register(name, params, description, (args, player) -> {
-                if (!enabled) return;
-
                 if (admin && !player.admin) {
                     Bundle.send(player, "commands.permission-denied", name);
                     return;
